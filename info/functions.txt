@@ -1,0 +1,78 @@
+converts integer from host byte order to network byte order
+needed for sockaddr_in.port
+htons
+uint16_t	htons(uint16_t hostshort);
+
+converts integer from host byte order to network byte order
+needed for sockaddr_in.port
+htonl
+uint32_t	htonl(uint32_t hostlong);
+
+converts integer from network byte order to host byte order
+needed for sockaddr_in.port
+ntohs
+uint16_t ntohs(uint16_t netshort);
+
+converts integer from network byte order to host byte order
+needed for sockaddr_in.port
+ntohl
+uint32_t ntohl(uint32_t netlong);
+
+select
+
+poll
+
+epoll (epoll_create, epoll_ctl, epoll_wait)
+NOT FOR MAC
+
+kqueue (kqueue, kevent)
+similar to epoll?
+
+socket
+int socket(int domain, int type, int protocol);
+
+accept
+
+listen
+
+send
+
+recv
+
+bind
+
+connect
+
+inet_addr
+#include <arpa/inet.h>
+in_addr_t inet_addr(const char *cp);
+The inet_addr() function shall convert the string pointed to by cp, in the standard IPv4 dotted decimal notation, to an integer value suitable for use as an Internet address.
+
+setsockopt
+int setsockopt(int socket, int level, int option_name, const void *option_value, socklen_t option_len);
+
+getsockname
+int getsockname(int sockfd, struct sockaddr *restrict addr, socklen_t *restrict addrlen);
+getsockname() returns the current address to which the socket sockfd is bound, in the buffer pointed to by addr.
+
+fcntl
+int fcntl(int fd, int cmd, ... /* arg */ );
+fcntl(fd, F_SETFL, O_NONBLOCK);
+
+FD_SET
+FD_SET(fd, &fdset)  
+Sets the bit for the file descriptor fd in the file descriptor set fdset.
+
+FD_CLR
+FD_CLR(fd, &fdset)  
+Clears the bit for the file descriptor fd in the file descriptor set fdset.
+
+FD_ISSET
+FD_ISSET(fd, &fdset)  
+Returns a non-zero value if the bit for the file descriptor fd is set in the file descriptor set pointed to by fdset, and 0 otherwise.
+
+FD_ZERO
+FD_ZERO(&fdset)  
+Initializes the file descriptor set fdset to have zero bits for all file descriptors.
+
+https://www.youtube.com/watch?v=tAGF0T2cXRA

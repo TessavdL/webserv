@@ -1,0 +1,24 @@
+server {
+	listen
+	server_name
+	root "path"
+	index
+	client_max_body_size "int+c"
+	error_page int "uri"
+	autoindex "on/off"
+
+	location / {
+		client_max_body_size "int+c"
+		root "path"
+		error_page int "uri"
+		limit_except "method"
+		autoindex "on/off"
+	}
+}
+
+
+
+
+
+
+location cannot have: listen, server_name
