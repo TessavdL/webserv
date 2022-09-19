@@ -1,5 +1,5 @@
 server {
-	listen
+	listen 
 	server_name
 	root "path"
 	index
@@ -16,9 +16,3 @@ server {
 	}
 }
 
-
-
-
-
-
-location cannot have: listen, server_name

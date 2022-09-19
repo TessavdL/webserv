@@ -188,3 +188,5 @@ location = /user {
 ---------
 LISTEN
 ---------
+
+location cannot have: listen, server_name
