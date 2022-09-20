@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/19 19:13:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/09/20 15:55:46 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ server_config::server_config(t_server server) : _autoindex(false) {
 		switch (this->hash_string(*it))
 		{
 			case	SERVER_NAME:
-				
+				this->helper_split(this->_server_name, *it);
 				break ;
 			case	LISTEN:
 				break ;
@@ -94,4 +94,14 @@ void		server_config::helper_split(string &str, string to_split) {
 	char			*p = std::strtok(cstr, " ");
 	string			tmp(p);
 	str = tmp;
+}
+
+void		server_config::helper_split(vector<string> &str, string to_split) {
+	stringstream ss(to_split);
+	istream_iterator<string> begin(ss);
+	istream_iterator<string> end;
+	vector<string> tmp(begin, end);
+	str = tmp;
+	if (!str.empty())
+		str.erase(str.begin());
 }

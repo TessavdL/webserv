@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 14:42:06 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/19 19:18:41 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/09/20 16:18:46 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ enum	directives_list	{
 class server_config
 {
 	private:
-		vector<string>				_server_name;
-		vector<pair<string, int>>	_listen;
+		vector<string>						_server_name;
+		vector<string>						_listen;
 	protected:
-		string						_root;
-		string						_client_max_body_size;
-		string						_limit_except;
-		vector<string>				_index;
-		vector<pair<int, string>>	_error_page;
-		bool						_autoindex;
+		string								_root;
+		string								_client_max_body_size;
+		string								_limit_except;
+		vector<string>						_index;
+		vector<pair<vector<int>, string>>	_error_page;
+		bool								_autoindex;
 	public:
 		server_config();
 		server_config(t_server server);
@@ -64,8 +64,7 @@ class server_config
 		directives_list	hash_string(string const& directive);
 		void			helper_split(vector<string> &str, string to_split);
 		void			helper_split(string &str, string to_split);
-		void			helper_split(vector<pair<string, int>> listen, string to_split);
-		void			helper_split(vector<pair<int, string>> error_page, string to_split);
+		void			helper_split(vector<pair<vector<int>, string>> error_page, string to_split);
 };
 
 #endif
