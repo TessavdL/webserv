@@ -2,15 +2,22 @@
 #include <iostream>
 
 int	main(int argc, char** argv) {
-	Lexer		lexer;
-	std::string	raw_data;
+	Lexer			lexer;
+	std::string		input;
+	size_t			server_blocks;
 
 	if (argc == 2) {
-		raw_data = lexer.get_raw_data(argv[1]);
-		std::cout << lexer.count_server_blocks(raw_data) << std::endl;
-		// std::cout << raw_data << std::endl;
-		lexer.get_server_block(raw_data);
-		lexer.check_brackets(raw_data);
+		input = lexer.get_input_from_config_file(argv[1]);
+		input.erase(std::remove(input.begin(), input.end(), '\n'), input.cend());
+		server_blocks = lexer.count_server_blocks(input);
+		std::string remainder = input;
+		for (size_t i = 0; i < server_blocks; i++) {
+			Lexer::t_server	block;
+			remainder = lexer.get_block(remainder, block);
+			lexer.get_private_var().push_back(block);
+		}
 	}
 	return (0);
 }
+
+# TO DO: overwrite ostream so it prints lexer
