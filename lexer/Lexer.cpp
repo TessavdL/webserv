@@ -57,65 +57,62 @@ size_t	Lexer::count_server_blocks(std::string str) const {
 	return (server_blocks);
 }
 
-int	Lexer::even_or_uneven(std::string str) {
-	int count = 0;
+// int	Lexer::even_or_uneven(std::string str) {
+// 	int count = 0;
 
-	for (size_t i = 0; i < str.size(); i++) {
-		if (str[i] == '{') {
-            count++;
-        }
-        else {
-            count--;
-        }
-	}
-	if (count == 0) {
-		return (0);
-	}
-	else {
-		return (1);
-	}
-}
+// 	for (size_t i = 0; i < str.size(); i++) {
+// 		if (str[i] == '{') {
+//             count++;
+//         }
+//         else {
+//             count--;
+//         }
+// 	}
+// 	if (count == 0) {
+// 		return (0);
+// 	}
+// 	else {
+// 		return (1);
+// 	}
+// }
 
-struct is_bracket : std::unary_function<char, bool>
-{
-    bool operator()(char c) const { return c == '{' || c == '}'; }
-};
 
-void	Lexer::check_brackets(std::string str) {
-	size_t	open;
-	size_t	close;
-	std::string	substr;
-	std::string substr2;
 
-	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
-	if (str.empty() || str[0] != '{') {
-		std::cout << "error:\n" << "in check_brackets\n" << "brackets invalid" << std::endl;
-		return ;
-	}
+// void	Lexer::check_brackets(std::string str) {
+// 	size_t	open;
+// 	size_t	close;
+// 	std::string	substr;
+// 	std::string substr2;
 
-	while (!str.empty() && str.size() > 1)
-	{
-		close = str.find_first_of('}');
-		substr = str.substr(0, close + 1);
-		open = substr.find_last_of('{');
-		substr2 = substr.substr(open, substr.size() - open);
-		if (even_or_uneven(substr2) == 1) 	
-		{
-			std::cout << "error:\n" << "in check_brackets\n" << "brackets invalid" << std::endl;
-			return ;
-		}
-		else
-		{
-			str.erase(close, 1);
-			str.erase(open, 1);
-		}
-	}
-	if (str.empty()) {
-		std::cout << "brackets OK" << std::endl;
-	}
-	else {
-		std::cout << "error:\n" << "in check_brackets\n" << "brackets KO" << std::endl;
-	}
+// 	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
+// 	if (str.empty() || str[0] != '{') {
+// 		std::cout << "error:\n" << "in check_brackets\n" << "brackets invalid" << std::endl;
+// 		return ;
+// 	}
+
+// 	while (!str.empty() && str.size() > 1)
+// 	{
+// 		close = str.find_first_of('}');
+// 		substr = str.substr(0, close + 1);
+// 		open = substr.find_last_of('{');
+// 		substr2 = substr.substr(open, substr.size() - open);
+// 		if (even_or_uneven(substr2) == 1) 	
+// 		{
+// 			std::cout << "error:\n" << "in check_brackets\n" << "brackets invalid" << std::endl;
+// 			return ;
+// 		}
+// 		else
+// 		{
+// 			str.erase(close, 1);
+// 			str.erase(open, 1);
+// 		}
+// 	}
+// 	if (str.empty()) {
+// 		std::cout << "brackets OK" << std::endl;
+// 	}
+// 	else {
+// 		std::cout << "error:\n" << "in check_brackets\n" << "brackets KO" << std::endl;
+// 	}
 }
 
 void	Lexer::add_directives(std::string str, std::vector<std::string> block) {

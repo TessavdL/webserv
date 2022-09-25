@@ -1,23 +1,18 @@
-#include "Lexer.hpp"
+#include "Lexer1.hpp"
 #include <iostream>
+#include <algorithm>
 
 int	main(int argc, char** argv) {
-	Lexer			lexer;
-	std::string		input;
-	size_t			server_blocks;
+	Lexer						lexer;
+	std::string					input;
+	std::vector<std::string>	server_blocks;
 
 	if (argc == 2) {
 		input = lexer.get_input_from_config_file(argv[1]);
-		input.erase(std::remove(input.begin(), input.end(), '\n'), input.cend());
-		server_blocks = lexer.count_server_blocks(input);
-		std::string remainder = input;
-		for (size_t i = 0; i < server_blocks; i++) {
-			Lexer::t_server	block;
-			remainder = lexer.get_block(remainder, block);
-			lexer.get_private_var().push_back(block);
+		server_blocks = lexer.get_server_blocks(input);
+		for (std::vector<std::string>::iterator it = server_blocks.begin(); it != server_blocks.end(); it++) {
+			std::cout << *it << std::endl;
 		}
 	}
 	return (0);
 }
-
-# TO DO: overwrite ostream so it prints lexer
