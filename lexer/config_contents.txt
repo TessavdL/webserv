@@ -1,33 +1,39 @@
-server {
-  listen phantom.nl:8080 400 5000;
+                                       server {
+	listen phantom.nl:8080 400 5000;
 
-  server_name www.phantom.nl phantom.nl;
+	server_name www.phantom.nl phantom.nl;
 	
-  error_page 404 /err/404.html;
-  error_page 500 /err/rip.html;
+	error_page 404 /err/404.html;
+	error_page 500 /err/rip.html;
 
-  location / {
-    client_max_body_size 12k;
-    autoindex off;
-    index index.php index.html index.htm Welcome.html;
-  }
+	location / {
+		client_max_body_size 12k;
+		autoindex off;
+		index index.php index.html index.htm Welcome.html;
+	}
 
-  location /dev/ {
-    autoindex off;
-    root /www/;
-    limit_except GET;
-    index index.html;
-    cgi .php /usr/local/bin/php-cgi;
-  }
+	location /dev/ {
+		autoindex off;
+		root /www/;
+		limit_except GET;
+		index index.html;
+		cgi .php /usr/local/bin/php-cgi;
+	}
 
-  location /HOME {
-    autoindex on;
-    limit_except GET POST DELETE;
-    client_max_body_size 10m;
-    index plebserv.php;
-  }
-  root blabla;
+	location /HOME {
+		autoindex on;
+		limit_except GET POST DELETE;
+		client_max_body_size 10m;
+		index plebserv.php;
+	}
+	root blabla;
 }
+
+
+
+
+
+
 
 server {
 	listen beepboop:80;

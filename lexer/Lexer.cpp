@@ -1,22 +1,38 @@
 #include "Lexer.hpp"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-#include <functional>
 
-Lexer::Lexer(void) {}
+Lexer::Lexer(std::string const& file_name) {
+	std::string		input = get_input_from_config_file(file_name);
+	size_t			n_server_blocks = count_blocks(input);
+	
+	if (n_server_blocks == 0) {
+		throw (LexerParserException());
+	}
 
-Lexer::~Lexer(void) {
-	this->_server_blocks.clear();
+	std::vector<std::string>	server_block_rough = get_server_blocks(input);
+
+	for (size_t i = 0; i < n_server_blocks; i++) {
+		t_server											server_block;
+		size_t												n_locations_blocks = count_blocks(server_block_rough[i]);
+		std::vector<std::pair<std::string,std::string> >	location_blocks_rough = get_location_blocks(server_block_rough[i]);
+
+		get_directives(server_block.directives, server_block_rough[i]);
+		for (size_t j = 0; j < n_locations_blocks; j++) {
+			t_locations	locations;
+			locations.path_and_optional_modifier = location_blocks_rough[j].first;
+			get_directives(locations.directives, location_blocks_rough[j].second);
+			server_block.locations.push_back(locations);
+		}
+		this->server_blocks.push_back(server_block);
+	}
 }
 
-Lexer::Lexer(Lexer const& other) : _server_blocks(other._server_blocks) {}
+Lexer::~Lexer(void) {}
+
+Lexer::Lexer(Lexer const& other) : server_blocks(other.server_blocks) {}
 
 Lexer&	Lexer::operator=(Lexer const& other) {
 	if (this != &other) {
-		this->_server_blocks = other._server_blocks;
+		this->server_blocks = other.server_blocks;
 	}
 	return (*this);
 }
@@ -26,169 +42,129 @@ std::string	Lexer::get_input_from_config_file(std::string const& file_name) cons
 	std::string		input;
 	
 	input_stream.open(file_name);
-	if (!input_stream) {
-		std::cout << "error:\n" << "get_input_from_config_file\n" << "failed to open config file" << std::endl;
+	if (!input_stream) { // open failed
+		throw (LexerParserException());
 	}
 	else {
 		std::ostringstream ss;
 		ss << input_stream.rdbuf();
 		input.append(ss.str());
 	}
+	input_stream.close();
 	return (input);
 }
 
-size_t	Lexer::count_server_blocks(std::string str) const {
-	size_t	server_blocks = 0;
-	size_t	pos = str.find("server");
-	size_t	pos_server_name;
-
-	if (pos == std::string::npos) {
-		std::cout << "error:\n" << "count_server_blocks\n" << "no server blocks were found" << std::endl;
-		return (0);
+std::pair<size_t, size_t>	Lexer::get_start_and_end_of_block(std::string str) {
+	size_t	open = str.find("{");
+	if (open == std::string::npos) {
+		throw (LexerParserException());
 	}
-	while (pos != std::string::npos) {
-		pos_server_name = str.find("server_name");
-		if (pos_server_name != pos) {
-			server_blocks++;
+	size_t	depth = 1;
+	for (size_t i = 0; i + open + 1 < str.size(); i++) {
+		if (str[i + open + 1] == '{') {
+			depth++;
 		}
-		str = str.substr(pos + sizeof("server"), str.length());
-		pos = str.find("server");
+		else if (str[i + open + 1] == '}') {
+			depth--;
+		}
+		if (depth == 0) {
+			return (std::pair<size_t, size_t>(open, i + open + 2));
+		}
+	}
+	throw (LexerParserException());
+}
+
+std::vector<std::string>	Lexer::get_server_blocks(std::string const& input) {
+	std::string					str = input;
+	std::string					server_block;
+	std::vector<std::string>	server_blocks;
+	std::pair<size_t, size_t>	start_end;
+	size_t						n_server_blocks;
+
+	n_server_blocks = count_blocks(str);
+	for (size_t i = 0; i < n_server_blocks; i++) {
+		start_end = get_start_and_end_of_block(str);
+		server_block = str.substr(start_end.first + 1, start_end.second - start_end.first - 2);
+		if (!is_valid_server_start(str.substr(0, start_end.first))) {
+			throw (LexerParserException());
+		}
+		server_blocks.push_back(server_block);
+		erase_substring(str, str.substr(0, start_end.second));
 	}
 	return (server_blocks);
 }
 
-// int	Lexer::even_or_uneven(std::string str) {
-// 	int count = 0;
-
-// 	for (size_t i = 0; i < str.size(); i++) {
-// 		if (str[i] == '{') {
-//             count++;
-//         }
-//         else {
-//             count--;
-//         }
-// 	}
-// 	if (count == 0) {
-// 		return (0);
-// 	}
-// 	else {
-// 		return (1);
-// 	}
-// }
-
-
-
-// void	Lexer::check_brackets(std::string str) {
-// 	size_t	open;
-// 	size_t	close;
-// 	std::string	substr;
-// 	std::string substr2;
-
-// 	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
-// 	if (str.empty() || str[0] != '{') {
-// 		std::cout << "error:\n" << "in check_brackets\n" << "brackets invalid" << std::endl;
-// 		return ;
-// 	}
-
-// 	while (!str.empty() && str.size() > 1)
-// 	{
-// 		close = str.find_first_of('}');
-// 		substr = str.substr(0, close + 1);
-// 		open = substr.find_last_of('{');
-// 		substr2 = substr.substr(open, substr.size() - open);
-// 		if (even_or_uneven(substr2) == 1) 	
-// 		{
-// 			std::cout << "error:\n" << "in check_brackets\n" << "brackets invalid" << std::endl;
-// 			return ;
-// 		}
-// 		else
-// 		{
-// 			str.erase(close, 1);
-// 			str.erase(open, 1);
-// 		}
-// 	}
-// 	if (str.empty()) {
-// 		std::cout << "brackets OK" << std::endl;
-// 	}
-// 	else {
-// 		std::cout << "error:\n" << "in check_brackets\n" << "brackets KO" << std::endl;
-// 	}
-}
-
-void	Lexer::add_directives(std::string str, std::vector<std::string> block) {
-	std::string	directive;
-	std::string	substring;
-	size_t		semicolumn;
+static std::string	get_location(std::string const& str, size_t end) {
+	std::string	location;
+	size_t 		start;
 	
-	for (size_t i = 0; i < str.size(); i++) {
-		i += skip_whitespaces(str, i);
-		substring = str.substr(i, str.length());
-		if (substring.empty()) {
-			return ;
-		}
-		semicolumn = substring.find_first_of(';');
-		if (semicolumn == std::string::npos) {
-			std::cout << "error:\n" << "in add_directives\n" << "directive not closed with a semicolumn" << std::endl;
-			std::cout << str << std::endl;
-			return ;
-		}
-		directive = substring.substr(0, semicolumn);
-		// std::cout << directive << std::endl;
-		block.push_back(directive);
-		i += semicolumn;
-	}
-}
-
-static void	get_path_and_modifier(Lexer::t_locations& loc, std::string str) {
-	size_t pos = str.find("location");
-	std::string substring = str.substr(pos, str.length());
-	std::string subsubstring = substring.substr(0, substring.find_first_of('{'));
-	std::cout << subsubstring << std::endl;
-	loc.path_and_optional_modifier = subsubstring;
-}
-
-std::string	Lexer::get_block(std::string str, t_server& server_block) {
-	size_t		start_block = str.find_first_of('{');
-	size_t		end_block = str.find_first_of('}');
-	std::string	substring = str.substr(start_block, end_block);
-	size_t		start_block_check = substring.find_last_of('{');
-	size_t		pos;
-
-	if (start_block_check == 0) {
-		substring = substring.substr(1, substring.length() - 2);
-		std::string subsubstring = substring.substr(0, substring.find_first_of('}'));
-		add_directives(subsubstring, server_block.directives);
-		pos = str.find(subsubstring);
-		if (pos != std::string::npos) {
-			str.erase(pos, subsubstring.length());
-			std::cout << str << std::endl;
-		}
-		pos = str.find_first_of("}");
-		if (pos != std::string::npos) {
-			str.erase(0, pos + 1);
-			std::cout << str << std::endl;
-		}
+	location = str.substr(0 , end);
+	start = location.find_last_of(";");
+	if (start == std::string::npos) {
+		start = 0;
 	}
 	else {
-		std::string location = substring.substr(start_block_check + 1, substring.find_first_of('}') - start_block_check - 1);
-		t_locations	loc;
-		add_directives(location, loc.directives);
-		server_block.locations.push_back(loc);
-		pos = str.find(location);
-		get_path_and_modifier(loc, str);
-		if (pos != std::string::npos) {
-			str.erase(pos, location.length());
-		}
-		pos = str.find(loc.path_and_optional_modifier);
-		if (pos != std::string::npos) {
-			str.erase(pos, loc.path_and_optional_modifier.length());
-		}
-		pos = str.find("{}");
-		if (pos != std::string::npos) {
-			str.erase(pos, 2);
-		}
-		return (get_block(str, server_block));
+		start++;
 	}
-	return (str);
+	location = location.substr(start, location.size());
+	return (location);
 }
 
+std::vector<std::pair<std::string,std::string> >	Lexer::get_location_blocks(std::string const& server_block) {
+	std::string											str = server_block;
+	std::vector<std::pair<std::string,std::string> >	location_blocks;
+	std::string											path;
+	std::pair<size_t, size_t>							start_end;
+	size_t												n_location_blocks;
+
+	n_location_blocks = count_blocks(str);
+	for (size_t i = 0; i < n_location_blocks; i++) {
+		start_end = get_start_and_end_of_block(str);
+		std::string location_block = str.substr(start_end.first + 1, start_end.second - start_end.first - 2);
+		std::string location = trim(get_location(str, start_end.first), " \t\n\r\f\v");
+		location_blocks.push_back(std::pair<std::string, std::string>(location, location_block));
+		erase_substring(str, str.substr(0, start_end.second));
+	}
+	return (location_blocks);
+}
+
+void	Lexer::get_directives(std::vector<std::string>& directives, std::string const& str) {
+	std::string	directive;
+	
+	for (size_t i = 0; i < str.size(); i++) {
+		std::string remainder = str.substr(i, str.size());
+		directive = remainder.substr(0, remainder.find_first_of(';'));
+		if (directive.find('{') != std::string::npos) {
+			i += remainder.find('}');
+			continue ;
+		}
+		i += directive.size();
+		directives.push_back(trim(directive, " \t\n\r\f\v"));
+	}
+}
+
+std::vector<Lexer::t_server>	Lexer::get_server_blocks(void) const {
+	return (this->server_blocks);
+}
+
+Lexer::Lexer(void) {}
+
+std::ostream&	operator<<(std::ostream& os, Lexer const& lexer) {
+	std::vector<Lexer::t_server> serv = lexer.get_server_blocks();
+
+	for (size_t i = 0; i < serv.size(); i++) {
+		for (size_t n = 0; n < serv[i].directives.size(); n++) {
+			os << serv[i].directives[n] << std::endl;
+		}
+
+		std::vector<Lexer::t_locations>	locs = serv[i].locations;
+
+		for (size_t j = 0; j < locs.size(); j++) {
+			os << locs[j].path_and_optional_modifier << std::endl;
+			for (size_t m = 0; m < locs[j].directives.size(); m++) {
+				os << "\t" << locs[j].directives[m] << std::endl;
+			}
+		}
+	}
+	return (os);
+}

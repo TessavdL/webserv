@@ -1,10 +1,17 @@
-#ifndef Lexer_HPP
-# define Lexer_HPP
+#ifndef LEXER_HPP
+# define LEXER_HPP
 
-#include "../srcs/utils_lexer_parser.hpp"
+#include "LexerUtils.hpp"
+#include "Exception.hpp"
 
 #include <vector>
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <functional>
 
 class Lexer {
 	public:
@@ -18,23 +25,23 @@ class Lexer {
 			std::vector<std::string>	directives;
 			std::vector<t_locations>	locations;
 		}								t_server;
-		Lexer();
+		Lexer(std::string const& file_name);
 		~Lexer();
 		Lexer(Lexer const& other);
-		Lexer&		operator=(Lexer const& other);
-		std::string	get_input_from_config_file(std::string const& file_name) const;
-		// bool		check_brackets(std::string const& raw_data);
-		size_t		count_server_blocks(std::string str) const;
-		void		add_directives(std::string str, std::vector<std::string> block);
-		void		check_brackets(std::string str);
-		void		remove_brackets(std::string& str);
-		int			even_or_uneven(std::string str);
-		std::string		get_block(std::string str, t_server& block);
-		std::vector<t_server>	get_private_var(void) const {
-			return (this->_server_blocks);
-		}
+		Lexer&												operator=(Lexer const& other);
+		std::string											get_input_from_config_file(std::string const& file_name) const;
+		void												check_brackets(std::string str);
+		std::pair<size_t, size_t>							get_start_and_end_of_block(std::string str);
+		std::vector<std::string>							get_server_blocks(std::string const& input);
+		std::vector<std::pair<std::string,std::string> >	get_location_blocks(std::string const& server_block);
+		void												get_directives(std::vector<std::string>& directives, std::string const& str);
+		std::vector<t_server>								get_server_blocks(void) const;
+	protected:
+		std::vector<t_server>								server_blocks;
 	private:
-		std::vector<t_server>			_server_blocks;
+		Lexer();
 };
+
+std::ostream&	operator<<(std::ostream& os, Lexer const& lexer);
 
 #endif
