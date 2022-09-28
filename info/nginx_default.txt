@@ -1,0 +1,19 @@
+autoindex				| default off 			| context server location
+
+client_max_body_size	| default 1m			| context server location
+
+index					| default index.html	| context server location
+
+error_page				| default				| context server location
+
+limit_except			| default				| context location
+
+listen					| default *:80 *:8000	| context server
+
+location				| default				| context server location
+
+root					| default html			| context server location
+
+server					| default				| context
+
+server_name				| default ""			| context server

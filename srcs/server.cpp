@@ -4,6 +4,7 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>	// socket, bind, listen, accept
+#include <sys/event.h>	// kqueue?
 
 #include <netinet/in.h> // contains sockaddr_in struct we need for address and port and htons, htonl, ntohl, ntohs
 
@@ -40,6 +41,13 @@ int	main(void)
 		return (error_and_exit("An error occured in socket.\n"));
 	}
 
+	//	setsockopt, make socket address reusable
+	int yes=1;
+	if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1) {
+		perror("setsockopt");
+		exit(1);
+	}
+
 	//	define server address (see client for more);
 	struct sockaddr_in	server_socket_address;
 	server_socket_address.sin_family = AF_INET;
@@ -70,6 +78,55 @@ int	main(void)
 		return (error_and_exit("An error occured in listen.\n"));
 	}
 
+	// struct kevent	change_event[4];
+	// struct kevent	event[4];
+	// int				new_events;
+	// int				kq = kqueue();
+
+	// EV_SET(change_event, server_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
+
+	// if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
+	// 	return (error_and_exit("An error occured in kevent"));
+	// }
+
+	// printf("Event loop starting...\n");
+	// //	event loop
+	// for (;;) {
+	// 	new_events = kevent(kq, NULL, 0, event, 1, NULL);
+	// 	if (new_events == -1) {
+	// 		return (error_and_exit("An error occured in kevent in the event loop"));
+	// 	}
+	
+	// 	for (int i = 0; new_events > i; i++) {
+	// 		int	event_fd = event[i].ident;
+	// 		if (event[i].flags & EOF) {
+	// 			printf("Client disconnected");
+	// 			if (close(event_fd) == -1) {
+	// 				return (error_and_exit("An error occured in close"));
+	// 			}
+	// 		}
+	// 		else if (event_fd == server_socket) {
+				// int	client_socket;
+				// client_socket = accept(server_socket, NULL, NULL);
+				// if (client_socket == -1) {
+				// 	return (error_and_exit("An error occured in accept.\n"));
+				// }
+	// 			printf("A client connected to the server\n");
+	// 			EV_SET(change_event, client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
+	// 			if (kevent(kq, change_event, 1, NULL, 0, NULL) < 0) {
+	// 				return (error_and_exit("An error occured in kevent in event loop registering new event"));
+	// 			}
+	// 		}
+	// 		else if (event[i].filter & EVFILT_READ) {
+	// 			// read bytes from client socket
+	// 			char buf[1024];
+	// 			size_t	bytes_read = recv(event_fd, buf, sizeof(buf), 0);
+	// 			printf("read %zu bytes\n", bytes_read);
+	// 		}
+	// 	}
+	// }
+
+
 	//	accept
 	//	int accept(int sockfd, struct sockaddr *restrict addr, socklen_t *restrict addrlen);
 	//	integer to hold client socket to which we can write
@@ -89,26 +146,26 @@ int	main(void)
 		return (error_and_exit("An error occured in accept.\n"));
 	}
 
-	//	send
-	//	ssize_t send(int sockfd, const void *buf, size_t len, int flags);
-	//	without flags send is equal to write
-	//	only works when the socket is in a connected state
+	// //	send
+	// //	ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+	// //	without flags send is equal to write
+	// //	only works when the socket is in a connected state
 	int	number_of_bytes_send;
 	number_of_bytes_send = send(client_socket, &server_message[0], ft_strlen(server_message), 0);
 	// -1
 	
-	//	close
-	//	close destroys the socket
+	// //	close
+	// //	close destroys the socket
 	int	close_status;
 	close_status = close(server_socket);
 	if (close_status == -1)
 	{
 		error_and_exit("An error occured in closing the server socket.\n");
 	}
-	close_status = close(client_socket);
-	if (close_status == -1)
-	{
-		error_and_exit("An error occured in closing the client socket.\n");
-	}
+	// close_status = close(client_socket);
+	// if (close_status == -1)
+	// {
+	// 	error_and_exit("An error occured in closing the client socket.\n");
+	// }
 	return (0);
 }

@@ -85,8 +85,10 @@ int main(void)
 		received_message.append(buf.cbegin(), buf.cend());
 	}
 
-	//	print data
+	// //	print data
 	std::cout << received_message << std::endl;
+
+
 
 	//	close socket
 	//	close destroys the socket
