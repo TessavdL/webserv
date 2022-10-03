@@ -6,6 +6,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "../listening_sockets/SocketListen.hpp"
+
 int	error_and_exit(const char* error_message)
 {
 	perror(error_message);
@@ -14,37 +16,10 @@ int	error_and_exit(const char* error_message)
 
 int main()
 {
+	SocketListen		socket(9002);
 	int					client_len;
     struct sockaddr_in	client_addr;
 
-	// CREATE SOCKET
-	int	socket_listen_fd;
-    if (((socket_listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)) {
-		return (error_and_exit("An error occured in socket().\n"));
-	}
-
-	// MAKE SOCKET ADDRESS REUSABLE
-	int	yes = 1;
-	if (setsockopt(socket_listen_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1) {
-		return (error_and_exit("An error occured in setsockopt().\n"));
-	}
-
-	// DEFINE SERVER ADDRESS
-	// portnumber based on server configuration
-	struct sockaddr_in	serv_addr;
-	int					portnumber = 9002;
-    bzero((char *)&serv_addr, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(portnumber);
-
-	// BIND SOCKET TO IP ADDRESS AND PORT
-    if (bind(socket_listen_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1) {
-		return (error_and_exit("An error occured in bind().\n"));
-    }
-
-	// LISTEN FOR CONNECTIONS
-    listen(socket_listen_fd, 3);
     client_len = sizeof(client_addr);
 
 	//	CREATE KERNEL QUEUE
@@ -59,7 +34,7 @@ int main()
     // actions on this kevent: EV_ADD and EV_ENABLE (add the event to the kqueue 
     // and enable it).
     struct kevent	change_event[4];
-    EV_SET(change_event, socket_listen_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
+    EV_SET(change_event, socket.getFd(), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
 
     // REGISTER EVENT TO KERNEL QUEUE
     if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
@@ -95,7 +70,7 @@ int main()
             // If the new event's file descriptor is the same as the listening
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
-            else if (event_fd == socket_listen_fd)
+            else if (event_fd == socket.getFd())
             {
                 printf("--- a client has connected ---\n");
 				// Incoming socket connection on the listening socket.
@@ -125,7 +100,7 @@ int main()
 				printf("buf = \n%s\n", buf);
 				// temp: when using curl because otherwise it will stay connected
 				close(socket_connection_fd);
-				printf("--- done reading so bounce bye ---");
+				printf("--- done reading so bounce bye ---\n\n");
 			}
         }
     }
