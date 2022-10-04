@@ -6,28 +6,31 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 17:18:05 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/19 17:48:01 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/04 17:50:53 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LOCATION_HPP
 # define LOCATION_HPP
 
-# include "./server_config.hpp"
+# include "./Server_Config.hpp"
 
-class server_config;
+class Server_Config;
 using namespace std;
 
-class location : protected server_config
+class Location : protected Server_Config
 {
 	private:
-		string	_path;
+		string			_path;
+		vector<string>	_limit_except;
+		Location();
 	protected:
 	public:
-		location();
-		location(location const& other);
-		location &operator=(location const& rhs);
-		virtual ~location();
+		Location(t_locations locations);
+		Location(Location const& other);
+		Location &operator=(Location const& rhs);
+		virtual ~Location();
+		void	get_directives(t_locations locations);
 };
 
 #endif

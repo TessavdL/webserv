@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 14:42:06 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/22 11:45:56 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/04 17:44:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sstream>
 # include <cstring>
 
-class location;
+class Location;
 using namespace std;
 
 typedef struct					s_locations
@@ -46,28 +46,29 @@ enum	directives_list	{
 	PATH
 };
 
-class server_config
+class Server_Config
 {
 	private:
 		vector<string>						_server_name;
 		vector<string>						_listen;
+		vector<Location>					_location_blocks;
 	protected:
 		string								_root;
 		string								_client_max_body_size;
-		string								_limit_except;
+		string								_autoindex;
 		vector<string>						_index;
 		vector<pair<vector<int>, string>>	_error_page;
-		bool								_autoindex;
 	public:
-		server_config();
-		server_config(t_server server);
-		server_config(server_config const& other);
-		server_config &operator=(server_config const& rhs);
-		virtual ~server_config();
+		Server_Config();
+		Server_Config(t_server server);
+		Server_Config(Server_Config const& other);
+		Server_Config &operator=(Server_Config const& rhs);
+		virtual ~Server_Config();
+		void			get_directives(t_server	server);
 		directives_list	hash_string(string const& directive);
-		void			helper_split(vector<string> &str, string to_split);
-		void			helper_split(string &str, string to_split);
-		void			helper_split(vector<pair<vector<int>, string>> error_page, string to_split);
+		int				helper_split(vector<string> &str, string to_split);
+		int				helper_split(string &str, string to_split);
+		int				helper_split(vector<pair<vector<int>, string>> error_page, string to_split);
 };
 
 #endif

@@ -6,61 +6,35 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/24 13:04:27 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/04 17:53:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser/server_config.hpp"
+#include "../../includes/parser/Server_Config.hpp"
 
-server_config::server_config(void) {
+Server_Config::Server_Config(void) {
 	return ;
 }
 
-server_config::server_config(t_server server) : _autoindex(false) {
-	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
-		string	first_word = (*it).substr(0, (*it).find(' '));
-		switch (this->hash_string(first_word))
-		{
-			case	SERVER_NAME:
-				this->helper_split(this->_server_name, *it);
-				break ;
-			case	LISTEN:
-				this->helper_split(this->_listen, *it);
-				break ;
-			case	ROOT:
-				break ;
-			case	CLIENT_MAX_BODY_SIZE:
-				break ;
-			case	LIMIT_EXCEPT:
-				break ;
-			case	INDEX:
-				this->helper_split(this->_index, *it);
-				break ;
-			case	ERROR_PAGE:
-				break ;
-			case	AUTOINDEX:
-				
-				break ;
-			default:
-				cout << *it << " is not a supported directive." << endl;
-				exit (1);
-		}
+Server_Config::Server_Config(t_server server) {
+	get_directives(server);
+	for (vector<t_locations>::iterator it = server.locations.begin(); it != this->server.locations.end(); ++it) {
+		this->_location_blocks.push_back(Location(server.locations));
 	}
 }
 
-server_config::server_config(server_config const& other) {
+Server_Config::Server_Config(Server_Config const& other) {
 	*this = other;
 	return ;
 }
 
-server_config	&server_config::operator=(server_config	const& rhs) {
+Server_Config	&Server_Config::operator=(Server_Config	const& rhs) {
 	if (this != &rhs)
 	{
 		this->_server_name = rhs._server_name;
 		this->_listen = rhs._listen;
 		this->_root = rhs._root;
 		this->_client_max_body_size = rhs._client_max_body_size;
-		this->_limit_except = rhs._limit_except;
 		this->_index = rhs._index;
 		this->_error_page = rhs._error_page;
 		this->_autoindex = rhs._autoindex;
@@ -68,11 +42,44 @@ server_config	&server_config::operator=(server_config	const& rhs) {
 	return (*this);
 }
 
-server_config::~server_config(void) {
+Server_Config::~Server_Config(void) {
 	return ;
 }
 
-directives_list	server_config::hash_string(string const& directive) {
+void			Server_Config::get_directives(t_server server) {
+	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
+		string	first_word = (*it).substr(0, (*it).find(' '));
+		switch (hash_string(first_word))
+		{
+			case	SERVER_NAME:
+				helper_split(this->_server_name, *it);
+				break ;
+			case	LISTEN:
+				helper_split(this->_listen, *it);
+				break ;
+			case	ROOT:
+				helper_split(this->_root, *it);
+				break ;
+			case	CLIENT_MAX_BODY_SIZE:
+				helper_split(this->_client_max_body_size, *it);
+				break ;
+			case	INDEX:
+				helper_split(this->_index, *it);
+				break ;
+			case	ERROR_PAGE:
+				helper_split(this->_error_page, *it);
+				break ;
+			case	AUTOINDEX:
+				helper_split(this->_autoindex, *it);
+				break ;
+			default:
+				cout << *it << " is not a supported directive in the server block." << endl;
+				exit (1);
+		}
+	}
+}
+
+directives_list	Server_Config::hash_string(string const& directive) {
 	if (directive == "server_name")
 		return (SERVER_NAME);
 	if (directive == "listen")
@@ -91,15 +98,19 @@ directives_list	server_config::hash_string(string const& directive) {
 		return (AUTOINDEX);
 }
 
-void		server_config::helper_split(string &str, string to_split) {
-	char		*cstr = new char[to_split.length() + 1];
-	strcpy(cstr, to_split.c_str());
-	char			*p = std::strtok(cstr, " ");
-	string			tmp(p);
-	str = tmp;
+int			Server_Config::helper_split(string &str, string to_split) {
+	vector<string> tmp;
+
+	helper_split(tmp, to_split);
+	if (tmp.empty())
+		return (1);
+	if (tmp.size() > 1)
+		return (1);
+	str = tmp[0];
+	return (0);
 }
 
-void		server_config::helper_split(vector<string> &str, string to_split) {
+int			Server_Config::helper_split(vector<string> &str, string to_split) {
 	stringstream ss(to_split);
 	istream_iterator<string> begin(ss);
 	istream_iterator<string> end;
@@ -107,4 +118,22 @@ void		server_config::helper_split(vector<string> &str, string to_split) {
 	str = tmp;
 	if (!str.empty())
 		str.erase(str.begin());
+	return (0);
+}
+
+int			Server_Config::helper_split(vector<pair<vector<int>, string>> error_page, string to_split) {
+	vector<string>	tmp;
+	vector<int>		tmp_int;
+
+	helper_split(tmp, to_split);
+	if (tmp.size() < 2)
+		return (1);
+	for (size_t i = 0; i < (tmp.size() - 1); ++i) {
+		if (tmp[i].find_first_not_of("0123456789") == string::npos)
+			tmp_int.push_back(stoi(tmp[i]));
+		else
+			return (1);
+	}
+	error_page.push_back(pair(tmp_int, tmp[tmp.size() - 1]));
+	return (0);
 }
