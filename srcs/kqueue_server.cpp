@@ -5,6 +5,8 @@
 #include <sys/event.h>
 #include <string.h>
 #include <unistd.h>
+#include <iostream>
+#include <errno.h>
 
 #include "../listening_sockets/SocketListen.hpp"
 
@@ -63,8 +65,9 @@ int main()
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
             if (event[i].flags & EV_EOF) {
-                printf("--- a client has disconnected ---");
+                printf("--- a client has disconnected ---\n");
                 close(event_fd);
+				// do not close socket_connection_fd, is bad file descriptor
             }
 
             // If the new event's file descriptor is the same as the listening
@@ -76,6 +79,7 @@ int main()
 				// Incoming socket connection on the listening socket.
                 // Create a new socket for the actual connection to client.
                 socket_connection_fd = accept(event_fd, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
+				std::cout << socket_connection_fd << std::endl;
                 if (socket_connection_fd == -1) {
 					return (error_and_exit("An error occured in accept()\n"));
                 }
