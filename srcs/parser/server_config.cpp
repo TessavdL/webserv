@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/20 15:55:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/09/24 13:04:27 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ server_config::server_config(void) {
 
 server_config::server_config(t_server server) : _autoindex(false) {
 	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
-		switch (this->hash_string(*it))
+		string	first_word = (*it).substr(0, (*it).find(' '));
+		switch (this->hash_string(first_word))
 		{
 			case	SERVER_NAME:
 				this->helper_split(this->_server_name, *it);
 				break ;
 			case	LISTEN:
+				this->helper_split(this->_listen, *it);
 				break ;
 			case	ROOT:
 				break ;
@@ -32,6 +34,7 @@ server_config::server_config(t_server server) : _autoindex(false) {
 			case	LIMIT_EXCEPT:
 				break ;
 			case	INDEX:
+				this->helper_split(this->_index, *it);
 				break ;
 			case	ERROR_PAGE:
 				break ;
@@ -39,7 +42,7 @@ server_config::server_config(t_server server) : _autoindex(false) {
 				
 				break ;
 			default:
-				cout << *it << " is not a supported directive" << endl;
+				cout << *it << " is not a supported directive." << endl;
 				exit (1);
 		}
 	}

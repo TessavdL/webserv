@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 14:42:06 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/20 16:18:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/09/22 11:45:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <string>
 # include <vector>
 # include <iostream>
+# include <iterator>
+# include <sstream>
+# include <cstring>
 
 class location;
 using namespace std;
