@@ -19,7 +19,7 @@ int main()
 
 	// CREATE SOCKET
 	int	socket_listen_fd;
-    if (((socket_listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)) {
+    if ((socket_listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
 		return (error_and_exit("An error occured in socket().\n"));
 	}
 
@@ -115,18 +115,24 @@ int main()
 				printf("--- event was added to queue ---\n");
             }
 
-			// READY TO READ FROM CLIENT SOCKET
+			// READY TO READ && WRITE FROM AND TO CLIENT SOCKET
             else if (event[i].filter & EVFILT_READ)
             {
 				printf("--- reading from client socket ---\n");
                 char buf[1024];
                 size_t bytes_read = recv(event_fd, buf, sizeof(buf), 0);
                 printf("read %zu bytes\n", bytes_read);
-				printf("buf = \n%s\n", buf);
+				printf("[buf = \n%s]\n", buf);
 				// temp: when using curl because otherwise it will stay connected
+				printf("--- done reading so bounce bye ---\n\n");
+                const char		message[35] = "You've reached the server. Hello.\n";
+                int				error = 0;
+                error = send(event_fd, message, sizeof(message), 0);
+                if (error == -1)
+                    return (error_and_exit("An error occured in send() while trying to write the message.\n"));
 				close(socket_connection_fd);
-				printf("--- done reading so bounce bye ---");
 			}
+
         }
     }
     return (0);
