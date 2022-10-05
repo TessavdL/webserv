@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   Exception.hpp                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/05 16:44:29 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/05 16:44:30 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEXER_PARSER_EXCEPTION_HPP
 # define LEXER_PARSER_EXCEPTION_HPP
 
