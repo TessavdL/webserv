@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/09/28 14:25:59 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/10/05 14:34:50 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ SRC_FILES	=		main.cpp
 
 SRCS		=		$(addprefix ${SRC_DIR}/, ${SRC_FILES})
 
-OBJS		= 		${SRCS:.cpp=.o}
+OBJS		=		${SRCS:.cpp=.o}
 
-INCLUDES 	=
+INCLUDES	=		./includes/
 
 all: $(NAME)
 
