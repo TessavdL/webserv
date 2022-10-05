@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:13:06 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/05 17:30:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Location::Location(void) {
 	return ;
 }
 
-Location::Location(t_locations locations) : _path(locations.path) {
+Location::Location(Lexer::t_locations locations) : _path_and_optional_modifier(locations.path_and_optional_modifier) {
 	get_directives(locations);
 }
 
@@ -28,7 +28,7 @@ Location::Location(Location const& other) {
 Location &Location::operator=(Location const& rhs) {
 	if (this != &rhs)
 	{
-		this->_path = rhs._path;
+		this->_path_and_optional_modifier = rhs._path_and_optional_modifier;
 	}	
 	return (*this);
 }
@@ -37,7 +37,7 @@ Location::~Location(void) {
 	return ;
 }
 
-void		Location::get_directives(t_locations locations) {
+void		Location::get_directives(Lexer::t_locations locations) {
 	for (vector<string>::iterator it = locations.directives.begin(); it != locations.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))

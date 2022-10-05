@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:19:50 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/05 18:02:21 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ ServerConfig::ServerConfig(void) {
 	return ;
 }
 
-ServerConfig::ServerConfig(t_server server) {
+ServerConfig::ServerConfig(Lexer::t_server server) {
 	get_directives(server);
-	for (vector<t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
-		this->_location_blocks.push_back(*it);
+	for (vector<Lexer::t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
+		this->_location_blocks.push_back(Location(*it));
 	}
 }
 
@@ -46,7 +46,7 @@ ServerConfig::~ServerConfig(void) {
 	return ;
 }
 
-void			ServerConfig::get_directives(t_server server) {
+void			ServerConfig::get_directives(Lexer::t_server server) {
 	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
@@ -121,7 +121,7 @@ int			ServerConfig::helper_split(vector<string> &str, string to_split) {
 	return (0);
 }
 
-int			ServerConfig::helper_split(vector<pair<vector<int>, string>> error_page, string to_split) {
+int			ServerConfig::helper_split(vector<pair<vector<int>, string> > error_page, string to_split) {
 	vector<string>	tmp;
 	vector<int>		tmp_int;
 
@@ -134,6 +134,6 @@ int			ServerConfig::helper_split(vector<pair<vector<int>, string>> error_page, s
 		else
 			return (1);
 	}
-	error_page.push_back(pair(tmp_int, tmp[tmp.size() - 1]));
+	error_page.push_back(pair<vector<int>, string>(tmp_int, tmp[tmp.size() - 1]));
 	return (0);
 }
