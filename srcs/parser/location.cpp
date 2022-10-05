@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/04 17:53:58 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/04 18:05:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		Location::get_directives(t_locations locations) {
 				helper_split(this->_autoindex, *it);
 				break ;
 			default:
-				cout << *it << " is not a supported directive." << endl;
+				cout << *it << " is not a supported directive in the location block." << endl;
 				exit (1);
 		}
 	}
