@@ -1,4 +1,16 @@
-#include "LexerUtils.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   lexer_utils.cpp                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/05 15:02:34 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/05 16:07:32 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/config_parser/lexer_utils.hpp"
 
 std::string	right_trim(std::string const& str, const char* to_trim) {
     std::string str_trimmed = str;

@@ -1,8 +1,8 @@
 #ifndef LEXER_HPP
 # define LEXER_HPP
 
-#include "LexerUtils.hpp"
-#include "Exception.hpp"
+#include "lexer_utils.hpp"
+#include "exception.hpp"
 
 #include <vector>
 #include <string>

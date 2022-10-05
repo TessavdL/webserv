@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 14:42:06 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/04 17:44:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:20:22 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <iterator>
 # include <sstream>
 # include <cstring>
+# include "./location.hpp"
 
 class Location;
 using namespace std;
@@ -46,7 +47,7 @@ enum	directives_list	{
 	PATH
 };
 
-class Server_Config
+class ServerConfig
 {
 	private:
 		vector<string>						_server_name;
@@ -59,11 +60,11 @@ class Server_Config
 		vector<string>						_index;
 		vector<pair<vector<int>, string>>	_error_page;
 	public:
-		Server_Config();
-		Server_Config(t_server server);
-		Server_Config(Server_Config const& other);
-		Server_Config &operator=(Server_Config const& rhs);
-		virtual ~Server_Config();
+		ServerConfig();
+		ServerConfig(t_server server);
+		ServerConfig(ServerConfig const& other);
+		ServerConfig &operator=(ServerConfig const& rhs);
+		virtual ~ServerConfig();
 		void			get_directives(t_server	server);
 		directives_list	hash_string(string const& directive);
 		int				helper_split(vector<string> &str, string to_split);

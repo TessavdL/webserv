@@ -1,4 +1,16 @@
-#include "Exception.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   Exception.cpp                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/05 15:01:35 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/05 16:07:23 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/config_parser/exception.hpp"
 
 LexerParserException::LexerParserException(void) {
 	this->_message = "Config file is not valid";

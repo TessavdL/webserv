@@ -6,18 +6,18 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/04 18:05:11 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:13:06 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser/Location.hpp"
+#include "../../includes/config_parser/location.hpp"
 
 Location::Location(void) {
 	return ;
 }
 
 Location::Location(t_locations locations) : _path(locations.path) {
-	get_directives(t_locations locations);
+	get_directives(locations);
 }
 
 Location::Location(Location const& other) {
@@ -38,7 +38,7 @@ Location::~Location(void) {
 }
 
 void		Location::get_directives(t_locations locations) {
-	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
+	for (vector<string>::iterator it = locations.directives.begin(); it != locations.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
 		{

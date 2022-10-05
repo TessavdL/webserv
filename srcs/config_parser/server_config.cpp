@@ -6,29 +6,29 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/04 17:53:05 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:19:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser/Server_Config.hpp"
+#include "../../includes/config_parser/server_config.hpp"
 
-Server_Config::Server_Config(void) {
+ServerConfig::ServerConfig(void) {
 	return ;
 }
 
-Server_Config::Server_Config(t_server server) {
+ServerConfig::ServerConfig(t_server server) {
 	get_directives(server);
-	for (vector<t_locations>::iterator it = server.locations.begin(); it != this->server.locations.end(); ++it) {
-		this->_location_blocks.push_back(Location(server.locations));
+	for (vector<t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
+		this->_location_blocks.push_back(*it);
 	}
 }
 
-Server_Config::Server_Config(Server_Config const& other) {
+ServerConfig::ServerConfig(ServerConfig const& other) {
 	*this = other;
 	return ;
 }
 
-Server_Config	&Server_Config::operator=(Server_Config	const& rhs) {
+ServerConfig	&ServerConfig::operator=(ServerConfig	const& rhs) {
 	if (this != &rhs)
 	{
 		this->_server_name = rhs._server_name;
@@ -42,11 +42,11 @@ Server_Config	&Server_Config::operator=(Server_Config	const& rhs) {
 	return (*this);
 }
 
-Server_Config::~Server_Config(void) {
+ServerConfig::~ServerConfig(void) {
 	return ;
 }
 
-void			Server_Config::get_directives(t_server server) {
+void			ServerConfig::get_directives(t_server server) {
 	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
@@ -79,7 +79,7 @@ void			Server_Config::get_directives(t_server server) {
 	}
 }
 
-directives_list	Server_Config::hash_string(string const& directive) {
+directives_list	ServerConfig::hash_string(string const& directive) {
 	if (directive == "server_name")
 		return (SERVER_NAME);
 	if (directive == "listen")
@@ -98,7 +98,7 @@ directives_list	Server_Config::hash_string(string const& directive) {
 		return (AUTOINDEX);
 }
 
-int			Server_Config::helper_split(string &str, string to_split) {
+int			ServerConfig::helper_split(string &str, string to_split) {
 	vector<string> tmp;
 
 	helper_split(tmp, to_split);
@@ -110,7 +110,7 @@ int			Server_Config::helper_split(string &str, string to_split) {
 	return (0);
 }
 
-int			Server_Config::helper_split(vector<string> &str, string to_split) {
+int			ServerConfig::helper_split(vector<string> &str, string to_split) {
 	stringstream ss(to_split);
 	istream_iterator<string> begin(ss);
 	istream_iterator<string> end;
@@ -121,7 +121,7 @@ int			Server_Config::helper_split(vector<string> &str, string to_split) {
 	return (0);
 }
 
-int			Server_Config::helper_split(vector<pair<vector<int>, string>> error_page, string to_split) {
+int			ServerConfig::helper_split(vector<pair<vector<int>, string>> error_page, string to_split) {
 	vector<string>	tmp;
 	vector<int>		tmp_int;
 
