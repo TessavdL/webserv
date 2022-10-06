@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   location.cpp                                       :+:    :+:            */
+/*   location_block.cpp                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 17:30:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/06 17:49:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/config_parser/location.hpp"
+#include "../../includes/config_parser/location_block.hpp"
 
-Location::Location(void) {
+LocationBlock::LocationBlock(void) {
 	return ;
 }
 
-Location::Location(Lexer::t_locations locations) : _path_and_optional_modifier(locations.path_and_optional_modifier) {
-	get_directives(locations);
+LocationBlock::LocationBlock(Lexer::t_locations location) : _path_and_optional_modifier(location.path_and_optional_modifier) {
+	get_directives(location);
 }
 
-Location::Location(Location const& other) {
+LocationBlock::LocationBlock(LocationBlock const& other) {
 	*this = other;
 	return ;
 }
 
-Location &Location::operator=(Location const& rhs) {
+LocationBlock &LocationBlock::operator=(LocationBlock const& rhs) {
 	if (this != &rhs)
 	{
 		this->_path_and_optional_modifier = rhs._path_and_optional_modifier;
@@ -33,12 +33,12 @@ Location &Location::operator=(Location const& rhs) {
 	return (*this);
 }
 
-Location::~Location(void) {
+LocationBlock::~LocationBlock(void) {
 	return ;
 }
 
-void		Location::get_directives(Lexer::t_locations locations) {
-	for (vector<string>::iterator it = locations.directives.begin(); it != locations.directives.end(); ++it) {
+void		LocationBlock::get_directives(Lexer::t_locations location) {
+	for (vector<string>::iterator it = location.directives.begin(); it != location.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
 		{
@@ -65,4 +65,12 @@ void		Location::get_directives(Lexer::t_locations locations) {
 				exit (1);
 		}
 	}
+}
+
+string const&			LocationBlock::get_path_and_optional_modifier() const {
+	return (this->_path_and_optional_modifier);
+}
+
+vector<string> const&	LocationBlock::get_limit_except() const {
+	return (this->_limit_except);
 }

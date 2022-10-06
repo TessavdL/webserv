@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   Lexer.cpp                                          :+:    :+:            */
+/*   lexer.cpp                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:02:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:48:51 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/06 17:48:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,9 @@ void	Lexer::get_directives(std::vector<std::string>& directives, std::string con
 			continue ;
 		}
 		i += directive.size();
-		directives.push_back(trim(directive, " \t\n\r\f\v"));
+		std::string tmp = trim(directive, " \t\n\r\f\v");
+		if (!tmp.empty())
+			directives.push_back(tmp);
 	}
 }
 
