@@ -1,4 +1,16 @@
-#include "Lexer.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   Lexer.cpp                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/05 15:02:14 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/05 16:48:51 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/config_parser/lexer.hpp"
 
 Lexer::Lexer(std::string const& file_name) {
 	std::string		input = get_input_from_config_file(file_name);

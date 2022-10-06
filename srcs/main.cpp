@@ -1,12 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   http_client.cpp                                    :+:    :+:            */
+/*   main.cpp                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/14 12:03:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/09/14 15:26:24 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/05 14:40:34 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../includes/parser/server_config.hpp"
+#include "../includes/*.hpp"
+#include "./*.hpp"
 

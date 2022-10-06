@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   Lexer.hpp                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/05 16:44:24 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/05 16:48:42 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEXER_HPP
 # define LEXER_HPP
 
-#include "LexerUtils.hpp"
-#include "Exception.hpp"
+#include "lexer_utils.hpp"
+#include "exception.hpp"
 
 #include <vector>
 #include <string>
