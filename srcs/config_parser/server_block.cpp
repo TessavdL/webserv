@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 18:45:26 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/06 17:53:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/10 17:18:18 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ ServerBlock	&ServerBlock::operator=(ServerBlock	const& rhs) {
 		this->_index = rhs._index;
 		this->_error_page = rhs._error_page;
 		this->_autoindex = rhs._autoindex;
+		this->_location_blocks = rhs._location_blocks;
 	}
 	return (*this);
 }
@@ -101,26 +102,39 @@ vector<LocationBlock> const&	ServerBlock::get_location_block() const {
 std::ostream&	operator<<(std::ostream& os, ServerBlock const& server_block) {
 	int	location_block_number(1);
 
+	os << "server block:" << endl << endl;
 	os << "root = " << server_block.get_root() << endl;
-	os << "client_max_body_size = " << server_block.get_client_max_body_size() << endl;
+	os << "client max body size = " << server_block.get_client_max_body_size() << endl;
 	os << "autoindex = " << server_block.get_autoindex() << endl;
 	for (vector<string>::const_iterator it = server_block.get_index().begin(); it != server_block.get_index().end(); ++it)
 		os << "index = " << *it << endl;
-	if (!server_block.get_error_page().empty()) {
-		for (vector<pair<vector<int>, string> >::const_iterator it = server_block.get_error_page().begin(); it != server_block.get_error_page().end(); ++it) {
-			for (vector<int>::const_iterator it2 = (*it).first.begin(); it2 != (*it).first.end(); ++it2)
-				os << "error page = " << (*it2) << " ";
-			os << (*it).second << endl;
-		}
+	for (vector<pair<vector<int>, string> >::const_iterator it = server_block.get_error_page().begin(); it != server_block.get_error_page().end(); ++it) {
+		os << "error page = ";
+		for (vector<int>::const_iterator it2 = (*it).first.begin(); it2 != (*it).first.end(); ++it2)
+			os << (*it2) << " ";
+		os << (*it).second << endl;
 	}
 	for (vector<string>::const_iterator it = server_block.get_server_name().begin(); it != server_block.get_server_name().end(); ++it)
 		os << "server name = " << *it << endl;
 	for (vector<string>::const_iterator it = server_block.get_listen().begin(); it != server_block.get_listen().end(); ++it)
 		os << "listen = " << *it << endl;
+	os << endl;
 	for (vector<LocationBlock>::const_iterator it = server_block.get_location_block().begin(); it != server_block.get_location_block().end(); ++it) {
-		os << "location block[" << location_block_number << "] path and optional modifier = " << (*it).get_path_and_optional_modifier() << endl;
+		os << "location block[" << location_block_number << "]" << endl;
+		os << "\troot = " << (*it).get_root() << endl;
+		os << "\tclient max body size = " << (*it).get_client_max_body_size() << endl;
+		os << "\tautoindex = " << (*it).get_autoindex() << endl;
+		for (vector<string>::const_iterator it2 = (*it).get_index().begin(); it2 != (*it).get_index().end(); ++it2)
+			os << "\tindex = " << (*it2) << endl;
+		for (vector<pair<vector<int>, string> >::const_iterator it2 = (*it).get_error_page().begin(); it2 != (*it).get_error_page().end(); ++it2) {
+			os << "\terror page = ";
+			for (vector<int>::const_iterator it3 = (*it2).first.begin(); it3 != (*it2).first.end(); ++it3)
+				os << (*it3) << " ";
+			os << (*it2).second << endl;
+		}
+		os << "\tpath and optional modifier = " << (*it).get_path_and_optional_modifier() << endl;
 		for (vector<string>::const_iterator it2 = (*it).get_limit_except().begin(); it2 != (*it).get_limit_except().end(); ++it2)
-			os << "limit except = " << (*it2) << endl;
+			os << "\tlimit except = " << (*it2) << endl;
 		location_block_number++;
 	}
 	return (os);

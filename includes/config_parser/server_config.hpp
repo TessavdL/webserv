@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:26:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:16:47 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/10 13:34:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ class ServerConfig
 		directives_list	hash_string(string const& directive);
 		int				helper_split(vector<string> &str, string to_split);
 		int				helper_split(string &str, string to_split);
-		int				helper_split(vector<pair<vector<int>, string> > error_page, string to_split);
+		int				helper_split(vector<pair<vector<int>, string> > &error_page, string to_split);
 		string const&								get_root() const;
 		string const&								get_client_max_body_size() const;
 		string const&								get_autoindex() const;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:20:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/10 16:30:46 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			ServerConfig::helper_split(vector<string> &str, string to_split) {
 	return (0);
 }
 
-int			ServerConfig::helper_split(vector<pair<vector<int>, string> > error_page, string to_split) {
+int			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page, string to_split) {
 	vector<string>	tmp;
 	vector<int>		tmp_int;
 
@@ -89,8 +89,9 @@ int			ServerConfig::helper_split(vector<pair<vector<int>, string> > error_page, 
 	if (tmp.size() < 2)
 		return (1);
 	for (size_t i = 0; i < (tmp.size() - 1); ++i) {
-		if (tmp[i].find_first_not_of("0123456789") == string::npos)
+		if (tmp[i].find_first_not_of("0123456789") == string::npos) {
 			tmp_int.push_back(stoi(tmp[i]));
+		}
 		else
 			return (1);
 	}

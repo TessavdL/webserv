@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/06 17:49:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/10 17:23:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ LocationBlock::LocationBlock(void) {
 }
 
 LocationBlock::LocationBlock(Lexer::t_locations location) : _path_and_optional_modifier(location.path_and_optional_modifier) {
+	this->_root = "html";
+	this->_client_max_body_size = "1m";
+	this->_autoindex = "off";
+	this->_index.push_back("index.html");
+	this->_limit_except.push_back("GET");
+	this->_limit_except.push_back("POST");
+	this->_limit_except.push_back("DELETE");
 	get_directives(location);
 }
 
@@ -29,6 +36,12 @@ LocationBlock &LocationBlock::operator=(LocationBlock const& rhs) {
 	if (this != &rhs)
 	{
 		this->_path_and_optional_modifier = rhs._path_and_optional_modifier;
+		this->_root = rhs._root;
+		this->_client_max_body_size = rhs._client_max_body_size;
+		this->_index = rhs._index;
+		this->_error_page = rhs._error_page;
+		this->_autoindex = rhs._autoindex;
+		this->_limit_except = rhs._limit_except;
 	}	
 	return (*this);
 }
@@ -49,6 +62,7 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 				helper_split(this->_client_max_body_size, *it);
 				break ;
 			case	LIMIT_EXCEPT:
+				this->_limit_except.clear();
 				helper_split(this->_limit_except, *it);
 				break ;
 			case	INDEX:
@@ -61,7 +75,6 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 				helper_split(this->_autoindex, *it);
 				break ;
 			default:
-				cout << *it << " is not a supported directive in the location block." << endl;
 				exit (1);
 		}
 	}
