@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   http_request_parser.hpp                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/12 17:37:40 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:37:42 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HTTP_REQUEST_PARSER_HPP
 # define HTTP_REQUEST_PARSER_HPP
 

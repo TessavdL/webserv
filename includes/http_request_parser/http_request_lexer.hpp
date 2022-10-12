@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   http_request_lexer.hpp                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/12 17:37:35 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:37:37 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HTTP_REQUEST_LEXER_HPP
 # define HTTP_REQUEST_LEXER_HPP
 

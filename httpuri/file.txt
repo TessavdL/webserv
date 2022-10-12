@@ -1,8 +1,0 @@
-foo://john.doe@example.com:8042/over/there?name=ferret&size=big#nose
-http://example.com:8042/over/there?name=ferret#nose
-foo://example.com:8042/over/there#nose
-example.com/over/there
-foo://john.doe@example.com:8042/over/there.html?name=ferret#nose
-foo://john.doe@example.com:8042/over/there.html?name=ferret&size=big
-//folder/file.txt
-/
