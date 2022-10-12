@@ -6,13 +6,11 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:27 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:40:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 19:26:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_request_parser/utility_split.hpp"
-
-
 
 // send back two empty strings or fill first string with original str?
 

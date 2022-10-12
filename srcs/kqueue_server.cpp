@@ -9,7 +9,7 @@
 #include <errno.h>
 
 #include "../includes/listening_sockets/socket_listen.hpp"
-#include "./http_request_parser/HTTPRequestLexer.hpp"
+#include "../includes/http_request_parser/http_request_lexer.hpp"
 
 int	error_and_exit(const char* error_message)
 {

@@ -6,13 +6,14 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:52:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/12 19:27:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_request_parser/http_request_lexer.hpp"
 
 #include <iostream>
+#include <sstream>
 
 HTTPRequestLexer::HTTPRequestLexer(void) {
 	this->_state = REQUEST_START;
@@ -62,6 +63,7 @@ void				HTTPRequestLexer::process_request(std::string const& request) {
 		case REQUEST_BODY:
 			if (this->parser->get_request_body_state() == CHUNKED) {
 				go_chonky_body(str, index);
+				return ;
 			}
 			go_body(str, index);
 			return ;
@@ -148,8 +150,48 @@ void				HTTPRequestLexer::go_body(std::string const& str, size_t& index) {
 	this->_request_body = str.substr(index);
 }
 
-void				HTTPRequestLexer::go_chonky_body(std::string const& str, size_t &index) {
+static int to_dec(std::string hex) {
+	unsigned int 		x;   
+	std::stringstream	ss;
 
+	ss << std::hex << hex;
+	ss >> x;
+	return (static_cast<int>(x));
+}
+
+void				HTTPRequestLexer::go_chonky_body(std::string const& str, size_t &index) {
+	std::string substring = str.substr(index);
+	size_t		pos = substring.find(CLRF);
+	bool		hex = true;
+	size_t		n;
+
+	for (; pos != std::string::npos;) {
+		if (hex == true) {
+			n = to_dec(substring);
+			std::cout << "number of bytes in next chonk = " << n << std::endl;
+			if (n == 0) {
+				std::cout << "END" << std::endl;
+				break ;
+			}
+			hex = false;
+		}
+		else {
+			std::string s = substring.substr(0, pos);
+			std::cout << s << std::endl;
+			if (s.length() == n) {
+				std::cout << "OK" << std::endl;
+			}
+			else {
+				std::cout << "KO" << std::endl;
+			}
+			hex = true;
+		}
+		// std::cout << "SUBSTRING = |" << substring << "|" << std::endl;
+		substring = substring.substr(pos + 2);
+		// std::cout << "SUBSTRING = |" << substring << "|" << std::endl;
+		pos = substring.find(CLRF);
+	}
+	std::cout << "END OF CHONKY BODY" << std::endl;
 }
 
 HTTPRequestLexer::State				HTTPRequestLexer::get_state(void) const {

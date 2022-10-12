@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:52:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/12 18:04:14 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,13 @@ void	HTTPRequestParser::check_headers(std::vector<std::string> const& headers) {
 		key_value_pair.second = headers[i].substr(pos + 2, headers[i].size());
 		this->_headers.insert(key_value_pair);
 	}
-	for(std::map<std::string, std::string>::const_iterator it = this->_headers.begin();
+	for (std::map<std::string, std::string>::const_iterator it = this->_headers.begin();
 		it != this->_headers.end(); ++it)
 	{
 		std::cout << it->first << " " << it->second << "\n";
 		if (it->first == "Transfer-Encoding" && it->second == "chunked") {
 			this->_request_body_state = CHUNKED;
+			std::cout << "ITSA CHONKY" << std::endl;
 		}
 	}
 }
