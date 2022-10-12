@@ -1,24 +1,36 @@
+#include <map>
 #include <vector>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "./utility_split.hpp"
 
-typedef struct	Authority {
-	std::string	user_information;
-	std::string host;
-	int			port;
-}				Authority;
+#define RESERVED_CHARACTERS "!#$&'()*+,/:;=?@[]"
+#define RESERVED_CHARACTERS_MINUS_FORWARD_SLASH "!#$&'()*+,:;=?@[]"
 
-typedef struct	Uri
+typedef struct							Authority {
+	std::string							user_information;
+	std::string 						host;
+	int									port;
+}										Authority;
+
+typedef struct 							Path
 {
-	std::string	scheme;
-	Authority	authority;
-	std::string	path;
-	std::string file_name;
-	std::string	query;
-	std::string	fragment;
-}				Uri;
+	std::string							full;
+	std::string							without_extension;
+	std::string							extension;
+}										Path;
+
+typedef struct							Uri
+{
+	std::string							scheme;
+	Authority							authority;
+	Path								path;
+	std::string 						file_name;
+	std::map<std::string, std::string>	query;
+	std::string							fragment;
+}										Uri;
 
 std::string	get_input_from_config_file(std::string const& file_name) {
 	std::ifstream	input_stream;
@@ -37,67 +49,157 @@ std::string	get_input_from_config_file(std::string const& file_name) {
 	return (input);
 }
 
-void	check_uri(std::string const& str,  Uri& uri) {
-	std::string	remainder = str;
-	size_t		pos = remainder.find("://");
-	
-	if (pos != std::string::npos) {
-		uri.scheme = remainder.substr(0, pos);
-		std::cout << "URI SCHEME = " << uri.scheme << std::endl;
-		remainder = remainder.substr(pos + 3);
-		// std::cout << "remainder after scheme = " << remainder << std::endl;
+void	check_scheme(std::string const& scheme_str, std::string& scheme, size_t& index) {
+	std::pair<std::string, std::string>	p = split_string_in_half(scheme_str.substr(index), "://");
+	scheme = p.first;
+	if (!scheme.empty()) {
+		std::cout << "SCHEME = " << scheme << std::endl;
+		index += scheme.length() + 3;
 	}
-	pos = remainder.find("/");
-	std::string authority = remainder.substr(0, pos);
-	// std::cout << "Authority = " << authority << std::endl;
-	if (pos != std::string::npos && !authority.empty()) {
-		// std::cout << "HERE" << std::endl;
-		size_t	pos2 = authority.find("@");
-		if (pos2 != std::string::npos) {
-			uri.authority.user_information = authority.substr(0, pos2);
-			std::cout << "URI AUTHORITY USER INFORMATION = " << uri.authority.user_information << std::endl;
-			authority = authority.substr(pos2 + 1, std::string::npos);
-			// std::cout << "authority after user information " << authority << std::endl;
+}
+
+void	check_authority(std::string const& authority_str, Authority& authority, size_t& index) {
+	std::pair<std::string, std::string>	p = split_string_in_half(authority_str.substr(index), "/");
+	std::string							str = p.first;
+
+	if (!str.empty()) {
+		std::pair<std::string, std::string>	p2 = split_string_in_half(str, "@");
+		std::string							str2 = p2.first;
+		authority.user_information = str2;
+		if (!authority.user_information.empty()) {
+			std::cout << "USER INFORMATION = " << authority.user_information << std::endl;
+			str2 = p2.second;
+			index += (authority.user_information.length() + 1);
 		}
-		pos2 = authority.find(":");
-		if (pos2 != std::string::npos) {
-			// std::cout << pos2 << std::endl;
-			uri.authority.host = authority.substr(0, pos2);
-			std::cout << "URI AUTHORITY HOST = " << uri.authority.host << std::endl;
-			authority = authority.substr(pos2 + 1);
-			if (!authority.empty()) {
-				uri.authority.port = stoi(authority);
-				std::cout << "URI AUTHORITY PORT = " << uri.authority.port << std::endl;
-			}
+		else { // if no @ is found then continue forward with the original string
+			str2 = str;
 		}
-		remainder = remainder.substr(pos + 1);
-	}
-	else {
-		return ;
-	}
-	pos = remainder.find("?");
-	if (pos != std::string::npos && !remainder.empty()) {
-		uri.path = remainder.substr(0, pos);
-	}
-	else {
-		pos = remainder.find("#");
-		if (pos != std::string::npos && !remainder.empty()) {
-			uri.path = remainder.substr(0, pos);
+		
+		std::pair<std::string, std::string>	p3 = split_string_in_half(str2, ":");
+		std::string							port;
+		authority.host = p3.first;
+		if (!authority.host.empty()) {
+			std::cout << "AUTHORITY HOST = " << authority.host << std::endl;
+			index += (authority.host.length() + 1);
 		}
 		else {
-			uri.path = remainder;
+			authority.host = str2;
+			if (!authority.host.empty()) {
+				std::cout << "AUTHORITY HOST = " << authority.host << std::endl;
+				index += (authority.host.length() + 1);
+			}
+		}
+		port = p3.second;
+		if (!port.empty()) {
+			authority.port = stoi(port);
+			index += (port.length() + 1);
+			std::cout << "AUTHORITY PORT = " << authority.port << std::endl;
+		}
+		else {
+			authority.port = -1;
+			std::cout << "AUTHORITY PORT = " << authority.port << std::endl;
 		}
 	}
-	std::cout << "END OF CHECK URI" << std::endl;	
+}
+
+// should think of a way to handle multiple "//" after each other
+
+void	check_path(std::string const& path_str, Path& path, size_t& index) {
+	std::string							substring = path_str.substr(index);
+	std::pair<std::string, std::string>	p = split_string_in_half_on_any_match(substring, "?#");
+	std::string							str = p.first;
+
+	if (!p.first.empty()) {
+		path.full = p.first;
+		std::cout << "PATH FULL = " << path.full << std::endl;
+	}
+	else {
+		path.full = substring;
+		std::cout << "PATH FULL = " << path.full << std::endl;
+	}
+	index += path.full.length();
+	std::pair<std::string, std::string>	p2 = split_string_in_half(path.full, ".");
+	if (!p2.second.empty()) {
+		path.without_extension = p2.first;
+		path.extension = p2.second;
+		std::cout << "PATH WITHOUT EXTENSION = " << path.without_extension << std::endl;
+		std::cout << "PATH EXTENSION = " << path.extension << std::endl;
+	}
+}
+
+void	check_query(std::string const& query_str, std::map<std::string, std::string>& query, size_t& index) {
+	std::pair<std::string, std::string>	p = split_string_in_half(query_str.substr(index), "?");
+	std::string							str = p.second;
+
+	if (!str.empty()) {
+		std::pair<std::string, std::string>	p2 = split_string_in_half(str, "#");
+		std::string							str2 = p2.first;
+		if (str2.empty()) {
+			str2 = str;
+			index += str2.length();
+		}
+		else {
+			index += str2.length() + 1;
+		}
+		std::vector<std::string>	query_seperated = split_string_on_delimeter(str2, '&');
+		for (size_t i = 0; i < query_seperated.size(); i++) {
+			if (!query_seperated[i].empty()) {
+				std::pair<std::string, std::string> p = split_string_in_half(query_seperated[i], "=");
+				query.insert(p);
+			}
+		}
+	}
+}
+
+void	check_fragment(std::string const& fragment_str, std::string& fragment, size_t& index) {
+	std::pair<std::string, std::string>	p = split_string_in_half(fragment_str.substr(index), "#");
+	std::string							str = p.second;
+
+	if (!str.empty()) {
+		fragment = str;
+		std::cout << "FRAGMENT = " << fragment << std::endl;
+		index += fragment.length() + 1;
+	}
+}
+
+void	check_uri(std::string const& str,  Uri& uri) {
+	size_t		index = 0;
+	
+	if (str.length() > 2000) {
+		std::cout << "ERROR\nuri too long\n" << std::endl;
+		return ;
+	}
+	std::cout << "URI = " << str << std::endl;
+	check_scheme(str, uri.scheme, index);
+	check_authority(str, uri.authority, index);
+	check_path(str, uri.path, index);
+	if (str.substr(index).empty()) {
+		std::cout << std::endl;
+		return ;
+	}
+	check_query(str, uri.query, index);
+	if (!uri.query.empty()) {
+		std::cout << "QUERY STRING = ";
+		for (std::map<std::string, std::string>::iterator it = uri.query.begin(); it != uri.query.end(); it++) {
+			std::cout << (*it).first << "=" << (*it).second << ",";
+		}
+		std::cout << std::endl;
+	}
+	if (str.substr(index).empty()) {
+		std::cout << std::endl;
+		return ;
+	}
+	else {
+		check_fragment(str, uri.fragment, index);
+	}
+	std::cout << std::endl;	
 }
 
 void eraseAllSubStr(std::string & mainStr, const std::string & toErase)
 {
     size_t pos = std::string::npos;
-    // Search for the substring in string in a loop untill nothing is found
     while ((pos  = mainStr.find(toErase) )!= std::string::npos)
     {
-        // If found then erase it from string
         mainStr.erase(pos, toErase.length());
     }
 }
@@ -106,19 +208,19 @@ int main(int argc, char ** argv) {
 	if (argc == 2) {
 		std::string input;
 		input = get_input_from_config_file(argv[1]);
+		std::cout << "INPUT = " << std::endl << input << std::endl;
 		for (;;)
 		{
-			static int i = 0;
 			Uri	uri;
-			std::string line = input.substr(0, input.find("\r\n"));
+			size_t pos = input.find("\n");
+			std::string line = input.substr(0, pos);
 			check_uri(line, uri);
+			line += '\n';
 			eraseAllSubStr(input, line);
 			if (input.empty()) {
-				std::cout << i << std::endl;
 				break ;
 			}
 		}
-
 	}
 	return (0);
 }

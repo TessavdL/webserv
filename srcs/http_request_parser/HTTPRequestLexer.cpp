@@ -4,10 +4,11 @@
 
 HTTPRequestLexer::HTTPRequestLexer(void) {
 	this->_state = REQUEST_START;
+	this->parser = new HTTPRequestParser();
 }
 
 HTTPRequestLexer::~HTTPRequestLexer(void) {
-
+	delete this->parser;
 }
 
 HTTPRequestLexer::HTTPRequestLexer(HTTPRequestLexer const& other) {
@@ -37,12 +38,15 @@ void				HTTPRequestLexer::process_request(std::string const& request) {
 			break ;
 		case REQUEST_LINE_METHOD:
 			go_method(str, index);
+			this->parser->check_method(this->_request_line.method);
 		case REQUEST_LINE_URI:
 			go_uri(str, index);
+			this->parser->check_uri(this->_request_line.uri);
 		case REQUEST_LINE_PROTOCOL:
 			go_protocol(str, index);
 		case REQUEST_HEADERS:
 			go_headers(str, index);
+			this->parser->check_headers(this->_request_headers);
 		case REQUEST_BODY:
 			go_body(str, index);
 			return ;
@@ -127,12 +131,6 @@ void				HTTPRequestLexer::go_headers(std::string const& str, size_t& index) {
 
 void				HTTPRequestLexer::go_body(std::string const& str, size_t& index) {
 	this->_request_body = str.substr(index, str.size());
-	// if (this->_request_body.empty()) {
-	// 	std::cout << "BODY = empty" << std::endl;
-	// }
-	// else {
-	// 	std::cout << "BODY = " << this->_request_body << std::endl;
-	// }
 }
 
 HTTPRequestLexer::State				HTTPRequestLexer::get_state(void) const {
@@ -176,4 +174,3 @@ std::ostream&	operator<<(std::ostream& os, HTTPRequestLexer const& lexer) {
 	}
 	return (os);
 }
-

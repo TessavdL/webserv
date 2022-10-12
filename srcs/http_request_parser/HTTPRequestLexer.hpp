@@ -4,17 +4,22 @@
 # include <string>
 # include <vector>
 
+# include "./HTTPRequestParser.hpp"
+
 # define CLRF "\r\n"
 # define DOUBLE_CLRF "\r\n\r\n"
 
+class HTTPRequestParser;
+
 class HTTPRequestLexer {
 	public:
-		typedef struct RequestLine
+		typedef struct	RequestLine
 		{
 			std::string	method;
 			std::string	uri;
 			std::string	protocol;
-		} RequestLine;
+		}				RequestLine;
+
 		enum State {
 			REQUEST_START = 0,
 			REQUEST_LINE_METHOD = 1,
@@ -24,23 +29,24 @@ class HTTPRequestLexer {
 			REQUEST_BODY = 5,
 			REQUEST_ERROR = -1
 		};
+
 		HTTPRequestLexer();
 		~HTTPRequestLexer();
 		HTTPRequestLexer(HTTPRequestLexer const& other);
-		HTTPRequestLexer&	operator=(HTTPRequestLexer const& other);
-		void		process_request(std::string const& request);
-		void		process_request_start(std::string const& request);
-		void		go_method(std::string const& str, size_t& index);
-		void		go_uri(std::string const& str, size_t& index);
-		void		go_protocol(std::string const& str, size_t& index);
-		void		go_headers(std::string const& str, size_t& index);
-		void		go_body(std::string const& str, size_t& index);
-		State		get_state(void) const;
+		HTTPRequestLexer&				operator=(HTTPRequestLexer const& other);
+		void							process_request(std::string const& request);
+		void							process_request_start(std::string const& request);
+		void							go_method(std::string const& str, size_t& index);
+		void							go_uri(std::string const& str, size_t& index);
+		void							go_protocol(std::string const& str, size_t& index);
+		void							go_headers(std::string const& str, size_t& index);
+		void							go_body(std::string const& str, size_t& index);
+		State							get_state(void) const;
 		std::string						get_remainder(void) const;
 		HTTPRequestLexer::RequestLine	get_request_line(void) const;
 		std::vector<std::string>		get_headers(void) const;
 		std::string						get_body(void) const;
-		
+		HTTPRequestParser*				parser;
 	private:
 		std::string					_remainder;
 		RequestLine 				_request_line;
