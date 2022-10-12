@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   Exception.cpp                                      :+:    :+:            */
+/*   exception_config_parser.cpp                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/05 15:01:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:48:46 by jelvan-d      ########   odam.nl         */
+/*   Created: 2022/10/12 17:45:30 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:45:41 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/config_parser/exception.hpp"
+#include "../../includes/config_parser/exception_config_parser.hpp"
 
 LexerParserException::LexerParserException(void) {
 	this->_message = "Config file is not valid";
