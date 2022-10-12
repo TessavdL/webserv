@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 17:18:05 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/10 15:54:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 12:30:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class LocationBlock : public ServerConfig
 {
 	private:
 		vector<string>	_limit_except;
-		string			_path_and_optional_modifier;
+		vector<string>	_path_and_optional_modifier;
 	protected:
 	public:
 		LocationBlock();
@@ -31,7 +31,7 @@ class LocationBlock : public ServerConfig
 		LocationBlock &operator=(LocationBlock const& rhs);
 		virtual ~LocationBlock();
 		void	get_directives(Lexer::t_locations location);
-		string const&			get_path_and_optional_modifier() const;
+		vector<string> const&	get_path_and_optional_modifier() const;
 		vector<string> const&	get_limit_except() const;
 };
 

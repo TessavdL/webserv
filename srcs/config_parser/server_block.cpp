@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 18:45:26 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/10 17:18:18 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 12:31:13 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,8 @@ std::ostream&	operator<<(std::ostream& os, ServerBlock const& server_block) {
 				os << (*it3) << " ";
 			os << (*it2).second << endl;
 		}
-		os << "\tpath and optional modifier = " << (*it).get_path_and_optional_modifier() << endl;
+		for (vector<string>::const_iterator it2 = (*it).get_path_and_optional_modifier().begin(); it2 != (*it).get_path_and_optional_modifier().end(); ++it2)
+			os << "\tpath and optional modifier = " << (*it2) << endl;
 		for (vector<string>::const_iterator it2 = (*it).get_limit_except().begin(); it2 != (*it).get_limit_except().end(); ++it2)
 			os << "\tlimit except = " << (*it2) << endl;
 		location_block_number++;

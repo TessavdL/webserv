@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/10 17:23:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 12:30:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ LocationBlock::LocationBlock(void) {
 	return ;
 }
 
-LocationBlock::LocationBlock(Lexer::t_locations location) : _path_and_optional_modifier(location.path_and_optional_modifier) {
+LocationBlock::LocationBlock(Lexer::t_locations location) {
 	this->_root = "html";
 	this->_client_max_body_size = "1m";
 	this->_autoindex = "off";
@@ -24,6 +24,7 @@ LocationBlock::LocationBlock(Lexer::t_locations location) : _path_and_optional_m
 	this->_limit_except.push_back("GET");
 	this->_limit_except.push_back("POST");
 	this->_limit_except.push_back("DELETE");
+	helper_split(this->_path_and_optional_modifier, location.path_and_optional_modifier);
 	get_directives(location);
 }
 
@@ -80,7 +81,7 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 	}
 }
 
-string const&			LocationBlock::get_path_and_optional_modifier() const {
+vector<string> const&			LocationBlock::get_path_and_optional_modifier() const {
 	return (this->_path_and_optional_modifier);
 }
 
