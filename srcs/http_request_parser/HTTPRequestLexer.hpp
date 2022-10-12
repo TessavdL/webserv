@@ -41,6 +41,7 @@ class HTTPRequestLexer {
 		void							go_protocol(std::string const& str, size_t& index);
 		void							go_headers(std::string const& str, size_t& index);
 		void							go_body(std::string const& str, size_t& index);
+		void							go_chonky_body(std::string const& str, size_t &index) {
 		State							get_state(void) const;
 		std::string						get_remainder(void) const;
 		HTTPRequestLexer::RequestLine	get_request_line(void) const;

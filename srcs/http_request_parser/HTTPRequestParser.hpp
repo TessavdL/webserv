@@ -41,7 +41,7 @@ typedef struct	Uri
 class HTTPRequestParser {
 	public:
 		HTTPRequestParser();
-		HTTPRequestParser(std::string const& request);
+		// HTTPRequestParser(std::string const& request);
 		~HTTPRequestParser();
 		HTTPRequestParser(HTTPRequestParser const& other);
 		HTTPRequestParser&					operator=(HTTPRequestParser const& other);
@@ -53,7 +53,7 @@ class HTTPRequestParser {
 		std::map<std::string, std::string>	get_headers(void) const;
 		std::string							get_body(void) const;
 		std::string							get_chonky_body(void) const;
-		std::string							get_request_body_state(void) const;
+		RequestBody							get_request_body_state(void) const;
 	private:
 		std::string							_method;
 		Uri									_uri;

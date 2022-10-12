@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   HTTPRequestLexer.cpp                               :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/12 17:36:26 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:43:04 by tevan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "HTTPRequestLexer.hpp"
 
 #include <iostream>
@@ -48,6 +60,9 @@ void				HTTPRequestLexer::process_request(std::string const& request) {
 			go_headers(str, index);
 			this->parser->check_headers(this->_request_headers);
 		case REQUEST_BODY:
+			if (this->parser->get_request_body_state() == CHUNKED) {
+				go_chonky_body(str, index);
+			}
 			go_body(str, index);
 			return ;
 		default:
@@ -130,7 +145,11 @@ void				HTTPRequestLexer::go_headers(std::string const& str, size_t& index) {
 }
 
 void				HTTPRequestLexer::go_body(std::string const& str, size_t& index) {
-	this->_request_body = str.substr(index, str.size());
+	this->_request_body = str.substr(index);
+}
+
+void				HTTPRequestLexer::go_chonky_body(std::string const& str, size_t &index) {
+
 }
 
 HTTPRequestLexer::State				HTTPRequestLexer::get_state(void) const {

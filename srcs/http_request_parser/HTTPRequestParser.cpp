@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   HTTPRequestParser.cpp                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/12 17:36:21 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:38:44 by tevan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "HTTPRequestParser.hpp"
 
 #include <iostream>
@@ -6,9 +18,9 @@ HTTPRequestParser::HTTPRequestParser(void) {
 
 }
 
-HTTPRequestParser::HTTPRequestParser(std::string const& request) {
+// HTTPRequestParser::HTTPRequestParser(std::string const& request) {
 
-}
+// }
 
 HTTPRequestParser::~HTTPRequestParser(void) {
 
@@ -134,6 +146,6 @@ std::string	HTTPRequestParser::get_chonky_body(void) const {
 	return (this->_chonky_body);
 }
 
-std::string	HTTPRequestParser::get_request_body_state(void) const {
-	return (this->_chonky_body);
+RequestBody	HTTPRequestParser::get_request_body_state(void) const {
+	return (this->_request_body_state);
 }
