@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/10 16:30:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 19:48:44 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ int			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page,
 	}
 	error_page.push_back(pair<vector<int>, string>(tmp_int, tmp[tmp.size() - 1]));
 	return (0);
+}
+
+void		ServerConfig::error_check_error_page(vector<pair<vector<int>, string> > const& error_page) {
+	for (vector<pair<vector<int>, string> >::const_iterator it = error_page.begin(); it != error_page.end(); ++it) {
+
+	}
 }
 
 string const&								ServerConfig::get_root() const {

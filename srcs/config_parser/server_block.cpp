@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 18:45:26 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 14:56:54 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:45:28 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void			ServerBlock::get_directives(Lexer::t_server server) {
 				break ;
 			case	LISTEN:
 				helper_split(this->_listen, *it);
+				error_check_listen(this->_listen);
 				break ;
 			case	ROOT:
 				helper_split(this->_root, *it);
@@ -86,6 +87,33 @@ void			ServerBlock::get_directives(Lexer::t_server server) {
 				cout << *it << " is not a supported directive in the server block." << endl;
 				exit (1);
 		}
+	}
+}
+
+void			ServerBlock::error_check_listen(vector<string> const& listen) {
+	pair<string, string> hostname_port_split;
+	
+	for (vector<string>::const_iterator it = listen.begin(); it != listen.end(); ++it) {
+		if ((*it).find(":") != string::npos) {
+			hostname_port_split = split_string_in_half((*it), ":");
+			if (hostname_port_split.first.empty())
+				hostname_port_split.first = "localhost";
+			if (hostname_port_split.second.empty())
+				hostname_port_split.second = "80";
+			else if (hostname_port_split.second.find_first_not_of("0123456789") != string::npos)
+				throw LexerParserException("Invalid character found in listen port");
+		}
+		else {
+			if ((*it).find_first_not_of("0123456789") == string::npos) {
+				hostname_port_split.first = "localhost";
+				hostname_port_split.second = (*it);
+			}
+			else {
+				hostname_port_split.first = (*it);
+				hostname_port_split.second = "80";
+			}
+		}
+		this->_host_and_port.push_back(pair<string, int>(hostname_port_split.first, stoi(hostname_port_split.second)));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:26:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/10 13:34:31 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:13:24 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <cstring>
 # include <utility>
 # include "./lexer.hpp"
+# include "./exception_config_parser.hpp"
 
 using namespace std;
 
@@ -55,6 +56,7 @@ class ServerConfig
 		int				helper_split(vector<string> &str, string to_split);
 		int				helper_split(string &str, string to_split);
 		int				helper_split(vector<pair<vector<int>, string> > &error_page, string to_split);
+		void			error_check_error_page(vector<pair<vector<int>, string > > const& error_page);
 		string const&								get_root() const;
 		string const&								get_client_max_body_size() const;
 		string const&								get_autoindex() const;

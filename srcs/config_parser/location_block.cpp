@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 14:54:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 19:34:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 			case	LIMIT_EXCEPT:
 				this->_limit_except.clear();
 				helper_split(this->_limit_except, *it);
+				error_check_limit_except(this->_limit_except);
 				break ;
 			case	INDEX:
 				helper_split(this->_index, *it);
@@ -81,6 +82,28 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 				exit (1);
 		}
 	}
+}
+
+void		LocationBlock::error_check_limit_except(vector<string> const& limit_except) const {
+	int	seen_get(0);
+	int	seen_post(0);
+	int	seen_delete(0);
+	int	seen_head(0);
+	
+	for (vector<string>::const_iterator it = limit_except.begin(); it != limit_except.end(); ++it) {
+		if ((*it) == "GET")
+			++seen_get;
+		else if ((*it) == "POST")
+			++seen_post;
+		else if ((*it) == "DELETE")
+			++seen_delete;
+		else if ((*it) == "HEAD")
+			++seen_head;
+		else
+			throw LexerParserException("Unknown limit_except argument");
+	}
+	if (seen_get > 1 || seen_post > 1 || seen_delete > 1 || seen_head > 1)
+		throw LexerParserException("Repeated limit_except argument");
 }
 
 vector<string> const&			LocationBlock::get_path_and_optional_modifier() const {
