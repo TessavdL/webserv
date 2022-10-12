@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   kqueue_server.cpp                                  :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/10/05 16:44:59 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:45:01 by jelvan-d      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <netinet/in.h>
@@ -21,6 +9,7 @@
 #include <errno.h>
 
 #include "../listening_sockets/socket_listen.hpp"
+#include "./http_request_parser/HTTPRequestLexer.hpp"
 
 int	error_and_exit(const char* error_message)
 {
@@ -91,7 +80,6 @@ int main()
 				// Incoming socket connection on the listening socket.
                 // Create a new socket for the actual connection to client.
                 socket_connection_fd = accept(event_fd, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
-				std::cout << socket_connection_fd << std::endl;
                 if (socket_connection_fd == -1) {
 					return (error_and_exit("An error occured in accept()\n"));
                 }
@@ -109,11 +97,37 @@ int main()
 			// READY TO READ FROM CLIENT SOCKET
             else if (event[i].filter & EVFILT_READ)
             {
-				printf("--- reading from client socket ---\n");
-                char buf[1024];
-                size_t bytes_read = recv(event_fd, buf, sizeof(buf), 0);
-                printf("read %zu bytes\n", bytes_read);
-				printf("buf = \n%s\n", buf);
+				HTTPRequestLexer	lexer;
+				long				total_amount_of_bytes_read = 0;
+				int					bytes_read = 1;
+				char				buf[1024];
+
+				std::cout << "--- reading from client socket ---" << std::endl;
+                std::cout << "amount of bytes in data = " << event[i].data << std::endl;
+	
+				while (bytes_read > 0) {
+					bytes_read = recv(event_fd, buf, sizeof(buf), 0);
+					if (bytes_read == -1) {
+						break ;
+					}
+					if (bytes_read > 0 && bytes_read < 1024) {
+						std::cout << "Finished reading from socket" << std::endl;
+					}
+					total_amount_of_bytes_read += bytes_read;
+				}
+				if (total_amount_of_bytes_read == event[i].data) {
+					std::cout << "Read all of the send data from the socket" << std::endl;
+				}
+                else {
+					std::cout << "An error occured while reading from the socket" << std::endl;
+				}
+
+				lexer.process_request(std::string(buf));
+				if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
+						std::cout << "Request is invalid" << std::endl;
+				}
+				
+				std::cout << lexer << std::endl;
 				// temp: when using curl because otherwise it will stay connected
 				close(socket_connection_fd);
 				printf("--- done reading so bounce bye ---\n\n");
