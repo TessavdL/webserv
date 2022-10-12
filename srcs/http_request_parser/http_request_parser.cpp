@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   HTTPRequestParser.cpp                              :+:    :+:            */
+/*   http_request_parser.cpp                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/12 17:36:21 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:38:44 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/10/12 17:35:34 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:52:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HTTPRequestParser.hpp"
+#include "../../includes/http_request_parser/http_request_parser.hpp"
 
 #include <iostream>
 

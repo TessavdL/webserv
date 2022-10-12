@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   http_request_lexer.hpp                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/12 17:37:35 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:42:34 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HTTP_REQUEST_LEXER_HPP
 # define HTTP_REQUEST_LEXER_HPP
 
 # include <string>
 # include <vector>
 
-# include "./HTTPRequestParser.hpp"
+# include "./http_request_parser.hpp"
 
 # define CLRF "\r\n"
 # define DOUBLE_CLRF "\r\n\r\n"

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   http_request_parser.hpp                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/12 17:37:40 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:42:25 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HTTP_REQUEST_PARSER_HPP
 # define HTTP_REQUEST_PARSER_HPP
 
@@ -5,7 +17,7 @@
 # include <vector>
 # include <map>
 
-# include "./HTTPRequestLexer.hpp"
+# include "./http_request_lexer.hpp"
 
 # define CLRF "\r\n"
 # define DOUBLE_CLRF "\r\n\r\n"

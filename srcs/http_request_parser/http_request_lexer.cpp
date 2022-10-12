@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   HTTPRequestLexer.cpp                               :+:    :+:            */
+/*   http_request_lexer.cpp                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/12 17:36:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:43:04 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:52:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HTTPRequestLexer.hpp"
+#include "../../includes/http_request_parser/http_request_lexer.hpp"
 
 #include <iostream>
 
