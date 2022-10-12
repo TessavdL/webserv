@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 12:30:10 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/12 14:54:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 				break ;
 			case	AUTOINDEX:
 				helper_split(this->_autoindex, *it);
+				if (this->_autoindex != "on" && this->_autoindex != "off")
+					throw LexerParserException("Error; autoindex is not \"on\" or \"off\"");
 				break ;
 			default:
 				exit (1);
