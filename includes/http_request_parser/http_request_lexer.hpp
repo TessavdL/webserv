@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:37:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:42:34 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/13 16:23:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class HTTPRequestLexer {
 		void							go_protocol(std::string const& str, size_t& index);
 		void							go_headers(std::string const& str, size_t& index);
 		void							go_body(std::string const& str, size_t& index);
+		void							go_chonky_body(std::string const& str, size_t &index);
 		State							get_state(void) const;
 		std::string						get_remainder(void) const;
 		HTTPRequestLexer::RequestLine	get_request_line(void) const;
@@ -60,11 +61,11 @@ class HTTPRequestLexer {
 		std::string						get_body(void) const;
 		HTTPRequestParser*				parser;
 	private:
-		std::string					_remainder;
-		RequestLine 				_request_line;
-		std::vector<std::string>	_request_headers;
-		std::string					_request_body;
-		State						_state;
+		std::string						_remainder;
+		RequestLine 					_request_line;
+		std::vector<std::string>		_request_headers;
+		std::string						_request_body;
+		State							_state;
 };
 
 std::ostream&	operator<<(std::ostream& os, HTTPRequestLexer const& lexer);

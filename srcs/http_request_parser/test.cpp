@@ -6,7 +6,11 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:31 by jelvan-d      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2022/10/12 20:28:32 by jelvan-d      ########   odam.nl         */
+=======
+/*   Updated: 2022/10/13 14:12:02 by tevan-de      ########   odam.nl         */
+>>>>>>> 8e6ea91af557481910aaa6edc60889eef1129436
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +210,53 @@ void	check_uri(std::string const& str,  Uri& uri) {
 	}
 	std::cout << std::endl;	
 }
+
+// void	HTTPRequestParser::check_uri(std::string const& uri) {
+// 	std::string	remainder = uri;
+// 	size_t		pos = remainder.find("://");
+	
+// 	if (pos != std::string::npos) {
+// 		this->_uri.scheme = remainder.substr(0, pos);
+// 		std::cout << "URI SCHEME = " << this->_uri.scheme << std::endl;
+// 		remainder = remainder.substr(pos + 3);
+// 	}
+// 	pos = remainder.find("/");
+// 	std::string authority = remainder.substr(0, pos);
+// 	if (pos != std::string::npos && !authority.empty()) {
+// 		size_t	pos2 = authority.find("@");
+// 		if (pos != std::string::npos) {
+// 			this->_uri.authority.user_information = authority.substr(0, pos2);
+// 			std::cout << "URI AUTHORITY USER INFORMATION = " << this->_uri.authority.user_information << std::endl;
+// 			authority = authority.substr(pos + 1);
+// 		}
+// 		pos2 = authority.find(":");
+// 		if (pos2 != std::string::npos) {
+// 			this->_uri.authority.host = authority.substr(0, pos2);
+// 			authority = authority.substr(pos + 1);
+// 			if (!authority.empty())
+// 				this->_uri.authority.port = stoi(authority);
+// 		}
+// 		remainder = remainder.substr(pos + 1);
+// 	}
+// 	else {
+// 		return ;
+// 	}
+// 	pos = remainder.find("?");
+// 	if (pos != std::string::npos && !remainder.empty()) {
+// 		this->_uri.path = remainder.substr(0, pos);
+// 	}
+// 	else {
+// 		pos = remainder.find("#");
+// 		if (pos != std::string::npos && !remainder.empty()) {
+// 			this->_uri.path = remainder.substr(0, pos);
+// 		}
+// 		else {
+// 			this->_uri.path = remainder;
+// 		}
+// 	}
+// 	std::cout << "END OF CHECK URI" << std::endl;	
+// }
+
 
 void eraseAllSubStr(std::string & mainStr, const std::string & toErase)
 {

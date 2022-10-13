@@ -6,27 +6,31 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/10/05 15:14:15 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/10/13 16:29:30 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=		webserv
 
-CC			=		c++
+CC			=		g++
 
 CFLAGS		=		-Wall -Wextra -Werror -std=c++98 -pedantic
 
 SRC_DIR		=		srcs
 
-SRC_FILES	=		main.cpp \
-					FatalException.cpp \
+SRC_FILES	=		fatal_exception.cpp \
 					kqueue_server.cpp \
-					config_parser/Exception.cpp \
-					config_parser/Lexer.cpp \
-					config_parser/LexerUtils.cpp \
-					config_parser/Location.cpp \
-					config_parser/Server_Config.cpp \
-					listening_sockets/SocketListen.cpp
+					config_parser/exception_config_parser.cpp \
+					config_parser/lexer.cpp \
+					config_parser/lexer_utils.cpp \
+					config_parser/location_block.cpp \
+					config_parser/server_block.cpp \
+					config_parser/server_config.cpp \
+					listening_sockets/socket_listen.cpp \
+					http_request_parser/exception_http_request_parser.cpp \
+					http_request_parser/http_request_lexer.cpp \
+					http_request_parser/http_request_parser.cpp \
+					http_request_parser/utility_split.cpp
 
 SRCS		=		$(addprefix ${SRC_DIR}/, ${SRC_FILES})
 

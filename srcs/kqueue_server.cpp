@@ -9,7 +9,10 @@
 #include <errno.h>
 
 #include "../includes/listening_sockets/socket_listen.hpp"
-#include "./http_request_parser/HTTPRequestLexer.hpp"
+#include "../includes/http_request_parser/http_request_lexer.hpp"
+#include "../includes/http_request_parser/http_request_parser.hpp"
+
+#define BUFF_SIZE 4096
 
 int	error_and_exit(const char* error_message)
 {
@@ -95,39 +98,39 @@ int main()
             }
 
 			// READY TO READ FROM CLIENT SOCKET
-            else if (event[i].filter & EVFILT_READ)
+            else if (event[i].filter == EVFILT_READ)
             {
 				HTTPRequestLexer	lexer;
 				long				total_amount_of_bytes_read = 0;
 				int					bytes_read = 1;
-				char				buf[1024];
+				char				buf[BUFF_SIZE];
 
 				std::cout << "--- reading from client socket ---" << std::endl;
-                std::cout << "amount of bytes in data = " << event[i].data << std::endl;
+                std::cout << "--- amount of bytes in data = " << event[i].data << "---" << std::endl;
 	
 				while (bytes_read > 0) {
 					bytes_read = recv(event_fd, buf, sizeof(buf), 0);
 					if (bytes_read == -1) {
 						break ;
 					}
-					if (bytes_read > 0 && bytes_read < 1024) {
-						std::cout << "Finished reading from socket" << std::endl;
+					if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
+						std::cout << "--- finished reading from socket ---" << std::endl;
+					}
+					lexer.process_request(std::string(buf));
+					if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
+						std::cout << "--- request is invalid ---" << std::endl;
+						break ;
 					}
 					total_amount_of_bytes_read += bytes_read;
 				}
+
 				if (total_amount_of_bytes_read == event[i].data) {
-					std::cout << "Read all of the send data from the socket" << std::endl;
+					std::cout << "--- all data send by the socket was received ---" << std::endl;
 				}
                 else {
-					std::cout << "An error occured while reading from the socket" << std::endl;
-				}
-
-				lexer.process_request(std::string(buf));
-				if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
-						std::cout << "Request is invalid" << std::endl;
+					std::cout << "--- an error occured, not all send by the socket was received ---" << std::endl;
 				}
 				
-				std::cout << lexer << std::endl;
 				// temp: when using curl because otherwise it will stay connected
 				close(socket_connection_fd);
 				printf("--- done reading so bounce bye ---\n\n");
