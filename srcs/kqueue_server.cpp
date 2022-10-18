@@ -20,8 +20,9 @@ int	error_and_exit(const char* error_message)
 	exit(EXIT_FAILURE);
 }
 
-int main()
+int kqueue_server()
 {
+    // std::map<int/*socket_fd*/, class Server>;
 	SocketListen		socket(9002);
 	int					client_len;
     struct sockaddr_in	client_addr;

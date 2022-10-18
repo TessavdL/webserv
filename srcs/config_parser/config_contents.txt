@@ -1,5 +1,5 @@
                                        server {
-	listen phantom.nl:8080 4A00 5000;
+	listen phantom.nl:8080 400 5000;
 
 	server_name www.phantom.nl phantom.nl;
 	autoindex on;
