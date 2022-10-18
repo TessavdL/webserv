@@ -14,10 +14,6 @@
 #include "../includes/http_response/response.hpp"
 
 #define BUFF_SIZE 4096
-#include <ctime>
-#include <iomanip>
-
-
 
 int	error_and_exit(const char* error_message)
 {
@@ -47,7 +43,7 @@ int main()
     struct kevent	change_event[4];
     EV_SET(change_event, socket.getFd(), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
 
-    // REGISTER EVENT TO KERNEL QUEUE
+    // REGISTER SOCKET FD TO KERNEL QUEUE
     if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
 		return (error_and_exit("An error occured in kevent() while trying to register the kernel event to the queue.\n"));
     }
