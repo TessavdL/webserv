@@ -11,6 +11,7 @@
 #include "../includes/listening_sockets/socket_listen.hpp"
 #include "../includes/http_request_parser/http_request_lexer.hpp"
 #include "../includes/http_request_parser/http_request_parser.hpp"
+#include "../includes/http_response/response.hpp"
 
 #define BUFF_SIZE 4096
 
@@ -43,7 +44,7 @@ int kqueue_server()
     struct kevent	change_event[4];
     EV_SET(change_event, socket.getFd(), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
 
-    // REGISTER EVENT TO KERNEL QUEUE
+    // REGISTER SOCKET FD TO KERNEL QUEUE
     if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
 		return (error_and_exit("An error occured in kevent() while trying to register the kernel event to the queue.\n"));
     }
@@ -92,7 +93,7 @@ int kqueue_server()
                 // to watch in kqueue, so we can now watch for events on this
                 // new socket.
                 EV_SET(change_event, socket_connection_fd, EVFILT_READ, EV_ADD, 0, 0, NULL);
-                if (kevent(kq, change_event, 1, NULL, 0, NULL) < 0) {
+                if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
                     return (error_and_exit("An error occured in kevent() when registering connected socket to the queue\n"));
                 }
 				printf("--- event was added to queue ---\n");
@@ -132,9 +133,22 @@ int kqueue_server()
 					std::cout << "--- an error occured, not all send by the socket was received ---" << std::endl;
 				}
 				
-				// temp: when using curl because otherwise it will stay connected
-				close(socket_connection_fd);
-				printf("--- done reading so bounce bye ---\n\n");
+				EV_SET(change_event, socket_connection_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
+				if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
+					return (error_and_exit("An error occured in kevent() when registering write event to the queue\n"));
+				}
+				printf("--- done reading ---\n");
+			}
+			else if (event[i].filter == EVFILT_WRITE) {
+				printf("--- writing to client socket ---\n");
+				Response	response;
+				const char *buf = response.get_full_response().c_str();
+				std::cout << std::endl << response << std::endl;
+
+				send(event_fd, buf, strlen(buf), 0);
+				printf("--- done writing to client socket\n");
+				close(event_fd);
+				printf("--- bounce bye ---\n\n");
 			}
         }
     }

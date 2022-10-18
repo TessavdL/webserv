@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/10/18 16:31:50 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/10/18 17:38:17 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,9 @@ SRC_FILES	=		fatal_exception.cpp \
 					http_request_parser/exception_http_request_parser.cpp \
 					http_request_parser/http_request_lexer.cpp \
 					http_request_parser/http_request_parser.cpp \
-					http_request_parser/utility_split.cpp
+					http_request_parser/utility_split.cpp \
+					http_response/response.cpp \
+					http_response/response_utils.cpp
 
 SRCS		=		$(addprefix ${SRC_DIR}/, ${SRC_FILES})
 
