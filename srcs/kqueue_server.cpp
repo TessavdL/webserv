@@ -11,65 +11,13 @@
 #include "../includes/listening_sockets/socket_listen.hpp"
 #include "../includes/http_request_parser/http_request_lexer.hpp"
 #include "../includes/http_request_parser/http_request_parser.hpp"
+#include "../includes/http_response/response.hpp"
 
 #define BUFF_SIZE 4096
 #include <ctime>
 #include <iomanip>
 
-//Date: Mon, 27 Jul 2009 12:28:53 GMT
 
-// static const char wday_name[][4] = {
-//     "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-// };
-
-// static const char mon_name[][4] = {
-//    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-//    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-// };
-
-// Wed Feb 13 15:46:11 2013
-
-char* custom_asctime(const struct tm *timeptr)
-{
-  static const char wday_name[][4] = {
-    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-  };
-  static const char mon_name[][4] = {
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  };
-  static char result[26];
-  sprintf(result, "%.3s,%3d %.3s %d %.2d:%.2d:%.2d CET\n",
-    wday_name[timeptr->tm_wday],
-	timeptr->tm_mday,
-    mon_name[timeptr->tm_mon],
-	1900 + timeptr->tm_year,
-    timeptr->tm_hour,
-    timeptr->tm_min,
-	timeptr->tm_sec);
-  return result;
-}
-
-std::string get_time(void) {
- 	time_t rawtime;
-	struct tm * timeinfo;
-
-	time (&rawtime);
-	timeinfo = localtime(&rawtime);
-	std::string str("Date");
-	str.append(": ");
-	str.append(std::string(custom_asctime(timeinfo)));
-	// str.append(std::to_string(wday_name[timeinfo->tm_wday]));
-	// std::append(", ");
-	// str.append(std::to_)
-	// str.append(" ");
-	// str.append(std::to_string(mon_name[timeinfo->tm_mday]));
-	// str.append(" ");
-	// str.append(std::to_string(1900 + timeinfo->tm_year));
-	// str.append(" ")
-	// str.append(std::to_string())
-  return (str);
-}
 
 int	error_and_exit(const char* error_message)
 {
@@ -196,14 +144,16 @@ int main()
 			}
 			else if (event[i].filter == EVFILT_WRITE) {
 				printf("--- writing to client socket ---\n");
-				std::string	str = "HTTP1/1 200 OK";
-				str.append(CLRF);
-				std::string date = get_time();
-				str.append(date);
-				str.append("Server: 42Webserv");
-				str.append(CLRF);
-				str.append(CLRF);
-				const char *buf = str.c_str();
+				// std::string	str = "HTTP1/1 200 OK";
+				// str.append(CLRF);
+				// std::string date = get_time();
+				// str.append(date);
+				// str.append("Server: 42Webserv");
+				// str.append(CLRF);
+				// str.append(CLRF);
+				Response	response;
+				const char *buf = response.get_full_response().c_str();
+				std::cout << response << std::endl;
 				// printf("sending this to client: %s", buf);
 
 
