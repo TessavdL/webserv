@@ -1,0 +1,17 @@
+== Info: Rebuilt URL to: 127.0.0.1:9002/
+== Info:   Trying 127.0.0.1...
+== Info: TCP_NODELAY set
+== Info: Connected to 127.0.0.1 (127.0.0.1) port 9002 (#0)
+=> Send header, 78 bytes (0x4e)
+0000: GET / HTTP/1.1
+0010: Host: 127.0.0.1:9002
+0026: User-Agent: curl/7.54.0
+003f: Accept: */*
+004c: 
+<= Recv data, 16 bytes (0x10)
+0000: HTTP1/1 200 OK
+<= Recv data, 106 bytes (0x6a)
+0000: Date: Wed, 19 Oct 2022 18:49:32 CET.
+0026: <!doctype html>.<html>.<head>.</head>.<body>.  HELLO.</body>.</h
+0066: tml>
+== Info: Connection #0 to host 127.0.0.1 left intact
