@@ -41,7 +41,7 @@ int main()
     // actions on this kevent: EV_ADD and EV_ENABLE (add the event to the kqueue 
     // and enable it).
     struct kevent	change_event[4];
-    EV_SET(change_event, socket.getFd(), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
+    EV_SET(change_event, socket.get_fd(), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
 
     // REGISTER SOCKET FD TO KERNEL QUEUE
     if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
@@ -78,7 +78,7 @@ int main()
             // If the new event's file descriptor is the same as the listening
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
-            else if (event_fd == socket.getFd())
+            else if (event_fd == socket.get_fd())
             {
                 printf("--- a client has connected ---\n");
 				// Incoming socket connection on the listening socket.

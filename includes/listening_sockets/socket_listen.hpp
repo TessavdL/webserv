@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 16:44:37 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:44:39 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/23 13:04:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ class SocketListen {
 		SocketListen(int port_number);
 		~SocketListen();
 		SocketListen(SocketListen const& other);
-		SocketListen&		operator=(SocketListen const& other);
-		void				create_socket(void);
-		void				make_address_reusable(void);
-		void				define_socket_address(void);
-		void				bind_socket_to_address(void);
-		void				listen_on_socket(void);
-		struct sockaddr_in	getAddr(void) const;
-		int					getFd(void) const;
-		int					getPortNumber(void) const;
+		SocketListen&				operator=(SocketListen const& other);
+		void						create_socket(void);
+		void						define_socket_address(void);
+		void						bind_socket_to_address(void);
+		void						listen_on_socket(void);
+		int							get_port_number_from_socket_fd(void) const;
+		struct sockaddr_in const&	get_addr(void) const;
+		int const&					get_fd(void) const;
+		int	const&					get_port_number(void) const;
 	private:
 		struct sockaddr_in	_addr;
 		int					_fd;
