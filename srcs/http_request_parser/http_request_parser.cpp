@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/23 16:31:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/24 18:30:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	check_scheme(std::string const& scheme_str, std::string& scheme, siz
 	std::pair<std::string, std::string>	p = split_string_in_half(scheme_str.substr(index), "://");
 	scheme = p.first;
 	if (!scheme.empty()) {
-		std::cout << "SCHEME = " << scheme << std::endl;
+		std::transform(scheme.begin(), scheme.end(), scheme.begin(), ::tolower);
+		// std::cout << "SCHEME = " << scheme << std::endl;
 		index += scheme.length() + 3;
 	}
 }
@@ -97,19 +98,16 @@ static void	check_authority(std::string const& authority_str, Authority& authori
 		authority.host = p3.first;
 		// if (!authority.host.empty()) {
 		// 	// std::cout << "AUTHORITY HOST = " << authority.host << std::endl;
-		// 	index += (authority.host.length() + 1);
 		// }
 		// else {
 		// 	authority.host = str2;
 		// 	if (!authority.host.empty()) {
 		// 		// std::cout << "AUTHORITY HOST = " << authority.host << std::endl;
-		// 		index += (authority.host.length() + 1);
 		// 	}
 		// }
 		port = p3.second;
 		if (!port.empty()) {
 			authority.port = stoi(port);
-			// index += (port.length() + 1);
 			// std::cout << "AUTHORITY PORT = " << authority.port << std::endl;
 		}
 		else {

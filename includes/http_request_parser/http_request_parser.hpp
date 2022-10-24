@@ -6,13 +6,14 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:37:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 17:13:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/24 18:27:35 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTP_REQUEST_PARSER_HPP
 # define HTTP_REQUEST_PARSER_HPP
 
+# include <algorithm>
 # include <string>
 # include <vector>
 # include <map>

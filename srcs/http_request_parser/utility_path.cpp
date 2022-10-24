@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:29:58 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/18 17:42:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/24 18:15:07 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ bool	is_directory(std::string const& str) {
 	}
 	return (false);
 }
+
+std::string	remove_consequetive_characters(std::string const& str, char c)
+{
+	std::string	ret;
+
+	for (size_t i = 0; i < str.length(); i++) {
+		if (str[i] == c && str[i + 1] && str[i + 1] == c) {}
+		else {
+			ret.push_back(str[i]);
+		}
+	}
+	return (ret);
+}
+
 
 std::vector<std::string>	get_directory_file_list(std::string const& filename) {
 	DIR							*dir;
