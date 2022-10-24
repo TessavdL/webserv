@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 17:13:51 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/23 16:31:44 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ Method	HTTPRequestParser::check_method(std::string const& str) {
 	return (INVALID);
 }
 
+// 4.2.3. HTTP NORMALIZATION AND COMPARISON
+// The scheme and host are case-insensitive and normally provided in lowercase; all other components are compared in a case-sensitive manner.
+
 static void	check_scheme(std::string const& scheme_str, std::string& scheme, size_t& index) {
 	std::pair<std::string, std::string>	p = split_string_in_half(scheme_str.substr(index), "://");
 	scheme = p.first;
@@ -64,6 +67,10 @@ static void	check_scheme(std::string const& scheme_str, std::string& scheme, siz
 	}
 }
 
+// 4.2.3. HTTP NORMALIZATION AND COMPARISON
+// The scheme and host are case-insensitive and normally provided in lowercase; all other components are compared in a case-sensitive manner.
+// 4.2.4 Depecrication of userinfo in HTTP URI's
+// a recipient SHOULD parse for userinfo and treat its presence as an error; it is likely being used to obscure the authority for the sake of phishing attacks.
 static void	check_authority(std::string const& authority_str, Authority& authority, size_t& index) {
 	size_t								pos = authority_str.substr(index).find("/");
 
@@ -112,6 +119,8 @@ static void	check_authority(std::string const& authority_str, Authority& authori
 	}
 }
 
+// HTTP 4.2.3. Normalization and comparison
+// When not being used as the target of an OPTIONS request, an empty path component is equivalent to an absolute path of "/", so the normal form is to provide a path of "/" instead.
 // Should think of a way to handle multiple "//" after each other
 static void	check_path(std::string const& path_str, Path& path, size_t& index) {
 	std::string							substring = path_str.substr(index);

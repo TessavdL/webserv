@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:19:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/18 15:46:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/19 17:41:08 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Response {
 		Response&	operator=(Response const& other);
 		void				set_status_line();
 		void				set_headers();
+		void				set_body(void);
 		void				set_full_response();
 		std::string const&	get_full_response() const;
 		std::string const&	get_status_line() const;
