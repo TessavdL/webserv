@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   kqueue_server.cpp                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/24 17:10:51 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <netinet/in.h>
@@ -8,10 +20,7 @@
 #include <iostream>
 #include <errno.h>
 
-#include "../includes/listening_sockets/socket_listen.hpp"
-#include "../includes/http_request_parser/http_request_lexer.hpp"
-#include "../includes/http_request_parser/http_request_parser.hpp"
-#include "../includes/http_response/response.hpp"
+#include "../includes/webserv.hpp"
 
 #define BUFF_SIZE 4096
 
@@ -21,14 +30,27 @@ int	error_and_exit(const char* error_message)
 	exit(EXIT_FAILURE);
 }
 
-int kqueue_server()
+int kqueue_server(vector<Server>	server)
 {
-    // std::map<int/*socket_fd*/, class Server>;
+	map<const int/*port*/, vector<Server> >	socket_and_config;
 	SocketListen		socket(9002);
 	int					client_len;
     struct sockaddr_in	client_addr;
 
     client_len = sizeof(client_addr);
+
+	cout << server.size() << endl;
+
+	for (vector<Server>::iterator it = server.begin(); it != server.end(); ++it) {
+		cout << "size of host and port " << (*it).get_host_and_port().size() << endl;
+		for (vector<pair<string, int> >::const_iterator it2 = (*it).get_host_and_port().begin(); it2 != (*it).get_host_and_port().end(); ++it2) {
+			cout << "HERE" << endl;
+			socket_and_config[(*it2).second] = vector<Server>();
+		}
+	}
+	for (map<const int, vector<Server> >::iterator it = socket_and_config.begin(); it != socket_and_config.end(); ++it) {
+		(*it).second.push_back
+	}
 
 	//	CREATE KERNEL QUEUE
     int	kq = kqueue();
