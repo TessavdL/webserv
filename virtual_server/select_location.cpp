@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 14:20:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/24 17:45:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/24 17:53:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ size_t	longest_match(std::string str1, std::string str2) {
 size_t	select_location(std::string uri_path, std::vector<t_location> v) {
 	size_t		l = 0;
 	size_t		max = 0;
-	size_t		virtual_server_index = 0;
+	size_t		location_index = 0;
 
 	for (size_t i = 0; i < v.size(); i++) {
 		if (v[i].exact_match == true) {
@@ -42,10 +42,10 @@ size_t	select_location(std::string uri_path, std::vector<t_location> v) {
 		l = longest_match(uri_path, v[i].path);
 		if (max < l) {
 			max = l;
-			virtual_server_index = i;
+			location_index = i;
 		}
 	}
-	return (virtual_server_index);
+	return (location_index);
 }
 
 int main(int argc, char **argv) {
