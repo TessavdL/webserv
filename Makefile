@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/10/18 15:47:14 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/10/18 17:38:17 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,12 @@ SRC_DIR		=		srcs
 
 SRC_FILES	=		fatal_exception.cpp \
 					kqueue_server.cpp \
+					main.cpp \
 					config_parser/exception_config_parser.cpp \
 					config_parser/lexer.cpp \
 					config_parser/lexer_utils.cpp \
 					config_parser/location_block.cpp \
-					config_parser/server_block.cpp \
+					config_parser/server.cpp \
 					config_parser/server_config.cpp \
 					listening_sockets/socket_listen.cpp \
 					http_request_parser/exception_http_request_parser.cpp \

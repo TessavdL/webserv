@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   server_block.cpp                                   :+:    :+:            */
+/*   server.cpp                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/05 18:45:26 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:41:27 by jelvan-d      ########   odam.nl         */
+/*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/10/18 16:44:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/config_parser/server_block.hpp"
+#include "../../includes/config_parser/server.hpp"
 
-ServerBlock::ServerBlock(void) {
+Server::Server(void) {
 	return ;
 }
 
-ServerBlock::ServerBlock(Lexer::t_server server) {
+Server::Server(Lexer::t_server server) {
 	this->_root = "html";
 	this->_client_max_body_size = "1m";
 	this->_autoindex = "off";
@@ -30,12 +30,12 @@ ServerBlock::ServerBlock(Lexer::t_server server) {
 	}
 }
 
-ServerBlock::ServerBlock(ServerBlock const& other) {
+Server::Server(Server const& other) {
 	*this = other;
 	return ;
 }
 
-ServerBlock	&ServerBlock::operator=(ServerBlock	const& rhs) {
+Server	&Server::operator=(Server	const& rhs) {
 	if (this != &rhs)
 	{
 		this->_server_name = rhs._server_name;
@@ -46,15 +46,16 @@ ServerBlock	&ServerBlock::operator=(ServerBlock	const& rhs) {
 		this->_error_page = rhs._error_page;
 		this->_autoindex = rhs._autoindex;
 		this->_location_blocks = rhs._location_blocks;
+		this->_sockets = rhs._sockets;
 	}
 	return (*this);
 }
 
-ServerBlock::~ServerBlock(void) {
+Server::~Server(void) {
 	return ;
 }
 
-void			ServerBlock::get_directives(Lexer::t_server server) {
+void			Server::get_directives(Lexer::t_server server) {
 	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
@@ -90,7 +91,7 @@ void			ServerBlock::get_directives(Lexer::t_server server) {
 	}
 }
 
-void			ServerBlock::error_check_listen(vector<string> const& listen) {
+void			Server::error_check_listen(vector<string> const& listen) {
 	pair<string, string> hostname_port_split;
 	
 	for (vector<string>::const_iterator it = listen.begin(); it != listen.end(); ++it) {
@@ -117,19 +118,25 @@ void			ServerBlock::error_check_listen(vector<string> const& listen) {
 	}
 }
 
-vector<string> const&			ServerBlock::get_server_name() const {
+void			Server::set_listening_sockets(void) {
+	for (vector<pair<string, int > >::iterator it = this->_host_and_port.begin(); it != this->_host_and_port.end(); ++it) {
+
+	}
+}
+
+vector<string> const&			Server::get_server_name() const {
 	return (this->_server_name);
 }
 
-vector<string> const&			ServerBlock::get_listen() const {
+vector<string> const&			Server::get_listen() const {
 	return (this->_listen);
 }
 
-vector<LocationBlock> const&	ServerBlock::get_location_block() const {
+vector<LocationBlock> const&	Server::get_location_block() const {
 	return (this->_location_blocks);
 }
 
-std::ostream&	operator<<(std::ostream& os, ServerBlock const& server_block) {
+std::ostream&	operator<<(std::ostream& os, Server const& server_block) {
 	int	location_block_number(1);
 
 	os << "server block:" << endl << endl;
