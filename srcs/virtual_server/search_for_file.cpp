@@ -18,6 +18,15 @@
 // 	buf[BUFFERSIZE] = '\0';
 // }
 
+bool	is_file_in_directory_entry(const char *file, dirent** namelist) {
+	for (size_t i = 0; namelist[i]; i++) {
+		if (!strcmp(file, namelist[i]->d_name)) {
+			return (true);
+		}
+	}
+	return (false);
+}
+
 std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::string const& directory) {
 	std::string		file;
 	struct dirent	**namelist;
@@ -28,12 +37,10 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 		perror("scandir");
 		exit(EXIT_FAILURE);
 	}
-
-	for (int i = 0; i < n; i++) {
-		std::vector<std::string>::const_iterator it = std::find(v.begin(), v.end(), std::string(namelist[i]->d_name));
-		if (it != v.end()) {
-			std::cout << namelist[i]->d_name << " is present in " << directory << std::endl;
-			file = std::string(namelist[i]->d_name);
+	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
+		if (is_file_in_directory_entry((*it).c_str(), namelist)) {
+			file = *it;
+			std::cout << file << std::endl;
 			break ;
 		}
 	}
@@ -46,7 +53,7 @@ int	main(int argc, char **argv) {
 	for (int i = 1; i < argc; i++) {
 		v.push_back(std::string(argv[i]));
 	}
-		std::string	index = search_for_file_in_dir(v, std::string("test_index"));
+	std::string	index = search_for_file_in_dir(v, std::string("test_index"));
 		// if (!index.empty()) {
 		// 	std::string	file_contents = read_file(index);
 		// 	if (!file_contents.empty()) {
