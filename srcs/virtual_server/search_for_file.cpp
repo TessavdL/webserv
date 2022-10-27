@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <algorithm>
 
 #define BUFFERSIZE 1024
 
@@ -27,12 +28,14 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 		perror("scandir");
 		exit(EXIT_FAILURE);
 	}
-	std::cout << "result from scandir = " << n << std::endl;
+
 	for (int i = 0; i < n; i++) {
-		std::cout << namelist[i]->d_name << std::endl;
-	}
-	for (size_t i = 0; i < v.size(); i++) {
-		std::cout << v[i] << std::endl;
+		std::vector<std::string>::const_iterator it = std::find(v.begin(), v.end(), std::string(namelist[i]->d_name));
+		if (it != v.end()) {
+			std::cout << namelist[i]->d_name << " is present in " << directory << std::endl;
+			file = std::string(namelist[i]->d_name);
+			break ;
+		}
 	}
 	return (file);
 }
