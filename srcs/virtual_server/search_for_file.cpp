@@ -19,6 +19,7 @@ bool	is_file_in_directory_entry(const char *file, dirent** namelist) {
 	return (false);
 }
 
+// should probably not exit if scandir fails...
 std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::string const& directory) {
 	std::string		file;
 	struct dirent	**namelist;
@@ -39,6 +40,9 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 	return (file);
 }
 
+// remove testing main when we start using it later
+// use when path is a directory
+// question: does it has to be an html file? should we check for extension?
 int	main(int argc, char **argv) {
 	std::vector<std::string>	v;
 
