@@ -6,16 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:29:58 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/27 17:05:43 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/27 18:10:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string>
-#include <vector>
-#include <iostream>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#include "../../includes/http_request_parser/utility_path.hpp"
 
 bool	is_absolute_path(const char* str) {
 	if (str[0] && str[0] == '/') {
@@ -48,19 +43,6 @@ bool	is_regular_file_stat(const char* str) {
 		return (false);
 	}
 	return (S_ISREG(stat_buf.st_mode));
-}
-
-std::string	remove_consequetive_characters(std::string const& str, char c)
-{
-	std::string	ret;
-
-	for (size_t i = 0; i < str.length(); i++) {
-		if (str[i] == c && str[i + 1] && str[i + 1] == c) {}
-		else {
-			ret.push_back(str[i]);
-		}
-	}
-	return (ret);
 }
 
 std::vector<std::string>	get_directory_file_list(std::string const& filename) {
@@ -99,10 +81,23 @@ bool	has_execute_permission(const char* str) {
 	return (true);
 }
 
-std::string		root_plus_uri_path(std::string const& uri_path, std::string const& root) {
+std::string	remove_consequetive_characters(std::string const& str, char c) {
+	std::string	ret;
+
+	for (size_t i = 0; i < str.length(); i++) {
+		if (str[i] == c && str[i + 1] && str[i + 1] == c) {}
+		else {
+			ret.push_back(str[i]);
+		}
+	}
+	return (ret);
+}
+
+std::string	root_plus_uri_path(std::string const& uri_path, std::string const& root) {
 	return(remove_consequetive_characters(root + uri_path,'/'));
 }
 
+// remove once functions from utility path are going to be used
 int main(void) {
 	std::cout << std::boolalpha << "/directory/file.html" << " " << is_absolute_path("/directory/file.html") << std::endl;
 	std::cout << std::boolalpha << "directory/file.html" << " " << is_absolute_path("directory/file.html") << std::endl;
