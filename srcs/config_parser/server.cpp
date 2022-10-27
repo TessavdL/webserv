@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/24 17:09:44 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:20:47 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ Server	&Server::operator=(Server	const& rhs) {
 		this->_autoindex = rhs._autoindex;
 		this->_location_blocks = rhs._location_blocks;
 		this->_host_and_port = rhs._host_and_port;
-		this->_socket_fds = rhs._socket_fds;
 	}
 	return (*this);
 }
@@ -119,12 +118,6 @@ void			Server::error_check_listen(vector<string> const& listen) {
 	}
 }
 
-void			Server::set_listening_sockets(void) {
-	for (vector<pair<string, int > >::iterator it = this->_host_and_port.begin(); it != this->_host_and_port.end(); ++it) {
-		this->_socket_fds.push_back(SocketListen((*it).second));
-	}
-}
-
 vector<string> const&				Server::get_server_name() const {
 	return (this->_server_name);
 }
@@ -139,10 +132,6 @@ vector<pair<string, int> > const&	Server::get_host_and_port() const {
 
 vector<LocationBlock> const&		Server::get_location_block() const {
 	return (this->_location_blocks);
-}
-
-vector<SocketListen> const&			Server::get_sockets() const {
-	return (this->_socket_fds);
 }
 
 std::ostream&	operator<<(std::ostream& os, Server const& server_block) {
