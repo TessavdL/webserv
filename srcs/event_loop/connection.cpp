@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:08:57 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 17:56:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Connection::Connection(Connection const& other) {
 
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
-		this->_connection_fd = other._connection_fd;
+		// this->_connection_fd = other._connection_fd;
 		this->_virtual_servers = other._virtual_servers;
 		this->_request = other._request;
 		this->_response = other._response;
@@ -38,7 +38,7 @@ Connection&	Connection::operator=(Connection const& other) {
 // 	return (this->_connection_fd);
 // }
 
-std::map<int, std::vector<Server> > const&	Connection::get_virtual_servers(void) const {
+std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void) const {
 	return (this->_virtual_servers);
 }
 

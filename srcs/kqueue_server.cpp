@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 16:03:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 17:57:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,13 +160,11 @@ int kqueue_server(vector<Server>	server)
 		// LOOP OVER NEW_EVENTS
         for (int i = 0; new_events > i; i++)
         {
-            int event_fd = event[i].ident;
-
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
             if (event[i].flags & EV_EOF) {
                 printf("--- a client has disconnected ---\n");
-                close(event_fd);
+                close(event[i].ident);
 				// do not close socket_connection_fd, is bad file descriptor
             }
 
@@ -192,7 +190,7 @@ int kqueue_server(vector<Server>	server)
 				cout << "--- amount of bytes in data = " << event[i].data << "---" << endl;
 	
 				while (bytes_read > 0) {
-					bytes_read = recv(event_fd, buf, sizeof(buf), 0);
+					bytes_read = recv(event[i].ident, buf, sizeof(buf), 0);
 					if (bytes_read == -1) {
 						break ;
 					}
@@ -214,10 +212,6 @@ int kqueue_server(vector<Server>	server)
 					cout << "--- an error occured, not all send by the socket was received ---" << endl;
 				}
 				add_event_to_kqueue(kq, client.first, EVFILT_WRITE);
-				// EV_SET(&change_event, socket_connection_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
-				// if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-				// 	return (error_and_exit("An error occured in kevent() when registering write event to the queue\n"));
-				// }
 				printf("--- done reading ---\n");
 			}
 			else if (event[i].filter == EVFILT_WRITE) {
@@ -226,9 +220,9 @@ int kqueue_server(vector<Server>	server)
 				const char *buf = response.get_full_response().c_str();
 				cout << endl << response << endl;
 
-				send(event_fd, buf, strlen(buf), 0);
+				send(event[i].ident, buf, strlen(buf), 0);
 				printf("--- done writing to client socket\n");
-				close(event_fd);
+				close(event[i].ident);
 				printf("--- bounce bye ---\n\n");
 			}
 		}
