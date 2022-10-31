@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 18:19:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 18:21:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ int kqueue_server(vector<Server>	server)
             if (event[i].flags & EV_EOF) {
                 printf("--- a client has disconnected ---\n");
                 close(event[i].ident);
+				connections.erase(event[i].ident);
 				// do not close socket_connection_fd, is bad file descriptor
             }
 

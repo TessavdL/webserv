@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 15:53:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 18:24:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 
 class Connection {
 	public:
+		typedef struct	s_request_line {
+
+		}				t_request_line;
+		typedef struct	s_request {
+			
+		}				t_request;
 		Connection();
 		~Connection();
 		Connection(Connection const& other);
