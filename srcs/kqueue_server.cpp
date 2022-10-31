@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 17:57:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 18:15:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include "../includes/event_loop/connection.hpp"
 
 #define BUFF_SIZE 4096
+#define MAX_EVENTS 100
 
 // bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
 // {
@@ -111,10 +112,6 @@ int kqueue_server(vector<Server>	server)
 	map<int/*socket_fds*/, vector<Server> >	sockets_with_config;
 	map<int, Connection>					connections;
 
-	int										client_len;
-    struct sockaddr_in						client_addr;
-    client_len = sizeof(client_addr);
-
 	create_sockets_with_config(server, sockets_with_config);
 
 	//	CREATE KERNEL QUEUE
@@ -145,20 +142,18 @@ int kqueue_server(vector<Server>	server)
     // }
 
     // EVENT LOOP
-	// int				socket_connection_fd;
-	int				new_events;
-	struct kevent	event[4];
     for (;;)
     {
+		struct kevent	event[MAX_EVENTS];
         // CHECK FOR NEW EVENTS
 		// Do not register new events with the kqueue. Hence the 2nd and 3rd arguments are NULL, 0.
         // Only handle 1 new event per iteration in the loop; 5th argument is 1.
-        new_events = kevent(kq, NULL, 0, event, 1, NULL);
-        if (new_events == -1) {
+        int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
+        if (n_events == -1) {
 			return (error_and_exit("An error occured in kevent() while checking for new events.\n"));
         }
-		// LOOP OVER NEW_EVENTS
-        for (int i = 0; new_events > i; i++)
+		// LOOP OVER n_events
+        for (int i = 0; n_events > i; i++)
         {
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
@@ -181,10 +176,10 @@ int kqueue_server(vector<Server>	server)
 			else if (event[i].filter == EVFILT_READ)
 			{
 				pair<int, Connection>	client = identify_client(event[i].ident, connections);
-				HTTPRequestLexer	lexer;
-				long				total_amount_of_bytes_read = 0;
-				int					bytes_read = 1;
-				char				buf[BUFF_SIZE];
+				HTTPRequestLexer		lexer;
+				long					total_amount_of_bytes_read = 0;
+				int						bytes_read = 1;
+				char					buf[BUFF_SIZE];
 
 				cout << "--- reading from client socket ---" << endl;
 				cout << "--- amount of bytes in data = " << event[i].data << "---" << endl;
