@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/18 16:44:01 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:20:47 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ Server	&Server::operator=(Server	const& rhs) {
 		this->_error_page = rhs._error_page;
 		this->_autoindex = rhs._autoindex;
 		this->_location_blocks = rhs._location_blocks;
-		this->_sockets = rhs._sockets;
+		this->_host_and_port = rhs._host_and_port;
 	}
 	return (*this);
 }
@@ -118,21 +118,19 @@ void			Server::error_check_listen(vector<string> const& listen) {
 	}
 }
 
-void			Server::set_listening_sockets(void) {
-	for (vector<pair<string, int > >::iterator it = this->_host_and_port.begin(); it != this->_host_and_port.end(); ++it) {
-
-	}
-}
-
-vector<string> const&			Server::get_server_name() const {
+vector<string> const&				Server::get_server_name() const {
 	return (this->_server_name);
 }
 
-vector<string> const&			Server::get_listen() const {
+vector<string> const&				Server::get_listen() const {
 	return (this->_listen);
 }
 
-vector<LocationBlock> const&	Server::get_location_block() const {
+vector<pair<string, int> > const&	Server::get_host_and_port() const {
+	return (this->_host_and_port);
+}
+
+vector<LocationBlock> const&		Server::get_location_block() const {
 	return (this->_location_blocks);
 }
 
