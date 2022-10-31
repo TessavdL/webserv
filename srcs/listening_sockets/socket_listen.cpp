@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:03:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/23 13:05:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 14:13:27 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ SocketListen::SocketListen(int port_number) : _port_number(port_number) {
 }
 
 SocketListen::~SocketListen(void) {
-	close(this->_fd);
+	// close(this->_fd);
 }
 
 SocketListen::SocketListen(SocketListen const& other) {

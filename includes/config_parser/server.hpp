@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:10 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/18 16:38:48 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/24 17:11:09 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ class Server : public ServerConfig {
 		vector<string>						_listen;
 		vector<pair<string, int> >			_host_and_port;
 		vector<LocationBlock>				_location_blocks;
-		vector<SocketListen>				_sockets;
 	public:
 		Server();
 		Server(Lexer::t_server server);
@@ -33,10 +32,10 @@ class Server : public ServerConfig {
 		virtual ~Server();
 		void	get_directives(Lexer::t_server server);
 		void	error_check_listen(vector<string> const& listen);
-		void	set_listening_sockets();
-		vector<string> const&			get_server_name() const;
-		vector<string> const&			get_listen() const;
-		vector<LocationBlock> const&	get_location_block() const;
+		vector<string> const&				get_server_name() const;
+		vector<string> const&				get_listen() const;
+		vector<pair<string, int> > const&	get_host_and_port() const;
+		vector<LocationBlock> const&		get_location_block() const;
 };
 
 std::ostream&	operator<<(std::ostream& os, Server const& server_block);
