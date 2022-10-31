@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 18:15:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 18:19:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,6 @@ int kqueue_server(vector<Server>	server)
     // (when there is data to be read on the socket), and perform the following
     // actions on this kevent: EV_ADD and EV_ENABLE (add the event to the kqueue 
     // and enable it).
-    // struct kevent	change_event;
-    // for (map<int, vector<Server> >::iterator it = sockets_with_config.begin(); it != sockets_with_config.end(); ++it) {
-	// 	EV_SET(&change_event, (*it).first, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
-	// 	if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-	// 		return (error_and_exit("An error occured in kevent() while trying to register the kernel event to the queue.\n"));
-	// 	}
-	// }
 	for (map<int, vector<Server> >::iterator it = sockets_with_config.begin(); it != sockets_with_config.end(); it++) {
 		add_event_to_kqueue(kq, (*it).first, EVFILT_READ);
 	}
