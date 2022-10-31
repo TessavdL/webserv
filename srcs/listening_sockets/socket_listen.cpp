@@ -6,11 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:03:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/27 17:25:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/31 14:13:27 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/listening_sockets/socket_listen.hpp"
+
+#include <iostream>
 
 SocketListen::SocketListen(int port_number) : _port_number(port_number) {
 	this->create_socket();
@@ -54,36 +56,46 @@ void				SocketListen::create_socket(void) {
 	}
 }
 
-void				SocketListen::define_socket_address(void) {
+void	SocketListen::define_socket_address(void) {
 	bzero((char *)&this->_addr, sizeof(this->_addr));
 	this->_addr.sin_family = AF_INET;
 	this->_addr.sin_addr.s_addr = INADDR_ANY;
 	this->_addr.sin_port = htons(this->_port_number);
 }
 
-void				SocketListen::bind_socket_to_address(void) {
+void	SocketListen::bind_socket_to_address(void) {
 	int	status = bind(this->_fd, (struct sockaddr *)&this->_addr, sizeof(this->_addr));
 	if (status == -1) {
 		throw (FatalException("System call to bind in SocketListen::bind_socket_to_address()\n"));
 	}
 }
 
-void				SocketListen::listen_on_socket(void) {
+void	SocketListen::listen_on_socket(void) {
 	int	status = listen(this->_fd, 5);
 	if (status == -1) {
 		throw (FatalException("System call to listen in SocketListen::listen_on_socket()\n"));
 	}
+	get_port_number_from_socket_fd();
 }
 
-struct sockaddr_in	SocketListen::getAddr(void) const {
+int	SocketListen::get_port_number_from_socket_fd(void) const {
+	struct sockaddr_in	local_sin;
+	socklen_t			local_sin_len = sizeof(local_sin);
+	
+	if (getsockname(this->_fd, (struct sockaddr *)&local_sin, &local_sin_len) != -1)
+		std::cout << "Socket is listening on port " << ntohs(local_sin.sin_port) << std::endl;
+	return (ntohs(local_sin.sin_port));
+}
+
+struct sockaddr_in const&	SocketListen::get_addr(void) const {
 	return (this->_addr);
 }
 
-int					SocketListen::getFd(void) const {
+int const&	SocketListen::get_fd(void) const {
 	return (this->_fd);
 }
 
-int					SocketListen::getPortNumber(void) const {
+int const&	SocketListen::get_port_number(void) const {
 	return (this->_port_number);
 }
 
