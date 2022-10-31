@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:13:52 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/31 14:15:32 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> >
 	}
 	for (map<int, vector<Server> >::iterator it = ports_with_config.begin(); it != ports_with_config.end(); ++it) {
 		SocketListen	socket((*it).first);
-		sockets_with_config[socket.getFd()] = (*it).second;
+		sockets_with_config[socket.get_fd()] = (*it).second;
 	}
 }
 
