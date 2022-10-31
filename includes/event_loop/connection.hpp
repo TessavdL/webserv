@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:09:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 15:53:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Connection {
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
 		// int const&									get_connection_fd() const;
-		std::map<int, std::vector<Server> > const&	get_virtual_servers() const;
+		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
 		HTTPRequestLexer const&						get_request() const;
 		Response const&								get_response() const;
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);

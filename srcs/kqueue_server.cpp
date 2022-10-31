@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 15:06:24 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/31 16:03:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,26 @@
 #include <errno.h>
 
 #include "../includes/webserv.hpp"
+#include "../includes/event_loop/connection.hpp"
 
 #define BUFF_SIZE 4096
 
-bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
+// bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
+// {
+// 	cout << "event fd = " << event_fd << endl;
+// 	map<int, vector<Server> >::iterator it;
+// 	it = sockets_with_config.find(event_fd);
+// 	if (it != sockets_with_config.end())
+// 		return (true);
+// 	return (false);
+// }
+
+int	error_and_exit(const char* error_message)
 {
-	cout << "event fd = " << event_fd << endl;
-	map<int, vector<Server> >::iterator it;
-	it = sockets_with_config.find(event_fd);
-	if (it != sockets_with_config.end())
-		return (true);
-	return (false);
+	perror(error_message);
+	exit(EXIT_FAILURE);
 }
+
 
 void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> > &sockets_with_config)
 {
@@ -57,18 +65,54 @@ void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> >
 	}
 }
 
-int	error_and_exit(const char* error_message)
-{
-	perror(error_message);
-	exit(EXIT_FAILURE);
+bool	is_new_connection(int event_identifier, map<int, vector<Server> > sockets_with_config) {
+	map<int, vector<Server> >::const_iterator it = sockets_with_config.find(event_identifier);
+	if (it != sockets_with_config.end()) {
+		return (true);
+	}
+	return (false);
+}
+
+int	accept_connection(int event_fd) {
+	struct sockaddr_in	client_addr;
+	socklen_t			client_len = sizeof(client_addr);
+	int connection_fd = accept(event_fd, (struct sockaddr*)&client_addr, &client_len);
+
+	if (connection_fd == -1) {
+		error_and_exit("accept");
+	}
+	return (connection_fd);
+}
+
+void	add_connection(int event_fd, int connection_fd, map<int, Connection>& connections, map<int, vector<Server> > virtual_servers) {
+	pair<int, Connection>	new_connection;
+	map<int, vector<Server> >::const_iterator it = virtual_servers.find(event_fd);
+	new_connection.first = connection_fd;
+	new_connection.second.set_virtual_servers(*it);
+	connections.insert(new_connection);
+}
+
+void	add_event_to_kqueue(int kq, int event_fd, int event_filter) {
+	struct kevent	monitor_event;
+
+	EV_SET(&monitor_event, event_fd, event_filter, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
+		error_and_exit("kevent");
+	}
+}
+
+pair<int, Connection>	identify_client(int event_identifier, map<int, Connection> connections) {
+	map<int, Connection>::iterator it = connections.find(event_identifier);
+	return (*it);
 }
 
 int kqueue_server(vector<Server>	server)
 {
 	map<int/*socket_fds*/, vector<Server> >	sockets_with_config;
-	int					client_len;
-    struct sockaddr_in	client_addr;
+	map<int, Connection>					connections;
 
+	int										client_len;
+    struct sockaddr_in						client_addr;
     client_len = sizeof(client_addr);
 
 	create_sockets_with_config(server, sockets_with_config);
@@ -84,12 +128,15 @@ int kqueue_server(vector<Server>	server)
     // (when there is data to be read on the socket), and perform the following
     // actions on this kevent: EV_ADD and EV_ENABLE (add the event to the kqueue 
     // and enable it).
-    struct kevent	change_event;
-    for (map<int, vector<Server> >::iterator it = sockets_with_config.begin(); it != sockets_with_config.end(); ++it) {
-		EV_SET(&change_event, (*it).first, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
-		if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-			return (error_and_exit("An error occured in kevent() while trying to register the kernel event to the queue.\n"));
-		}
+    // struct kevent	change_event;
+    // for (map<int, vector<Server> >::iterator it = sockets_with_config.begin(); it != sockets_with_config.end(); ++it) {
+	// 	EV_SET(&change_event, (*it).first, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
+	// 	if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
+	// 		return (error_and_exit("An error occured in kevent() while trying to register the kernel event to the queue.\n"));
+	// 	}
+	// }
+	for (map<int, vector<Server> >::iterator it = sockets_with_config.begin(); it != sockets_with_config.end(); it++) {
+		add_event_to_kqueue(kq, (*it).first, EVFILT_READ);
 	}
 
     // REGISTER SOCKET FD TO KERNEL QUEUE
@@ -98,7 +145,7 @@ int kqueue_server(vector<Server>	server)
     // }
 
     // EVENT LOOP
-	int				socket_connection_fd;
+	// int				socket_connection_fd;
 	int				new_events;
 	struct kevent	event[4];
     for (;;)
@@ -126,36 +173,23 @@ int kqueue_server(vector<Server>	server)
             // If the new event's file descriptor is the same as the listening
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
-            else if (match_event(event_fd, sockets_with_config) == true)
-            {
-                printf("--- a client has connected ---\n");
-				// Incoming socket connection on the listening socket.
-				// Create a new socket for the actual connection to client.
-				socket_connection_fd = accept(event_fd, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
-				if (socket_connection_fd == -1) {
-					return (error_and_exit("An error occured in accept()\n"));
-				}
-
-				// Put this new socket connection also as a 'filter' event
-				// to watch in kqueue, so we can now watch for events on this
-				// new socket.
-				EV_SET(&change_event, socket_connection_fd, EVFILT_READ, EV_ADD, 0, 0, NULL);
-				if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-                    return (error_and_exit("An error occured in kevent() when registering connected socket to the queue\n"));
-				}
-				printf("--- event was added to queue ---\n");
+			else if (is_new_connection(event[i].ident, sockets_with_config) == true) {
+				int connection_fd = accept_connection(event[i].ident);
+				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
+				add_connection(event[i].ident, connection_fd, connections, sockets_with_config);
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
 			else if (event[i].filter == EVFILT_READ)
 			{
+				pair<int, Connection>	client = identify_client(event[i].ident, connections);
 				HTTPRequestLexer	lexer;
 				long				total_amount_of_bytes_read = 0;
 				int					bytes_read = 1;
 				char				buf[BUFF_SIZE];
 
-				std::cout << "--- reading from client socket ---" << std::endl;
-				std::cout << "--- amount of bytes in data = " << event[i].data << "---" << std::endl;
+				cout << "--- reading from client socket ---" << endl;
+				cout << "--- amount of bytes in data = " << event[i].data << "---" << endl;
 	
 				while (bytes_read > 0) {
 					bytes_read = recv(event_fd, buf, sizeof(buf), 0);
@@ -163,34 +197,34 @@ int kqueue_server(vector<Server>	server)
 						break ;
 					}
 					if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
-						std::cout << "--- finished reading from socket ---" << std::endl;
+						cout << "--- finished reading from socket ---" << endl;
 					}
-					lexer.process_request(std::string(buf));
+					lexer.process_request(string(buf));
 					if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
-						std::cout << "--- request is invalid ---" << std::endl;
+						cout << "--- request is invalid ---" << endl;
 						break ;
 					}
 					total_amount_of_bytes_read += bytes_read;
 				}
 
 				if (total_amount_of_bytes_read == event[i].data) {
-					std::cout << "--- all data send by the socket was received ---" << std::endl;
+					cout << "--- all data send by the socket was received ---" << endl;
 				}
 				else {
-					std::cout << "--- an error occured, not all send by the socket was received ---" << std::endl;
+					cout << "--- an error occured, not all send by the socket was received ---" << endl;
 				}
-				
-				EV_SET(&change_event, socket_connection_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
-				if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-					return (error_and_exit("An error occured in kevent() when registering write event to the queue\n"));
-				}
+				add_event_to_kqueue(kq, client.first, EVFILT_WRITE);
+				// EV_SET(&change_event, socket_connection_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
+				// if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
+				// 	return (error_and_exit("An error occured in kevent() when registering write event to the queue\n"));
+				// }
 				printf("--- done reading ---\n");
 			}
 			else if (event[i].filter == EVFILT_WRITE) {
 				printf("--- writing to client socket ---\n");
 				Response	response;
 				const char *buf = response.get_full_response().c_str();
-				std::cout << std::endl << response << std::endl;
+				cout << endl << response << endl;
 
 				send(event_fd, buf, strlen(buf), 0);
 				printf("--- done writing to client socket\n");
