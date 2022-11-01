@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 18:24:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 15:01:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@
 
 class Connection {
 	public:
-		typedef struct	s_request_line {
-
-		}				t_request_line;
-		typedef struct	s_request {
-			
-		}				t_request;
+		typedef struct					s_request_line {
+			std::string					method;
+			std::string					uri;
+			std::string					protocol;
+		}								t_request_line;
+		typedef struct					s_request {
+			t_request_line				request_line;
+			std::vector<std::string>	headers;
+			std::string					body;
+		}								t_request;
 		Connection();
 		~Connection();
 		Connection(Connection const& other);
