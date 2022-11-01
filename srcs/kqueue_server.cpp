@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 18:21:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 15:08:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,20 @@ void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> >
 		SocketListen	socket((*it).first);
 		sockets_with_config[socket.get_fd()] = (*it).second;
 	}
+}
+
+bool	is_readable_event(int event_filter) {
+	if (event_filter == EVFILT_READ) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	is_writable_event(int event_filter) {
+	if (event_filter == EVFILT_WRITE) {
+		return (true);
+	}
+	return (false);
 }
 
 bool	is_new_connection(int event_identifier, map<int, vector<Server> > sockets_with_config) {
@@ -167,7 +181,7 @@ int kqueue_server(vector<Server>	server)
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
-			else if (event[i].filter == EVFILT_READ)
+			else if (is_readable_event(event[i].filter) == true)
 			{
 				pair<int, Connection>	client = identify_client(event[i].ident, connections);
 				HTTPRequestLexer		lexer;
@@ -203,7 +217,7 @@ int kqueue_server(vector<Server>	server)
 				add_event_to_kqueue(kq, client.first, EVFILT_WRITE);
 				printf("--- done reading ---\n");
 			}
-			else if (event[i].filter == EVFILT_WRITE) {
+			else if (is_writable_event(event[i].filter)) {
 				printf("--- writing to client socket ---\n");
 				Response	response;
 				const char *buf = response.get_full_response().c_str();
