@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/01 18:16:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 18:24:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 #define MAX_EVENTS 100
 
 #define EVENT_FD event[i].ident
+#define EVENT_FLAGS event[i].flags
+#define EVENT_FILTER event[i].filter
 
 // bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
 // {
@@ -67,14 +69,21 @@ void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> >
 	}
 }
 
-bool	is_readable_event(int event_filter) {
+bool	client_disconnected(u_short event_flag) {
+	if (event_flag & EV_EOF) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	is_readable_event(short event_filter) {
 	if (event_filter == EVFILT_READ) {
 		return (true);
 	}
 	return (false);
 }
 
-bool	is_writable_event(int event_filter) {
+bool	is_writable_event(short event_filter) {
 	if (event_filter == EVFILT_WRITE) {
 		return (true);
 	}
@@ -164,15 +173,6 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	printf("--- done reading ---\n");
 }
 
-int	get_port_number_from_socket_fd(int fd) {
-	struct sockaddr_in	local_sin;
-	socklen_t			local_sin_len = sizeof(local_sin);
-	
-	if (getsockname(fd, (struct sockaddr *)&local_sin, &local_sin_len) != -1)
-		std::cout << "Socket is listening on port " << ntohs(local_sin.sin_port) << std::endl;
-	return (ntohs(local_sin.sin_port));
-}
-
 int kqueue_server(vector<Server>	server)
 {
 	map<int/*socket_fds*/, vector<Server> >	sockets_with_config;
@@ -217,7 +217,7 @@ int kqueue_server(vector<Server>	server)
         {
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
-            if (event[i].flags & EV_EOF) {
+            if (client_disconnected(EVENT_FLAGS)) {
                 printf("--- a client has disconnected ---\n");
                 close(EVENT_FD);
 				connections.erase(EVENT_FD);
@@ -231,18 +231,19 @@ int kqueue_server(vector<Server>	server)
 				int connection_fd = accept_connection(EVENT_FD);
 				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
 				add_connection(EVENT_FD, connection_fd, connections, sockets_with_config);
-				cout << "added " << connection_fd << "to kqueue" << endl;
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
-			else if (is_readable_event(event[i].filter) == true) {
+			else if (is_readable_event(EVENT_FILTER) == true) {
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
 					receive_request_from_client(EVENT_FD, client, event[i].data);
 					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
 				}
 			}
-			else if (is_writable_event(event[i].filter) == true) {
+
+			// READY TO WRITE TO CLIENT SOCKET
+			else if (is_writable_event(EVENT_FILTER) == true) {
 				printf("--- writing to client socket ---\n");
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
