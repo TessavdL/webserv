@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/01 15:08:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 15:22:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	error_and_exit(const char* error_message)
 	perror(error_message);
 	exit(EXIT_FAILURE);
 }
-
 
 void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> > &sockets_with_config)
 {
@@ -121,6 +120,40 @@ pair<int, Connection>	identify_client(int event_identifier, map<int, Connection>
 	return (*it);
 }
 
+void	receive_request_from_client(pair<int, Connection> client, int total_bytes) {
+	HTTPRequestLexer		lexer;
+	long					total_amount_of_bytes_read = 0;
+	int						bytes_read = 1;
+	char					buf[BUFF_SIZE];
+
+	cout << "--- reading from client socket ---" << endl;
+	cout << "--- amount of bytes in data = " << total_bytes << "---" << endl;
+
+	while (bytes_read > 0) {
+		bytes_read = recv(client.first, buf, sizeof(buf), 0);
+		if (bytes_read == -1) {
+			break ;
+		}
+		if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
+			cout << "--- finished reading from socket ---" << endl;
+		}
+		lexer.process_request(string(buf));
+		if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
+			cout << "--- request is invalid ---" << endl;
+			break ;
+		}
+		total_amount_of_bytes_read += bytes_read;
+	}
+
+	if (total_amount_of_bytes_read == total_bytes) {
+		cout << "--- all data send by the socket was received ---" << endl;
+	}
+	else {
+		cout << "--- an error occured, not all send by the socket was received ---" << endl;
+	}
+	printf("--- done reading ---\n");
+}
+
 int kqueue_server(vector<Server>	server)
 {
 	map<int/*socket_fds*/, vector<Server> >	sockets_with_config;
@@ -181,43 +214,12 @@ int kqueue_server(vector<Server>	server)
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
-			else if (is_readable_event(event[i].filter) == true)
-			{
+			else if (is_readable_event(event[i].filter) == true) {
 				pair<int, Connection>	client = identify_client(event[i].ident, connections);
-				HTTPRequestLexer		lexer;
-				long					total_amount_of_bytes_read = 0;
-				int						bytes_read = 1;
-				char					buf[BUFF_SIZE];
-
-				cout << "--- reading from client socket ---" << endl;
-				cout << "--- amount of bytes in data = " << event[i].data << "---" << endl;
-	
-				while (bytes_read > 0) {
-					bytes_read = recv(event[i].ident, buf, sizeof(buf), 0);
-					if (bytes_read == -1) {
-						break ;
-					}
-					if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
-						cout << "--- finished reading from socket ---" << endl;
-					}
-					lexer.process_request(string(buf));
-					if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
-						cout << "--- request is invalid ---" << endl;
-						break ;
-					}
-					total_amount_of_bytes_read += bytes_read;
-				}
-
-				if (total_amount_of_bytes_read == event[i].data) {
-					cout << "--- all data send by the socket was received ---" << endl;
-				}
-				else {
-					cout << "--- an error occured, not all send by the socket was received ---" << endl;
-				}
+				receive_request_from_client(client, event[i].data);
 				add_event_to_kqueue(kq, client.first, EVFILT_WRITE);
-				printf("--- done reading ---\n");
 			}
-			else if (is_writable_event(event[i].filter)) {
+			else if (is_writable_event(event[i].filter) == true) {
 				printf("--- writing to client socket ---\n");
 				Response	response;
 				const char *buf = response.get_full_response().c_str();
