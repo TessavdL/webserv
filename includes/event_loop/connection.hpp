@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 15:01:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 16:11:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,32 @@
 
 class Connection {
 	public:
-		typedef struct					s_request_line {
-			std::string					method;
-			std::string					uri;
-			std::string					protocol;
-		}								t_request_line;
-		typedef struct					s_request {
-			t_request_line				request_line;
-			std::vector<std::string>	headers;
-			std::string					body;
-		}								t_request;
+		typedef struct							s_request_line {
+			std::string							method;
+			Uri									uri;
+			std::string							protocol;
+		}										t_request_line;
+		typedef struct							s_request {
+			t_request_line						request_line;
+			std::map<std::string, std::string>	headers;
+			std::string							body;
+			int									bytes_in_data;
+			int									total_bytes_read;
+		}										t_request;
 		Connection();
 		~Connection();
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
 		// int const&									get_connection_fd() const;
 		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
-		HTTPRequestLexer const&						get_request() const;
+		Connection::t_request const&				get_request() const;
 		Response const&								get_response() const;
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
+		void										set_request(Connection::t_request request);
 	private:
 		// int											_connection_fd;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
-		HTTPRequestLexer							_request;
+		Connection::t_request						_request;
 		Response									_response;
 };
 

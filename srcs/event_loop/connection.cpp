@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 17:56:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 15:40:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void
 	return (this->_virtual_servers);
 }
 
-HTTPRequestLexer const&	Connection::get_request(void) const {
+Connection::t_request const&	Connection::get_request(void) const {
 	return (this->_request);
 }
 
@@ -52,4 +52,8 @@ Response const&	Connection::get_response(void) const {
 
 void	Connection::set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers) {
 	this->_virtual_servers = virtual_servers;
+}
+
+void	Connection::set_request(Connection::t_request request) {
+	this->_request = request;
 }

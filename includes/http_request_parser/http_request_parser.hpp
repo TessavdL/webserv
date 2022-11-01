@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:37:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/24 18:27:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 16:04:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ class HTTPRequestParser {
 		HTTPRequestParser();
 		~HTTPRequestParser();
 		HTTPRequestParser(HTTPRequestParser const& other);
-		HTTPRequestParser&					operator=(HTTPRequestParser const& other);
-		Method								check_method(std::string const& str);
-		void								check_uri(std::string const& str);
-		void								check_protocol(std::string const& protocol);
-		void								check_headers(std::vector<std::string> const& headers);
+		HTTPRequestParser&							operator=(HTTPRequestParser const& other);
+		Method										check_method(std::string const& str);
+		void										check_uri(std::string const& str);
+		void										check_protocol(std::string const& protocol);
+		void										check_headers(std::vector<std::string> const& headers);
 		std::string const&							get_method(void) const;
 		Uri	const&									get_uri(void) const;
 		std::string const&							get_protocol(void) const;
