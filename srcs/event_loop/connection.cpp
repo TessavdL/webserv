@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 15:40:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 17:40:02 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void	Connection::set_virtual_servers(std::pair<int, std::vector<Server> > virtua
 	this->_virtual_servers = virtual_servers;
 }
 
-void	Connection::set_request(Connection::t_request request) {
-	this->_request = request;
+void	Connection::set_request(Connection::t_request const& request) {
+	this->_request.request_line.method = request.request_line.method;
+	this->_request.request_line.uri = request.request_line.uri;
+	this->_request.request_line.protocol = request.request_line.protocol;
+	this->_request.headers = request.headers;
+	this->_request.body = request.body;
+	this->_request.bytes_in_data = request.bytes_in_data;
+	this->_request.total_bytes_read = request.total_bytes_read;
 }

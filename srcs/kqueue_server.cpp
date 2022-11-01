@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/01 16:15:24 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 18:16:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
+
+#define EVENT_FD event[i].ident
 
 // bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
 // {
@@ -115,14 +117,17 @@ void	add_event_to_kqueue(int kq, int event_fd, int event_filter) {
 	}
 }
 
-pair<int, Connection>	identify_client(int event_identifier, map<int, Connection> connections) {
+bool	identify_client(int event_identifier, map<int, Connection> connections) {
 	map<int, Connection>::iterator it = connections.find(event_identifier);
-	return (*it);
+	if (it != connections.end()) {
+		return (true);
+	}
+	return (false);
 }
 
-void	save_request(pair<int, Connection>& client, HTTPRequestParser *parser, int bytes_in_data, int total_bytes_read) {
+void	save_request(Connection& client, HTTPRequestParser *parser, int bytes_in_data, int total_bytes_read) {
 	Connection::t_request	request;
-	
+
 	request.request_line.method = parser->get_method();
 	request.request_line.uri = parser->get_uri();
 	request.request_line.protocol = parser->get_protocol();
@@ -130,10 +135,10 @@ void	save_request(pair<int, Connection>& client, HTTPRequestParser *parser, int 
 	request.body = parser->get_body();
 	request.bytes_in_data = bytes_in_data;
 	request.total_bytes_read = total_bytes_read;
-	client.second.set_request(request);
+	client.set_request(request);
 }
 
-void	receive_request_from_client(pair<int, Connection>& client, int bytes_in_data) {
+void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
 	HTTPRequestLexer		lexer;
 	long					total_bytes_read = 0;
 	int						bytes_read = 1;
@@ -141,7 +146,7 @@ void	receive_request_from_client(pair<int, Connection>& client, int bytes_in_dat
 
 	cout << "--- reading from client socket ---" << endl;
 	while (bytes_read > 0) {
-		bytes_read = recv(client.first, buf, sizeof(buf), 0);
+		bytes_read = recv(connection_fd, buf, sizeof(buf), 0);
 		if (bytes_read == -1) {
 			break ;
 		}
@@ -157,6 +162,15 @@ void	receive_request_from_client(pair<int, Connection>& client, int bytes_in_dat
 	}
 	save_request(client, lexer.parser, bytes_in_data, total_bytes_read);
 	printf("--- done reading ---\n");
+}
+
+int	get_port_number_from_socket_fd(int fd) {
+	struct sockaddr_in	local_sin;
+	socklen_t			local_sin_len = sizeof(local_sin);
+	
+	if (getsockname(fd, (struct sockaddr *)&local_sin, &local_sin_len) != -1)
+		std::cout << "Socket is listening on port " << ntohs(local_sin.sin_port) << std::endl;
+	return (ntohs(local_sin.sin_port));
 }
 
 int kqueue_server(vector<Server>	server)
@@ -197,6 +211,7 @@ int kqueue_server(vector<Server>	server)
         if (n_events == -1) {
 			return (error_and_exit("An error occured in kevent() while checking for new events.\n"));
         }
+
 		// LOOP OVER n_events
         for (int i = 0; n_events > i; i++)
         {
@@ -204,37 +219,41 @@ int kqueue_server(vector<Server>	server)
             // descriptor the event is automatically removed from the kqueue.
             if (event[i].flags & EV_EOF) {
                 printf("--- a client has disconnected ---\n");
-                close(event[i].ident);
-				connections.erase(event[i].ident);
+                close(EVENT_FD);
+				connections.erase(EVENT_FD);
 				// do not close socket_connection_fd, is bad file descriptor
             }
 
             // If the new event's file descriptor is the same as the listening
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
-			else if (is_new_connection(event[i].ident, sockets_with_config) == true) {
-				int connection_fd = accept_connection(event[i].ident);
+			else if (is_new_connection(EVENT_FD, sockets_with_config) == true) {
+				int connection_fd = accept_connection(EVENT_FD);
 				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
-				add_connection(event[i].ident, connection_fd, connections, sockets_with_config);
+				add_connection(EVENT_FD, connection_fd, connections, sockets_with_config);
+				cout << "added " << connection_fd << "to kqueue" << endl;
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
 			else if (is_readable_event(event[i].filter) == true) {
-				pair<int, Connection>	client = identify_client(event[i].ident, connections);
-				receive_request_from_client(client, event[i].data);
-				cout << "Amound of bytes read = " << client.second.get_request().total_bytes_read << endl;
-				add_event_to_kqueue(kq, client.first, EVFILT_WRITE);
+				if (identify_client(EVENT_FD, connections) == true) {
+					Connection& client = connections[EVENT_FD];
+					receive_request_from_client(EVENT_FD, client, event[i].data);
+					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
+				}
 			}
 			else if (is_writable_event(event[i].filter) == true) {
 				printf("--- writing to client socket ---\n");
-				Response	response;
-				const char *buf = response.get_full_response().c_str();
-				cout << endl << response << endl;
-
-				send(event[i].ident, buf, strlen(buf), 0);
-				printf("--- done writing to client socket\n");
-				close(event[i].ident);
-				printf("--- bounce bye ---\n\n");
+				if (identify_client(EVENT_FD, connections) == true) {
+					Connection& client = connections[EVENT_FD];
+					std::string response = client.get_response().get_full_response();
+					const char *buf = response.c_str();
+					send(EVENT_FD, buf, strlen(buf), 0);
+					printf("--- done writing to client socket\n");
+					close(EVENT_FD);
+					printf("--- bounce bye ---\n\n");
+					connections.erase(EVENT_FD);
+				}
 			}
 		}
 	}
