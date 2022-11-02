@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 19:11:14 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 19:12:50 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 
+std::map<int, std::string>	create_status_code_reason_phrase_map(void);
 std::string const&			get_reason_phrase(int status_code);
 void	                    check_user_information(int& status_code, std::string& reason_phrase, std::string const& uri_user_information);
 void	                    check_uri_length(int& status_code, std::string& reason_phrase, std::string const& request_uri);
