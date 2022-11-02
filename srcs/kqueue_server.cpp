@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 19:02:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 19:15:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,8 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 
 int kqueue_server(vector<Server>	server)
 {
-	map<int/*socket_fds*/, vector<Server> >	sockets_with_config;
-	map<int, Connection>					connections;
+	map<int, vector<Server> >	sockets_with_config;
+	map<int, Connection>		connections;
 
 	create_sockets_with_config(server, sockets_with_config);
 
