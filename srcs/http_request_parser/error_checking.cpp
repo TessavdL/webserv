@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 20:55:24 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 19:11:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ std::map<int, std::string>	g_status_code_reason_phrase_map = create_status_code_
 
 std::string const&	get_reason_phrase(int status_code) {
 	return (g_status_code_reason_phrase_map.find(status_code)->second);
+}
+
+void	check_user_information(int& status_code, std::string& reason_phrase, std::string const& uri_user_information) {
+	if (!uri_user_information.empty()) {
+		status_code = 400;
+		reason_phrase = get_reason_phrase(status_code);
+	}
 }
 
 void	check_uri_length(int& status_code, std::string& reason_phrase, std::string const& request_uri) {
@@ -65,11 +72,6 @@ void	handle_method(int& status_code, std::string& reason_phrase, std::string con
 	}
 }
 
-/*
-incomplete request that keeps connection open
-https://stackoverflow.com/questions/69386098/how-to-send-an-incomplete-http-request-using-netcat
-*/
-
 void	check_http_protocol(int& status_code, std::string& reason_phrase, std::string const& protocol) {
 	if (protocol != "HTTP1/1") {
 		status_code = 505;
@@ -77,3 +79,7 @@ void	check_http_protocol(int& status_code, std::string& reason_phrase, std::stri
 	}
 }
 
+/*
+incomplete request that keeps connection open
+https://stackoverflow.com/questions/69386098/how-to-send-an-incomplete-http-request-using-netcat
+*/
