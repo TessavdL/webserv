@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/02 14:18:39 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 16:49:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 17:13:15 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,26 +163,27 @@ std::ostream&   operator<<(std::ostream& os, Uri const& uri) {
     std::map<std::string, std::string>  query = uri.get_query();
 
     if (!scheme.empty()) {
-        os << scheme << std::endl;
+        os << "uri scheme = " << scheme << std::endl;
     }
     if (!authority_user_information.empty()) {
-        os << authority_user_information << std::endl;
+        os << "uri user information = " << authority_user_information << std::endl;
     }
     if (!authority_host.empty()) {
-        os << authority_host << std::endl;
+        os << "uri host = " << authority_host << std::endl;
     }
-    os << authority_port << std::endl;
+    if (authority_port != 0)
+        os << "uri port = " << authority_port << std::endl;
     if (!path_full.empty()) {
-        os << path_full << std::endl;
+        os << "uri path = " << path_full << std::endl;
     }
     if (!path_extension.empty()) {
-        os << path_extension << std::endl;
+        os << "uri path extension = " << path_extension << std::endl;
     }
     if (!path_without_extension.empty()) {
-        os << path_without_extension << std::endl;
+        os << "uri path without extension " << path_without_extension << std::endl;
     }
     if (!query.empty()) {
-        os << "query string" << std::endl;
+        os << "uri query string" << std::endl;
         for (std::map<std::string, std::string>::const_iterator it = query.begin(); it != query.end(); it++) {
             os << "\t" << it->first << "=" << it->second << std::endl;
         }

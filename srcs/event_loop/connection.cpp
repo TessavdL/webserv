@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 16:59:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 17:24:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,19 @@ void	Connection::set_request(Connection::t_request const& request) {
 }
 
 void	Connection::print_request(void) const {
-	std::cout << this->_request.request_line.method << std::endl;
-	std::cout << this->_request.request_line.uri << std::endl;
-	std::cout << this->_request.request_line.protocol << std::endl;
-	for (std::map<std::string, std::string>::const_iterator it = this->_request.headers.begin(); it != this->_request.headers.end(); it++) {
-        std::cout << "\t" << it->first << "=" << it->second << std::endl;
-    }
-	std::cout << this->_request.body << std::endl;
-	std::cout << this->_request.bytes_in_data << std::endl;
-	std::cout << this->_request.total_bytes_read << std::endl;
+	if (!this->_request.request_line.method.empty())
+		std::cout << "method = " << this->_request.request_line.method << std::endl;
+	std::cout << this->_request.request_line.uri;
+	if (!this->_request.request_line.protocol.empty())
+		std::cout << "protocol = " << this->_request.request_line.protocol << std::endl;
+	if (!this->_request.headers.empty()) {
+		std::cout << "headers = " << std::endl;
+		for (std::map<std::string, std::string>::const_iterator it = this->_request.headers.begin(); it != this->_request.headers.end(); it++) {
+			std::cout << "\t" << it->first << "=" << it->second << std::endl;
+		}
+	}
+	if (!this->_request.body.empty())
+		std::cout << this->_request.body << std::endl;
+	std::cout << "bytes in client request = " << this->_request.bytes_in_data << std::endl;
+	std::cout << "bytes read = " << this->_request.total_bytes_read << std::endl;
 }

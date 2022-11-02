@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:01:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 17:23:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		}
 		total_bytes_read += bytes_read;
 	}
-	cout << lexer << endl;
 	save_request(client, lexer, bytes_in_data, total_bytes_read);
 	printf("--- done reading ---\n");
 }

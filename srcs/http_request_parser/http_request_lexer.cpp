@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:07:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 17:24:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ HTTPRequestLexer&	HTTPRequestLexer::operator=(HTTPRequestLexer const& other) {
 		this->_remainder = other._remainder;
 		this->_request_line_full = other._request_line_full;
 		this->_request_line_method = other._request_line_method;
+		this->_request_line_uri = other._request_line_uri;
 		this->_request_line_uri_raw = other._request_line_uri_raw;
 		this->_request_line_protocol = other._request_line_protocol;
 		this->_request_headers_full = other._request_headers_full;
@@ -300,20 +301,20 @@ std::string	const&	HTTPRequestLexer::get_body(void) const {
 
 std::ostream&	operator<<(std::ostream& os, HTTPRequestLexer const& lexer) {
 	if (!lexer.get_request_line_method().empty()) {
-		os << "METHOD = " << lexer.get_request_line_method() << std::endl;
+		os << "method = " << lexer.get_request_line_method() << std::endl;
 	}
 	os << lexer.get_request_line_uri();
 	if (!lexer.get_request_line_protocol().empty()) {
-		os << "PROTOCOL = " << lexer.get_request_line_protocol() << std::endl;
+		os << "protocol = " << lexer.get_request_line_protocol() << std::endl;
 	}
 	if (!lexer.get_headers().empty()) {
-		os << "HEADER = " << std::endl;
-		for (std::map<std::string, std::string>::iterator it = lexer.get_headers().begin(); it != lexer.get_headers().end(); it++) {
-			os << "HEADER = " << it->first << ": " << it->second << std::endl;
+		os << "headers = " << std::endl;
+		for (std::map<std::string, std::string>::const_iterator it = lexer.get_headers().begin(); it != lexer.get_headers().end(); it++) {
+			os << "\t" << it->first << ": " << it->second << std::endl;
 		}
 	}
 	if (!lexer.get_body().empty()) {
-		os << "BODY = " << lexer.get_body() << std::endl;
+		os << "body = " << std::endl << lexer.get_body() << std::endl;
 	}
 	return (os);
 }
