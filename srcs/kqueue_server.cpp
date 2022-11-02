@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:23:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 19:02:06 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@
 #define EVENT_FD event[i].ident
 #define EVENT_FLAGS event[i].flags
 #define EVENT_FILTER event[i].filter
-
-// bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
-// {
-// 	cout << "event fd = " << event_fd << endl;
-// 	map<int, vector<Server> >::iterator it;
-// 	it = sockets_with_config.find(event_fd);
-// 	if (it != sockets_with_config.end())
-// 		return (true);
-// 	return (false);
-// }
 
 int	error_and_exit(const char* error_message)
 {

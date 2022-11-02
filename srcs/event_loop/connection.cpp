@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:24:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 19:04:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,16 @@ Connection::Connection(Connection const& other) {
 
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
-		// this->_connection_fd = other._connection_fd;
 		this->_virtual_servers = other._virtual_servers;
-		this->_request = other._request;
+		this->_request.request_line.method = other._request.request_line.method;
+		this->_request.request_line.uri = other._request.request_line.uri;
+		this->_request.request_line.protocol = other._request.request_line.protocol;
+		this->_request.headers = other._request.headers;
+		this->_request.body = other._request.body;
 		this->_response = other._response;
 	}
 	return (*this);
 }
-
-// int const&	Connection::get_connection_fd(void) const {
-// 	return (this->_connection_fd);
-// }
 
 std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void) const {
 	return (this->_virtual_servers);
