@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/01 18:24:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 17:01:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,14 +134,14 @@ bool	identify_client(int event_identifier, map<int, Connection> connections) {
 	return (false);
 }
 
-void	save_request(Connection& client, HTTPRequestParser *parser, int bytes_in_data, int total_bytes_read) {
+void	save_request(Connection& client, HTTPRequestLexer lexer, int bytes_in_data, int total_bytes_read) {
 	Connection::t_request	request;
 
-	request.request_line.method = parser->get_method();
-	request.request_line.uri = parser->get_uri();
-	request.request_line.protocol = parser->get_protocol();
-	request.headers = parser->get_headers();
-	request.body = parser->get_body();
+	request.request_line.method = lexer.get_request_line_method();
+	request.request_line.uri = lexer.get_request_line_uri();
+	request.request_line.protocol = lexer.get_request_line_protocol();
+	request.headers = lexer.get_headers();
+	request.body = lexer.get_body();
 	request.bytes_in_data = bytes_in_data;
 	request.total_bytes_read = total_bytes_read;
 	client.set_request(request);
@@ -169,7 +169,8 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		}
 		total_bytes_read += bytes_read;
 	}
-	save_request(client, lexer.parser, bytes_in_data, total_bytes_read);
+	cout << lexer << endl;
+	save_request(client, lexer, bytes_in_data, total_bytes_read);
 	printf("--- done reading ---\n");
 }
 
@@ -238,6 +239,7 @@ int kqueue_server(vector<Server>	server)
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
 					receive_request_from_client(EVENT_FD, client, event[i].data);
+					client.print_request();
 					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
 				}
 			}

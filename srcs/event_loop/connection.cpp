@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 17:40:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 16:59:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,16 @@ void	Connection::set_request(Connection::t_request const& request) {
 	this->_request.body = request.body;
 	this->_request.bytes_in_data = request.bytes_in_data;
 	this->_request.total_bytes_read = request.total_bytes_read;
+}
+
+void	Connection::print_request(void) const {
+	std::cout << this->_request.request_line.method << std::endl;
+	std::cout << this->_request.request_line.uri << std::endl;
+	std::cout << this->_request.request_line.protocol << std::endl;
+	for (std::map<std::string, std::string>::const_iterator it = this->_request.headers.begin(); it != this->_request.headers.end(); it++) {
+        std::cout << "\t" << it->first << "=" << it->second << std::endl;
+    }
+	std::cout << this->_request.body << std::endl;
+	std::cout << this->_request.bytes_in_data << std::endl;
+	std::cout << this->_request.total_bytes_read << std::endl;
 }

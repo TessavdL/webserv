@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:37:45 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:37:51 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/02 12:54:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@
 #include <iostream>
 #include <sstream>
 
+std::string	                        string_until_deilimeter(std::string const& str, std::string const& delimeter);
+std::vector<std::string>	        split_string_on_delimeter_string(std::string str, std::string const& delimeter);
 std::vector<std::string>			split_string_on_delimeter(std::string const& str, char c);
-std::pair<std::string, std::string>	split_string_in_half(std::string const& str, std::string delimiter);
-std::pair<std::string, std::string>	split_string_in_half_on_any_match(std::string const& str, std::string delimiter);
+std::pair<std::string, std::string>	split_string_in_half(std::string const& str, std::string delimeter);
+std::pair<std::string, std::string>	split_string_in_half_on_any_match(std::string const& str, std::string delimeter);
 
 #endif

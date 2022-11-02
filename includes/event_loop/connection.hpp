@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 17:14:15 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 16:54:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 #include "../../includes/config_parser/server.hpp"
 #include "../../includes/http_request_parser/http_request_lexer.hpp"
+#include "../../includes/http_request_parser/uri_parser.hpp"
 #include "../../includes/http_response/response.hpp"
 
 class Connection {
@@ -39,14 +40,13 @@ class Connection {
 		~Connection();
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
-		// int const&									get_connection_fd() const;
 		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
 		Connection::t_request const&				get_request() const;
 		Response const&								get_response() const;
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
 		void										set_request(Connection::t_request const& request);
+		void										print_request() const;
 	private:
-		// int											_connection_fd;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
 		Connection::t_request						_request;
 		Response									_response;
