@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 19:04:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/02 19:06:44 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ Connection&	Connection::operator=(Connection const& other) {
 		this->_request.request_line.method = other._request.request_line.method;
 		this->_request.request_line.uri = other._request.request_line.uri;
 		this->_request.request_line.protocol = other._request.request_line.protocol;
+		this->_request.bytes_in_data = other._request.bytes_in_data;
+		this->_request.total_bytes_read = other._request.total_bytes_read;
 		this->_request.headers = other._request.headers;
 		this->_request.body = other._request.body;
 		this->_response = other._response;
