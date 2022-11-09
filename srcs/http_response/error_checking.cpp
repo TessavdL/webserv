@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:40:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 16:41:50 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	check_uri_length(int& status_code, std::string const& request_uri) {
 	}
 }
 
-#include <iostream>
 void	check_http_protocol(int& status_code, std::string const& protocol) {
 	if (protocol != "HTTP/1.1") {
 		status_code = 505;
