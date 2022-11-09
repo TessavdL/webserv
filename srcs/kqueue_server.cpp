@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 15:11:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 16:40:37 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include "../includes/event_loop/connection.hpp"
 #include "../includes/virtual_server/select_virtual_server.hpp"
 #include "../includes/virtual_server/select_location.hpp"
+#include "../includes/http_response/error_checking.hpp"
 
 #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
@@ -154,6 +155,7 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
 			cout << "--- finished reading from socket ---" << endl;
 		}
+		buf[bytes_read] = '\0';
 		lexer.process_request(string(buf));
 		if (lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
 			cout << "--- request is invalid ---" << endl;
@@ -166,13 +168,14 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 }
 
 void	send_request_to_client(int connection_fd, Connection& client) {
-	client.set_server_index(select_virtual_server(client.get_request().request_line.uri.authority.host, client.get_virtual_servers().second));
-	std::cout << "virtual server index = " << client.get_server_index() << std::endl;
+	client.set_server_index(select_virtual_server(client.get_request().request_line.uri.get_authority_host(), client.get_virtual_servers().second));
+	// std::cout << "virtual server index = " << client.get_server_index() << std::endl;
 	
-	client.set_location_index(select_location(client.get_request().request_line.uri.path.full, client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
-	std::cout << "location index = " << client.get_location_index() << std::endl;
+	client.set_location_index(select_location(client.get_request().request_line.uri.get_path_full(), client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
+	// std::cout << "location index = " << client.get_location_index() << std::endl;
 	
-	initial_error_checking(client);
+	pair<int, string> status = initial_error_checking(client, client.get_request());
+	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
 	std::string response = client.get_response().get_full_response();
 	const char *buf = response.c_str();
 	send(connection_fd, buf, strlen(buf), 0);

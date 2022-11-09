@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 15:11:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 16:36:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ void	Connection::set_request(Connection::t_request const& request) {
 	this->_request.total_bytes_read = request.total_bytes_read;
 }
 
-<<<<<<< HEAD
 void	Connection::set_location_index(size_t location_index) {
 	this->_location_index = location_index;
 }
 
 void	Connection::set_server_index(size_t server_index) {
 	this->_server_index = server_index;
-=======
+}
+
 void	Connection::print_request(void) const {
 	if (!this->_request.request_line.method.empty())
 		std::cout << "method = " << this->_request.request_line.method << std::endl;
@@ -97,5 +97,4 @@ void	Connection::print_request(void) const {
 		std::cout << this->_request.body << std::endl;
 	std::cout << "bytes in client request = " << this->_request.bytes_in_data << std::endl;
 	std::cout << "bytes read = " << this->_request.total_bytes_read << std::endl;
->>>>>>> main
 }
