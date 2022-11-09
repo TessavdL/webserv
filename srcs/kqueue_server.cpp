@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:47:56 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 15:05:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,8 @@ void	send_request_to_client(int connection_fd, Connection& client) {
 	
 	client.set_location_index(select_location(client.get_request().request_line.uri.path.full, client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
 	std::cout << "location index = " << client.get_location_index() << std::endl;
+	
+	initial_error_checking(client);
 	std::string response = client.get_response().get_full_response();
 	const char *buf = response.c_str();
 	send(connection_fd, buf, strlen(buf), 0);

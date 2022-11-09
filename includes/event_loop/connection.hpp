@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:21:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:55:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class Connection {
 		~Connection();
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
-		// int const&									get_connection_fd() const;
 		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
 		Connection::t_request const&				get_request() const;
 		Response const&								get_response() const;
@@ -50,7 +49,6 @@ class Connection {
 		void										set_location_index(size_t server_index);
 		void										set_server_index(size_t server_index);
 	private:
-		// int											_connection_fd;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
 		Connection::t_request						_request;
 		Response									_response;

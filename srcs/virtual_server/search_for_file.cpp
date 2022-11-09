@@ -3,14 +3,14 @@
 #include <iostream>
 #include <dirent.h>
 
-void	free_scandir_memory(dirent **namelist, int n) {
+static void	free_scandir_memory(dirent **namelist, int n) {
 	for (int i = 0; i < n; i++) {
 		free(namelist[i]);
 	}
 	free(namelist);
 }
 
-bool	is_file_in_directory_entry(const char *file, dirent** namelist) {
+static bool	is_file_in_directory_entry(const char *file, dirent** namelist) {
 	for (size_t i = 0; namelist[i]; i++) {
 		if (!strcmp(file, namelist[i]->d_name)) {
 			return (true);
