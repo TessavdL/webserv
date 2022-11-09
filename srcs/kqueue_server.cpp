@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/01 18:24:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 11:46:35 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,15 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	printf("--- done reading ---\n");
 }
 
+void	send_request_to_client(int connection_fd, Connection& client) {
+	std::string response = client.get_response().get_full_response();
+	const char *buf = response.c_str();
+	send(connection_fd, buf, strlen(buf), 0);
+	printf("--- done writing to client socket\n");
+	close(connection_fd);
+	printf("--- bounce bye ---\n\n");
+}
+
 int kqueue_server(vector<Server>	server)
 {
 	map<int/*socket_fds*/, vector<Server> >	sockets_with_config;
@@ -247,12 +256,7 @@ int kqueue_server(vector<Server>	server)
 				printf("--- writing to client socket ---\n");
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
-					std::string response = client.get_response().get_full_response();
-					const char *buf = response.c_str();
-					send(EVENT_FD, buf, strlen(buf), 0);
-					printf("--- done writing to client socket\n");
-					close(EVENT_FD);
-					printf("--- bounce bye ---\n\n");
+					send_request_to_client(EVENT_FD, client);
 					connections.erase(EVENT_FD);
 				}
 			}
