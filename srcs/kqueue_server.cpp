@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 12:23:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:47:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "../includes/webserv.hpp"
 #include "../includes/event_loop/connection.hpp"
 #include "../includes/virtual_server/select_virtual_server.hpp"
+#include "../includes/virtual_server/select_location.hpp"
 
 #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
@@ -178,6 +179,8 @@ void	send_request_to_client(int connection_fd, Connection& client) {
 	client.set_server_index(select_virtual_server(client.get_request().request_line.uri.authority.host, client.get_virtual_servers().second));
 	std::cout << "virtual server index = " << client.get_server_index() << std::endl;
 	
+	client.set_location_index(select_location(client.get_request().request_line.uri.path.full, client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
+	std::cout << "location index = " << client.get_location_index() << std::endl;
 	std::string response = client.get_response().get_full_response();
 	const char *buf = response.c_str();
 	send(connection_fd, buf, strlen(buf), 0);

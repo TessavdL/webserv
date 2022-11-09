@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 12:25:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:21:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ class Connection {
 		std::pair<int, std::vector<Server> >		_virtual_servers;
 		Connection::t_request						_request;
 		Response									_response;
-		size_t										_server_index;
 		size_t										_location_index;
+		size_t										_server_index;
 };
 
 #endif

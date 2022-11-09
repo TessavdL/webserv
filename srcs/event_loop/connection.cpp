@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 12:26:52 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:22:00 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/event_loop/connection.hpp"
 
-Connection::Connection() : _server_index(0) {
+Connection::Connection() : _location_index(0), _server_index(0) {
 
 }
 

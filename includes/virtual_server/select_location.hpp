@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   select_virtual_server.hpp                          :+:    :+:            */
+/*   select_location.hpp                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 12:00:48 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:25:35 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/11/09 14:26:01 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/09 14:28:07 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SELECT_VIRTUAL_SERVER_HPP
-# define SELECT_VIRTUAL_SERVER_HPP
+#ifndef SELECT_LOCATION_HPP
+# define SELECT_LOCATION_HPP
 
 #include <string>
 #include <vector>
 
 #include "../../includes/config_parser/server.hpp"
 
-size_t	select_virtual_server(std::string const& host, std::vector<Server> const& v);
+#define NO_LOCATION -1
+
+size_t	select_location(std::string const& host, std::vector<LocationBlock> const& v);
 
 #endif
