@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 17:40:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 12:26:52 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/event_loop/connection.hpp"
 
-Connection::Connection() {
+Connection::Connection() : _server_index(0) {
 
 }
 
@@ -26,17 +26,12 @@ Connection::Connection(Connection const& other) {
 
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
-		// this->_connection_fd = other._connection_fd;
 		this->_virtual_servers = other._virtual_servers;
 		this->_request = other._request;
 		this->_response = other._response;
 	}
 	return (*this);
 }
-
-// int const&	Connection::get_connection_fd(void) const {
-// 	return (this->_connection_fd);
-// }
 
 std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void) const {
 	return (this->_virtual_servers);
@@ -48,6 +43,14 @@ Connection::t_request const&	Connection::get_request(void) const {
 
 Response const&	Connection::get_response(void) const {
 	return (this->_response);
+}
+
+size_t const&	Connection::get_location_index(void) const {
+	return (this->_location_index);
+}
+
+size_t const&	Connection::get_server_index(void) const {
+	return (this->_server_index);
 }
 
 void	Connection::set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers) {
@@ -62,4 +65,12 @@ void	Connection::set_request(Connection::t_request const& request) {
 	this->_request.body = request.body;
 	this->_request.bytes_in_data = request.bytes_in_data;
 	this->_request.total_bytes_read = request.total_bytes_read;
+}
+
+void	Connection::set_location_index(size_t location_index) {
+	this->_location_index = location_index;
+}
+
+void	Connection::set_server_index(size_t server_index) {
+	this->_server_index = server_index;
 }

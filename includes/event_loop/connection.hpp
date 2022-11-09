@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 17:14:15 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 12:25:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,19 @@ class Connection {
 		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
 		Connection::t_request const&				get_request() const;
 		Response const&								get_response() const;
+		size_t const&								get_location_index(void) const;
+		size_t const&								get_server_index(void) const;
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
 		void										set_request(Connection::t_request const& request);
+		void										set_location_index(size_t server_index);
+		void										set_server_index(size_t server_index);
 	private:
 		// int											_connection_fd;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
 		Connection::t_request						_request;
 		Response									_response;
+		size_t										_server_index;
+		size_t										_location_index;
 };
 
 #endif
