@@ -6,18 +6,22 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:20:48 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:44:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_CHECKING_HPP
 # define ERROR_CHECKING_HPP
 
-#include "../../includes/event_loop/connection.hpp"
+# include "../../includes/event_loop/connection.hpp"
 
-#include <map>
-#include <string>
-#include <vector>
+# include <map>
+# include <string>
+# include <vector>
+
+# define NO_LOCATION -2
+# define NO_CONTENT_LENGTH -2
+# define INVALID_CONTENT_LENGTH -1
 
 std::map<int, std::string>	create_status_code_reason_phrase_map(void);
 std::string const&			get_reason_phrase(int status_code);

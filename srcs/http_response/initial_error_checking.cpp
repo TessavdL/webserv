@@ -6,15 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:06:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:38:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:44:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/error_checking.hpp"
-
-#define NO_LOCATION -2
-#define NO_CONTENT_LENGTH -2
-#define INVALID_CONTENT_LENGTH -1
 
 static std::vector<std::string>	standard_method(void) {
 	std::vector<std::string>	standard_method;
@@ -77,17 +73,16 @@ std::pair<int, std::string>	initial_error_checking(Connection& client, Connectio
 	if (status_code != 200) {
 		return (return_status_code_and_reason_phrase(status_code));
 	}
-	if (!request.body.empty()) {
-		long	content_length = find_content_length(request.headers);
-		if (content_length == INVALID_CONTENT_LENGTH/* || content_length == NO_CONTENT_LENGTH*/) {
-			status_code = 400;
-			return (return_status_code_and_reason_phrase(status_code));
-		}
-		check_request_size(status_code, request.body.size(), content_length);
-		if (status_code != 200) {
-			return (return_status_code_and_reason_phrase(status_code));
-		}
+	long	content_length = find_content_length(request.headers);
+	if (content_length == INVALID_CONTENT_LENGTH/* || content_length == NO_CONTENT_LENGTH*/) {
+		status_code = 400;
+		return (return_status_code_and_reason_phrase(status_code));
 	}
+	check_request_size(status_code, request.body.size(), content_length);
+	if (status_code != 200) {
+		return (return_status_code_and_reason_phrase(status_code));
+	}
+
 	// check_uri_length(status_code, request.request_line.uri.
 	// need to save total uri length someone or handle it while parsing and just throw the 414
 	check_http_protocol(status_code, request.request_line.protocol);

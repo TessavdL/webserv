@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:41:50 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:46:27 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,15 @@ void	check_method(int& status_code, std::string const& method, std::vector<std::
 }
 
 void	check_request_size(int& status_code, int request_body_size, int content_length_size) {
-	if (request_body_size > content_length_size) {
-		status_code = 413;
+	if (content_length_size == NO_CONTENT_LENGTH) {
+		if (request_body_size != 0) {
+			status_code = 400;
+		}
+	}
+	else {
+		if (request_body_size > content_length_size) {
+			status_code = 413;
+		}
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:34:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:42:13 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ void	HTTPRequestLexer::process_request(std::string const& request) {
 			full_headers(str, index);
 			tokenize_request_headers(this->_request_headers_full);
 			create_headers_map(this->_request_headers_tokens);
-			std::cout << "is string empty? = " << std::boolalpha << str.substr(index).empty() << std::endl;
 		case REQUEST_BODY:
 			if (is_request_chunked(this->_request_headers) == true) {
 				go_chonky_body(str, index);

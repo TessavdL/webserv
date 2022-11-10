@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:40:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:41:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	send_request_to_client(int connection_fd, Connection& client) {
 	// std::cout << "location index = " << client.get_location_index() << std::endl;
 	
 	pair<int, string> status = initial_error_checking(client, client.get_request());
-	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
+	std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
 	std::string response = client.get_response().get_full_response();
 	const char *buf = response.c_str();
 	send(connection_fd, buf, strlen(buf), 0);
