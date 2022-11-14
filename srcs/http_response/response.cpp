@@ -6,7 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:19:28 by tevan-de      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2022/11/01 18:11:38 by jelvan-d      ########   odam.nl         */
+=======
+/*   Updated: 2022/11/14 12:33:06 by tevan-de      ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +68,21 @@ void	Response::set_headers(void) {
 	this->_headers.append(HEADER_SEPERATOR);
 	this->_headers.append(get_date_information());
 	this->_headers.append(CRLF);
+	this->_headers.append(CRLF);
 }
 
 void	Response::set_body(void) {
 	std::ifstream	input_stream;
 	std::string		input;
-	
+
 	input_stream.open("./index.html");
 	std::ostringstream ss;
 	ss << input_stream.rdbuf();
 	input.append(ss.str());
+<<<<<<< HEAD
 	// std::cout << input << std::endl;
+=======
+>>>>>>> main
 	input_stream.close();
 	this->_body.append(input);
 }

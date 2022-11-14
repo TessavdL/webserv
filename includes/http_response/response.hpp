@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:19:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/19 17:41:08 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 12:16:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ class Response {
 		~Response();
 		Response(Response const& other);
 		Response&	operator=(Response const& other);
-		void				set_status_line();
-		void				set_headers();
+		std::string const&	get_body() const;
+		std::string const&	get_full_response() const;
+		std::string const&	get_headers() const;
+		std::string const&	get_status_line() const;
 		void				set_body(void);
 		void				set_full_response();
-		std::string const&	get_full_response() const;
-		std::string const&	get_status_line() const;
-		std::string const&	get_headers() const;
-		std::string const&	get_body() const;
+		void				set_headers();
+		void				set_status_line();
 	private:
-		std::string		_full_response;
-		std::string		_status_line;
-		std::string		_headers;
 		std::string		_body;
+		std::string		_full_response;
+		std::string		_headers;
+		std::string		_status_line;
 };
 
 std::ostream&	operator<<(std::ostream& os, Response const& response);

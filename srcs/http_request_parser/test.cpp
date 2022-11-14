@@ -6,11 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:31 by jelvan-d      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2022/10/12 20:28:32 by jelvan-d      ########   odam.nl         */
-=======
-/*   Updated: 2022/10/13 14:12:02 by tevan-de      ########   odam.nl         */
->>>>>>> 8e6ea91af557481910aaa6edc60889eef1129436
+/*   Updated: 2022/11/01 18:32:43 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

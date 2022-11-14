@@ -172,3 +172,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# project specific
+a.out
+webserv
+*.o
