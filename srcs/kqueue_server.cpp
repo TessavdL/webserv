@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/10 12:41:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:58:51 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	send_request_to_client(int connection_fd, Connection& client) {
 	printf("--- bounce bye ---\n\n");
 }
 
-int kqueue_server(vector<Server>	server)
+int kqueue_server(vector<Server> server)
 {
 	map<int, vector<Server> >	sockets_with_config;
 	map<int, Connection>		connections;

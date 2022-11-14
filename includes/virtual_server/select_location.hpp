@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 14:26:01 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:28:07 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 10:51:49 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #include "../../includes/config_parser/server.hpp"
 
-#define NO_LOCATION -1
+#define NO_LOCATION -2
 
 size_t	select_location(std::string const& host, std::vector<LocationBlock> const& v);
 

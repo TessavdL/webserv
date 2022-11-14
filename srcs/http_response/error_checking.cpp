@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/10 12:46:27 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 10:57:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	check_request_size(int& status_code, int request_body_size, int content_len
 		}
 	}
 	else {
-		if (request_body_size > content_length_size) {
+		if (request_body_size != content_length_size) {
 			status_code = 413;
 		}
 	}

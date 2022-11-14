@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:06:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/10 12:44:32 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 10:57:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ std::pair<int, std::string>	initial_error_checking(Connection& client, Connectio
 		return (return_status_code_and_reason_phrase(status_code));
 	}
 	long	content_length = find_content_length(request.headers);
-	if (content_length == INVALID_CONTENT_LENGTH/* || content_length == NO_CONTENT_LENGTH*/) {
+	if (content_length == INVALID_CONTENT_LENGTH) {
 		status_code = 400;
 		return (return_status_code_and_reason_phrase(status_code));
 	}

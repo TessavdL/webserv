@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/10 12:44:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 10:55:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 # define ERROR_CHECKING_HPP
 
 # include "../../includes/event_loop/connection.hpp"
+# include "../../includes/virtual_server/select_location.hpp"
 
 # include <map>
 # include <string>
 # include <vector>
 
-# define NO_LOCATION -2
 # define NO_CONTENT_LENGTH -2
 # define INVALID_CONTENT_LENGTH -1
 
