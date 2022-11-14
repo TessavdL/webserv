@@ -6,11 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:19:28 by tevan-de      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2022/11/01 18:11:38 by jelvan-d      ########   odam.nl         */
-=======
-/*   Updated: 2022/11/14 12:33:06 by tevan-de      ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2022/11/14 12:39:15 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +75,6 @@ void	Response::set_body(void) {
 	std::ostringstream ss;
 	ss << input_stream.rdbuf();
 	input.append(ss.str());
-<<<<<<< HEAD
-	// std::cout << input << std::endl;
-=======
->>>>>>> main
 	input_stream.close();
 	this->_body.append(input);
 }
