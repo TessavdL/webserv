@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/02 16:37:21 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 16:48:43 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 16:19:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ class Uri {
         std::string const&                          get_path_full(void) const;
         std::string const&                          get_path_extension(void) const;
         std::string const&                          get_path_without_extension(void) const;
-        std::map<std::string, std::string> const&   get_query(void) const;        
+        std::map<std::string, std::string> const&   get_query(void) const;
     private:
         std::string							        _scheme;
         std::string							        _authority_user_information;

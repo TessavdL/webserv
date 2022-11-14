@@ -6,41 +6,29 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:19:28 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/14 12:39:15 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/14 14:32:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response.hpp"
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-#include <functional>
-
 #define HTTP_VERSION "HTTP1/1"
 #define CRLF "\r\n"
 #define HEADER_SEPERATOR ": "
 
-Response::Response(void) {
-	set_status_line();
-	set_headers();
-	set_body();
-	set_full_response();
-}
-
-Response::~Response(void) {
+ResponseGenerator::ResponseGenerator(void) {
 
 }
 
-Response::Response(Response const& other) {
+ResponseGenerator::~ResponseGenerator(void) {
+
+}
+
+ResponseGenerator::ResponseGenerator(ResponseGenerator const& other) {
 	*this = other;
 }
 
-Response&	Response::operator=(Response const& other) {
+ResponseGenerator&	ResponseGenerator::operator=(ResponseGenerator const& other) {
 	if (this != &other) {
 		this->_full_response = other._full_response;
 		this->_status_line = other._status_line;
@@ -50,58 +38,69 @@ Response&	Response::operator=(Response const& other) {
 	return (*this);
 }
 
-void	Response::set_status_line(void) {
+void	ResponseGenerator::generate_response(ResponseData response) {
+	// STATUS LINE
 	this->_status_line.append(HTTP_VERSION);
 	this->_status_line.append(" ");
-	this->_status_line.append("200"); // status_code
+	this->_status_line.append(std::to_string(response.get_status_code()));
 	this->_status_line.append(" ");
-	this->_status_line.append("OK"); // reason_phrase
-	this->_status_line.append(CRLF);
-}
+	this->_status_line.append(response.get_reason_phrase());
 
-void	Response::set_headers(void) {
+	// HEADERS
 	this->_headers.append("Date");
 	this->_headers.append(HEADER_SEPERATOR);
 	this->_headers.append(get_date_information());
 	this->_headers.append(CRLF);
+	for (std::map<std::string, std::string>::const_iterator it = response.get_headers().begin(); it != response.get_headers().end(); it++) {
+		this->_headers.append(it->first);
+		this->_headers.append(HEADER_SEPERATOR);
+		this->_headers.append(it->second);
+		this->_headers.append(CRLF);
+	}
 	this->_headers.append(CRLF);
-}
 
-void	Response::set_body(void) {
-	std::ifstream	input_stream;
-	std::string		input;
+	// BODY
+	this->_body.append(response.get_body());
 
-	input_stream.open("./index.html");
-	std::ostringstream ss;
-	ss << input_stream.rdbuf();
-	input.append(ss.str());
-	input_stream.close();
-	this->_body.append(input);
-}
-
-void	Response::set_full_response(void) {
+	// FULL RESPONSE	
 	this->_full_response.append(this->_status_line);
 	this->_full_response.append(this->_headers);
 	this->_full_response.append(this->_body);
 }
 
-std::string const&	Response::get_full_response(void) const {
-	return (this->_full_response);
-}
-
-std::string const&	Response::get_status_line(void) const {
-	return (this->_status_line);
-}
-
-std::string const&	Response::get_headers(void) const {
-	return (this->_headers);
-}
-
-std::string const&	Response::get_body(void) const {
+std::string const&	ResponseGenerator::get_body(void) const {
 	return (this->_body);
 }
 
-std::ostream&	operator<<(std::ostream& os, Response const& response) {
+std::string const&	ResponseGenerator::get_full_response(void) const {
+	return (this->_full_response);
+}
+
+std::string const&	ResponseGenerator::get_headers(void) const {
+	return (this->_headers);
+}
+
+std::string const&	ResponseGenerator::get_status_line(void) const {
+	return (this->_status_line);
+}
+
+void	ResponseGenerator::set_body(std::string const& body) {
+	this->_body = body;
+}
+
+void	ResponseGenerator::set_full_response(std::string const& full_response) {
+	this->_full_response = full_response;
+}
+
+void	ResponseGenerator::set_headers(std::string const& headers) {
+	this->_headers = headers;
+}
+
+void	ResponseGenerator::set_status_line(std::string const& status_line) {
+	this->_status_line = status_line;
+}
+
+std::ostream&	operator<<(std::ostream& os, ResponseGenerator const& response) {
 	os << "---STATUS LINE---" << std::endl << response.get_status_line() << std::endl;
 	os << "---HEADERS---" << std::endl << response.get_headers() << std::endl;
 	if (!response.get_body().empty()) {
