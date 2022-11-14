@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/14 12:36:38 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/14 12:38:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,73 +228,16 @@ int kqueue_server(vector<Server> server)
         {
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
-<<<<<<< HEAD
-            if (event[i].flags & EV_EOF) {
-                close(event_fd);
-=======
             if (client_disconnected(EVENT_FLAGS)) {
                 printf("--- a client has disconnected ---\n");
                 close(EVENT_FD);
 				connections.erase(EVENT_FD);
->>>>>>> main
 				// do not close socket_connection_fd, is bad file descriptor
             }
 
             // If the new event's file descriptor is the same as the listening
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
-<<<<<<< HEAD
-            else if (match_event(event_fd, sockets_with_config) == true)
-            {
-				// Incoming socket connection on the listening socket.
-				// Create a new socket for the actual connection to client.
-				socket_connection_fd = accept(event_fd, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
-				if (socket_connection_fd == -1) {
-					return (error_and_exit("An error occured in accept()\n"));
-				}
-
-				// Put this new socket connection also as a 'filter' event
-				// to watch in kqueue, so we can now watch for events on this
-				// new socket.
-				EV_SET(&change_event, socket_connection_fd, EVFILT_READ, EV_ADD, 0, 0, NULL);
-				if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-                    return (error_and_exit("An error occured in kevent() when registering connected socket to the queue\n"));
-				}
-			}
-
-			// READY TO READ FROM CLIENT SOCKET
-			else if (event[i].filter == EVFILT_READ)
-			{
-				HTTPRequestLexer	lexer;
-				long				total_amount_of_bytes_read = 0;
-				int					bytes_read = 1;
-				char				buf[BUFF_SIZE];
-	
-				while (bytes_read > 0) {
-					bytes_read = recv(event_fd, buf, sizeof(buf), 0);
-					if (bytes_read == -1) {
-						break ;
-					}
-					lexer.process_request(std::string(buf));
-					if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
-						break ;
-					}
-					total_amount_of_bytes_read += bytes_read;
-				}
-				
-				EV_SET(&change_event, socket_connection_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
-				if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
-					return (error_and_exit("An error occured in kevent() when registering write event to the queue\n"));
-				}
-			}
-			else if (event[i].filter == EVFILT_WRITE) {
-				Response	response;
-				const char *buf = response.get_full_response().c_str();
-				// std::cout << std::endl << response << std::endl;
-
-				send(event_fd, buf, strlen(buf), 0);
-				close(event_fd);
-=======
 			else if (is_new_connection(EVENT_FD, sockets_with_config) == true) {
 				int connection_fd = accept_connection(EVENT_FD);
 				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
@@ -319,7 +262,6 @@ int kqueue_server(vector<Server> server)
 					send_request_to_client(EVENT_FD, client);
 					connections.erase(EVENT_FD);
 				}
->>>>>>> main
 			}
 		}
 	}
