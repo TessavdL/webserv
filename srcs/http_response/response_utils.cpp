@@ -11,7 +11,7 @@ char*	custom_asctime(const struct tm* time_information)
 	};
 	static char	date_information[31];
 
-	sprintf(date_information, "%.3s,%3d %.3s %d %.2d:%.2d:%.2d CET\n",
+	sprintf(date_information, "%.3s,%3d %.3s %d %.2d:%.2d:%.2d CET",
     	wday_name[time_information->tm_wday],
 		time_information->tm_mday,
     	mon_name[time_information->tm_mon],

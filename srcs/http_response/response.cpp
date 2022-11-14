@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:19:28 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/01 20:02:27 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 11:02:27 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	Response::set_headers(void) {
 	this->_headers.append("Date");
 	this->_headers.append(HEADER_SEPERATOR);
 	this->_headers.append(get_date_information());
+	this->_headers.append(CRLF);
 	this->_headers.append(CRLF);
 }
 
