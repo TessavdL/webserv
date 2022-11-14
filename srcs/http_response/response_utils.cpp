@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   response_utils.cpp                                 :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2022/11/01 18:11:25 by jelvan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/http_response/response_utils.hpp"
 
 char*	custom_asctime(const struct tm* time_information)

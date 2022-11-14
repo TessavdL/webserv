@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:44:55 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/01 18:10:09 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	HTTPRequestLexer::process_request(std::string const& request) {
 			else {
 				go_body(str, index);
 			}
-			std::cout << *(this->parser) << std::endl;			
+			// std::cout << *(this->parser) << std::endl;			
 			return ;
 		default:
 			std::cout << "ERROR IN HTTP REQUEST" << std::endl;

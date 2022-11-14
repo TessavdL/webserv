@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:15:32 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/01 18:13:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 
 bool	match_event(int event_fd, map<int, vector<Server> > sockets_with_config)
 {
-	cout << "event fd = " << event_fd << endl;
 	map<int, vector<Server> >::iterator it;
 	it = sockets_with_config.find(event_fd);
 	if (it != sockets_with_config.end())
@@ -118,7 +117,6 @@ int kqueue_server(vector<Server>	server)
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
             if (event[i].flags & EV_EOF) {
-                printf("--- a client has disconnected ---\n");
                 close(event_fd);
 				// do not close socket_connection_fd, is bad file descriptor
             }
@@ -128,7 +126,6 @@ int kqueue_server(vector<Server>	server)
             // to connect to our socket.
             else if (match_event(event_fd, sockets_with_config) == true)
             {
-                printf("--- a client has connected ---\n");
 				// Incoming socket connection on the listening socket.
 				// Create a new socket for the actual connection to client.
 				socket_connection_fd = accept(event_fd, (struct sockaddr *)&client_addr, (socklen_t *)&client_len);
@@ -143,7 +140,6 @@ int kqueue_server(vector<Server>	server)
 				if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
                     return (error_and_exit("An error occured in kevent() when registering connected socket to the queue\n"));
 				}
-				printf("--- event was added to queue ---\n");
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
@@ -153,49 +149,31 @@ int kqueue_server(vector<Server>	server)
 				long				total_amount_of_bytes_read = 0;
 				int					bytes_read = 1;
 				char				buf[BUFF_SIZE];
-
-				std::cout << "--- reading from client socket ---" << std::endl;
-				std::cout << "--- amount of bytes in data = " << event[i].data << "---" << std::endl;
 	
 				while (bytes_read > 0) {
 					bytes_read = recv(event_fd, buf, sizeof(buf), 0);
 					if (bytes_read == -1) {
 						break ;
 					}
-					if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
-						std::cout << "--- finished reading from socket ---" << std::endl;
-					}
 					lexer.process_request(std::string(buf));
 					if (lexer.get_state() == HTTPRequestLexer::REQUEST_START || lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
-						std::cout << "--- request is invalid ---" << std::endl;
 						break ;
 					}
 					total_amount_of_bytes_read += bytes_read;
-				}
-
-				if (total_amount_of_bytes_read == event[i].data) {
-					std::cout << "--- all data send by the socket was received ---" << std::endl;
-				}
-				else {
-					std::cout << "--- an error occured, not all send by the socket was received ---" << std::endl;
 				}
 				
 				EV_SET(&change_event, socket_connection_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
 				if (kevent(kq, &change_event, 1, NULL, 0, NULL) == -1) {
 					return (error_and_exit("An error occured in kevent() when registering write event to the queue\n"));
 				}
-				printf("--- done reading ---\n");
 			}
 			else if (event[i].filter == EVFILT_WRITE) {
-				printf("--- writing to client socket ---\n");
 				Response	response;
 				const char *buf = response.get_full_response().c_str();
-				std::cout << std::endl << response << std::endl;
+				// std::cout << std::endl << response << std::endl;
 
 				send(event_fd, buf, strlen(buf), 0);
-				printf("--- done writing to client socket\n");
 				close(event_fd);
-				printf("--- bounce bye ---\n\n");
 			}
 		}
 	}
