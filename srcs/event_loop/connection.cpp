@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:36:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/14 17:08:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/event_loop/connection.hpp"
 
-Connection::Connection() : _location_index(0), _server_index(0) {
+Connection::Connection() : _location_index(0), _server_index(NO_LOCATION) {
 
 }
 
@@ -47,7 +47,7 @@ Connection::t_request const&	Connection::get_request(void) const {
 	return (this->_request);
 }
 
-Response const&	Connection::get_response(void) const {
+ResponseData const&	Connection::get_response(void) const {
 	return (this->_response);
 }
 
@@ -97,4 +97,9 @@ void	Connection::print_request(void) const {
 		std::cout << this->_request.body << std::endl;
 	std::cout << "bytes in client request = " << this->_request.bytes_in_data << std::endl;
 	std::cout << "bytes read = " << this->_request.total_bytes_read << std::endl;
+}
+
+void	Connection::select_virtual_server(void) {
+	this->_server_index = determine_server_index(this->_request.request_line.uri.get_authority_host(), this->get_virtual_servers().second);
+	this->_location_index = determine_location_index(this->_request.request_line.uri.get_path_full(), this->_virtual_servers.second[this->_server_index].get_location_block());
 }
