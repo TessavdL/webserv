@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 12:00:48 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:25:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 14:50:43 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@
 
 #include "../../includes/config_parser/server.hpp"
 
-size_t	select_virtual_server(std::string const& host, std::vector<Server> const& v);
+size_t	select_virtual_server_index(std::string const& host, std::vector<Server> const& v);
 
 #endif
