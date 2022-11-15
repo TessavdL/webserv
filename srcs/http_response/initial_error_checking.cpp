@@ -6,37 +6,37 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:06:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 12:23:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 18:16:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/error_checking.hpp"
 
-static std::vector<std::string>	standard_method(void) {
-	std::vector<std::string>	standard_method;
+// static std::vector<std::string>	standard_method(void) {
+// 	std::vector<std::string>	standard_method;
 
-	standard_method.push_back("GET");
-	standard_method.push_back("POST");
-	standard_method.push_back("DELETE");
-	return (standard_method);
-}
+// 	standard_method.push_back("GET");
+// 	standard_method.push_back("POST");
+// 	standard_method.push_back("DELETE");
+// 	return (standard_method);
+// }
 
-static std::vector<std::string>	find_allowed_methods(Connection const& client) {
-	int const&		location_index = client.get_location_index();
-	Server const&	virtual_server = client.get_virtual_servers().second[client.get_server_index()];
+// static std::vector<std::string>	find_allowed_methods(Connection const& client) {
+// 	int const&		location_index = client.get_location_index();
+// 	Server const&	virtual_server = client.get_virtual_servers().second[client.get_server_index()];
 
-	if (location_index != NO_LOCATION) {
-		if (!virtual_server.get_location_block()[location_index].get_limit_except().empty()) {
-			return (virtual_server.get_location_block()[location_index].get_limit_except());
-		}
-		else {
-			return (standard_method());
-		}
-	}
-	else {
-		return (standard_method());
-	}
-}
+// 	if (location_index != NO_LOCATION) {
+// 		if (!virtual_server.get_location_block()[location_index].get_limit_except().empty()) {
+// 			return (virtual_server.get_location_block()[location_index].get_limit_except());
+// 		}
+// 		else {
+// 			return (standard_method());
+// 		}
+// 	}
+// 	else {
+// 		return (standard_method());
+// 	}
+// }
 
 static long	find_content_length(std::map<std::string, std::string> headers) {
 	std::map<std::string, std::string>::const_iterator it = headers.find("Content-length");
@@ -66,7 +66,7 @@ int	initial_error_checking(Connection& client, Connection::t_request const& requ
 	if (check_if_complete(status_code, request.bytes_in_data, request.total_bytes_read)) {
 		return (status_code);
 	}
-	if (check_method(status_code, request.request_line.method, find_allowed_methods(client))) {
+	if (check_method(status_code, request.request_line.method, client.get_virtual_server().get_limit_except())) {
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {

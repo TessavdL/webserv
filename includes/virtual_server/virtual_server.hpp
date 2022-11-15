@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:03 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:05:17 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:22:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 
 class VirtualServer {
 	public:
-		VirtualServer(std::string const& host, std::string const& uri_path, std::vector<Server> servers)
+		VirtualServer();
 		~VirtualServer();
 		VirtualServer(VirtualServer const& other);
 		VirtualServer&	operator=(VirtualServer const& other);
 		
+		void	initialize_virtual_server(std::string const& host, std::string const& uri_path, std::vector<Server> servers);
 		void	overwrite_directives_if_set_in_location(LocationBlock location_block);
 		
 		std::string const &												get_autoindex() const;
@@ -34,8 +35,8 @@ class VirtualServer {
 		std::vector<std::string> const &								get_listen() const;
 		std::string const &												get_root() const;
 		std::string const &												get_server_name() const;
+	
 	private:
-		VirtualServer() {}
 		std::string												_autoindex;
 		std::string												_client_max_body_size;
 		std::vector<std::pair<std::vector<int>, std::string> >	_error_page;

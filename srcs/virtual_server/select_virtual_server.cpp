@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 13:43:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:12:50 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:20:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static size_t	longest_match(std::string str1, std::string str2) {
 	return (i);
 }
 
-size_t	determine_server_index(std::string const& host, std::vector<Server> const& v) {
+size_t	select_server_index(std::string const& host, std::vector<Server> const& v) {
 	size_t		l = 0;
 	size_t		max = 0;
 	size_t		server_index = 0;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   response.cpp                                       :+:    :+:            */
+/*   response_generator.cpp                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/18 15:19:28 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/14 14:32:54 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/11/15 17:29:52 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/15 19:00:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ void	ResponseGenerator::generate_response(ResponseData response) {
 	this->_headers.append(HEADER_SEPERATOR);
 	this->_headers.append(get_date_information());
 	this->_headers.append(CRLF);
-	for (std::map<std::string, std::string>::const_iterator it = response.get_headers().begin(); it != response.get_headers().end(); it++) {
-		this->_headers.append(it->first);
-		this->_headers.append(HEADER_SEPERATOR);
-		this->_headers.append(it->second);
-		this->_headers.append(CRLF);
-	}
+	// for (std::map<std::string, std::string>::const_iterator it = response.get_headers().begin(); it != response.get_headers().end(); it++) {
+	// 	this->_headers.append(it->first);
+	// 	this->_headers.append(HEADER_SEPERATOR);
+	// 	this->_headers.append(it->second);
+	// 	this->_headers.append(CRLF);
+	// }
 	this->_headers.append(CRLF);
 
 	// BODY

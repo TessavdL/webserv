@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 14:26:01 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:13:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 18:25:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 
 #define NO_LOCATION -2
 
-size_t	select_location_index(std::string const& host, std::vector<LocationBlock> const& v);
+int	select_location_index(std::string const& host, std::vector<LocationBlock> const& v);
 
 #endif

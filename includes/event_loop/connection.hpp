@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/14 16:57:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 17:43:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 #include <string>
 #include <vector>
 
-#include "../../includes/config_parser/server.hpp"
-#include "../../includes/http_request_parser/http_request_lexer.hpp"
-#include "../../includes/http_request_parser/uri_parser.hpp"
-#include "../../includes/http_response/response.hpp"
-#include "../includes/virtual_server/select_virtual_server.hpp"
-#include "../includes/virtual_server/select_location.hpp"
+#include "../config_parser/server.hpp"
+#include "../http_request_parser/http_request_lexer.hpp"
+#include "../http_request_parser/uri_parser.hpp"
+#include "../http_response/response.hpp"
+#include "../virtual_server/virtual_server.hpp"
+
+class ResponseHandler;
 
 class Connection {
 	public:
@@ -44,21 +45,25 @@ class Connection {
 		Connection&	operator=(Connection const& other);
 		void										print_request() const;
 		void										select_virtual_server();
-		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
-		Connection::t_request const&				get_request() const;
 		ResponseData const&							get_response() const;
-		size_t const&								get_location_index(void) const;
-		size_t const&								get_server_index(void) const;
-		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
+		Connection::t_request const&				get_request() const;
+		VirtualServer const&						get_virtual_server() const;
+		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
+		// size_t const&								get_location_index(void) const;
+		// size_t const&								get_server_index(void) const;
+		void										set_response(ResponseData const& response);
 		void										set_request(Connection::t_request const& request);
-		void										set_location_index(size_t server_index);
-		void										set_server_index(size_t server_index);
+		void										set_virtual_server(VirtualServer const& virtual_server);
+		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
+		// void										set_location_index(size_t server_index);
+		// void										set_server_index(size_t server_index);
 	private:
-		std::pair<int, std::vector<Server> >		_virtual_servers;
-		Connection::t_request						_request;
 		ResponseData								_response;
-		size_t										_location_index;
-		size_t										_server_index;
+		Connection::t_request						_request;
+		// size_t										_location_index;
+		// size_t										_server_index;
+		VirtualServer								_virtual_server;
+		std::pair<int, std::vector<Server> >		_virtual_servers;
 };
 
 #endif

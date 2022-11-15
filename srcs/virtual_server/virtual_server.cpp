@@ -6,17 +6,21 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:08:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 19:04:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/virtual_server/virtual_server.hpp"
 
-VirtualServer::VirtualServer(std::string const& host, std::string const& uri_path, std::vector<Server> servers) {
-	size_t const						server_index = select_virtual_server_index(host, servers);
+VirtualServer::VirtualServer(void) {
+
+}
+
+void	VirtualServer::initialize_virtual_server(std::string const& host, std::string const& uri_path, std::vector<Server> servers) {
+	size_t const						server_index = select_server_index(host, servers);
 	Server const						virtual_server = servers[server_index];
 	std::vector<LocationBlock> const	location_blocks = virtual_server.get_location_block();
-	size_t const						location_index = select_location_index(uri_path, location_blocks);
+	int const							location_index = select_location_index(uri_path, location_blocks);
 	LocationBlock						location_block;
 
 	this->_autoindex = virtual_server.get_autoindex();
@@ -26,8 +30,12 @@ VirtualServer::VirtualServer(std::string const& host, std::string const& uri_pat
 	this->_listen = virtual_server.get_listen();
 	this->_root = virtual_server.get_root();
 	this->_server_name = host;
+	this->_limit_except.push_back("GET");
+	this->_limit_except.push_back("POST");
+	this->_limit_except.push_back("DELETE");
 
 	if (location_index != NO_LOCATION) {
+		location_block = location_blocks[location_index];
 		overwrite_directives_if_set_in_location(location_block);
 	}
 }
@@ -67,6 +75,7 @@ VirtualServer&	VirtualServer::operator=(VirtualServer const& other) {
 		this->_client_max_body_size = other._client_max_body_size;
 		this->_error_page = other._error_page;
 		this->_index = other._index;
+		this->_limit_except = other._limit_except;
 		this->_listen = other._listen;
 		this->_root = other._root;
 		this->_server_name =other._server_name;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/14 17:12:24 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 18:30:31 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,12 +173,19 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	
 	// client.set_location_index(select_location(client.get_request().request_line.uri.get_path_full(), client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
 	// std::cout << "location index = " << client.get_location_index() << std::endl;
-	ResponseHandler	response;
+	ResponseHandler	response_handler;
 
-	pair<int, string> status = initial_error_checking(client, client.get_request());
-	std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
-	std::string response = client.get_response().get_full_response();
-	const char *buf = response.c_str();
+	response_handler.handle_response(client);
+	ResponseGenerator response;
+
+	response.generate_response(client.get_response());
+
+	
+
+	// pair<int, string> status = initial_error_checking(client, client.get_request());
+	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
+	std::string r = response.get_full_response();
+	const char *buf = r.c_str();
 	send(connection_fd, buf, strlen(buf), 0);
 	printf("--- done writing to client socket\n");
 	close(connection_fd);

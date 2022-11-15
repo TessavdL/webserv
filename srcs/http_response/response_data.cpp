@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 13:50:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/14 14:00:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 18:58:49 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,13 @@ std::string const&					ResponseData::get_body(void) const {
 	return (this->_body);
 }
 
+#include <iostream>
+
 std::map<std::string, std::string>	ResponseData::get_headers(void) const {
+	if (this->_headers.empty())
+		std::cout << "IS EMPTY" << std::endl;
+	else
+		std::cout << "size = " << this->_headers.size() << std::endl;
 	return (this->_headers);
 }
 

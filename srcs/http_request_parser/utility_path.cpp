@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:29:58 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/27 18:10:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 18:47:51 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,39 +93,39 @@ std::string	remove_consequetive_characters(std::string const& str, char c) {
 	return (ret);
 }
 
-std::string	root_plus_uri_path(std::string const& uri_path, std::string const& root) {
+std::string	root_plus_uri_path(std::string const& root, std::string const& uri_path) {
 	return(remove_consequetive_characters(root + uri_path,'/'));
 }
 
 // remove once functions from utility path are going to be used
-int main(void) {
-	std::cout << std::boolalpha << "/directory/file.html" << " " << is_absolute_path("/directory/file.html") << std::endl;
-	std::cout << std::boolalpha << "directory/file.html" << " " << is_absolute_path("directory/file.html") << std::endl;
-	std::cout << std::boolalpha << "file.html" << " " << is_absolute_path("file.html") << std::endl;
-	std::cout << std::boolalpha << "" << " " << is_absolute_path("") << std::endl;
-	std::cout << std::boolalpha << "/directory/file.html" << " " << is_directory("/directory/file.html") << std::endl;
-	std::cout << std::boolalpha << "directory/file.html" << " " << is_directory("directory/file.html") << std::endl;
-	std::cout << std::boolalpha << "file.html" << " " << is_directory("file.html") << std::endl;
-	std::cout << std::boolalpha << "" << " " << is_directory("") << std::endl;
-	std::cout << std::boolalpha << "/directory/" << " " << is_absolute_path("/directory/") << std::endl;
-	std::cout << std::boolalpha << "directory/" << " " << is_absolute_path("directory/") << std::endl;
-	std::cout << std::boolalpha << "/directory/directory/" << " " << is_absolute_path("/directory/directory/") << std::endl;
-	std::cout << std::boolalpha << "directory/directory/file.html" << " " << is_absolute_path("directory/directory/file.html") << std::endl;
-	std::vector<std::string> v = get_directory_file_list(std::string("./"));
-	if (!v.empty()) {
-		for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++) {
-			std::cout << *it << std::endl;
-		}
-	}
-	std::cout << std::boolalpha << "tempdir " << is_directory_stat("tempdir") << std::endl;
-	std::cout << std::boolalpha << "a.out " << is_regular_file_stat("a.out") << std::endl;
-	std::cout << std::boolalpha << "test " << is_regular_file_stat("test") << std::endl;
-	std::cout << std::boolalpha << "a.out " << has_read_permission("a.out") << std::endl;
-	std::cout << std::boolalpha << "a.out " << has_write_permission("a.out") << std::endl;
-	std::cout << std::boolalpha << "a.out " << has_execute_permission("a.out") << std::endl;
-	std::cout << std::boolalpha << "test " << has_read_permission("test") << std::endl;
-	std::cout << std::boolalpha << "test " << has_write_permission("test") << std::endl;
-	std::cout << std::boolalpha << "test " << has_execute_permission("test") << std::endl;
-	std::cout << root_plus_uri_path(std::string("/index.html"), std::string("var/www/html/"));
-	return (0);
-}
+// int main(void) {
+// 	std::cout << std::boolalpha << "/directory/file.html" << " " << is_absolute_path("/directory/file.html") << std::endl;
+// 	std::cout << std::boolalpha << "directory/file.html" << " " << is_absolute_path("directory/file.html") << std::endl;
+// 	std::cout << std::boolalpha << "file.html" << " " << is_absolute_path("file.html") << std::endl;
+// 	std::cout << std::boolalpha << "" << " " << is_absolute_path("") << std::endl;
+// 	std::cout << std::boolalpha << "/directory/file.html" << " " << is_directory("/directory/file.html") << std::endl;
+// 	std::cout << std::boolalpha << "directory/file.html" << " " << is_directory("directory/file.html") << std::endl;
+// 	std::cout << std::boolalpha << "file.html" << " " << is_directory("file.html") << std::endl;
+// 	std::cout << std::boolalpha << "" << " " << is_directory("") << std::endl;
+// 	std::cout << std::boolalpha << "/directory/" << " " << is_absolute_path("/directory/") << std::endl;
+// 	std::cout << std::boolalpha << "directory/" << " " << is_absolute_path("directory/") << std::endl;
+// 	std::cout << std::boolalpha << "/directory/directory/" << " " << is_absolute_path("/directory/directory/") << std::endl;
+// 	std::cout << std::boolalpha << "directory/directory/file.html" << " " << is_absolute_path("directory/directory/file.html") << std::endl;
+// 	std::vector<std::string> v = get_directory_file_list(std::string("./"));
+// 	if (!v.empty()) {
+// 		for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++) {
+// 			std::cout << *it << std::endl;
+// 		}
+// 	}
+// 	std::cout << std::boolalpha << "tempdir " << is_directory_stat("tempdir") << std::endl;
+// 	std::cout << std::boolalpha << "a.out " << is_regular_file_stat("a.out") << std::endl;
+// 	std::cout << std::boolalpha << "test " << is_regular_file_stat("test") << std::endl;
+// 	std::cout << std::boolalpha << "a.out " << has_read_permission("a.out") << std::endl;
+// 	std::cout << std::boolalpha << "a.out " << has_write_permission("a.out") << std::endl;
+// 	std::cout << std::boolalpha << "a.out " << has_execute_permission("a.out") << std::endl;
+// 	std::cout << std::boolalpha << "test " << has_read_permission("test") << std::endl;
+// 	std::cout << std::boolalpha << "test " << has_write_permission("test") << std::endl;
+// 	std::cout << std::boolalpha << "test " << has_execute_permission("test") << std::endl;
+// 	std::cout << root_plus_uri_path(std::string("/index.html"), std::string("var/www/html/"));
+// 	return (0);
+// }
