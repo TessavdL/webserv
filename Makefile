@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/11/16 13:26:04 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/11/16 17:23:03 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC_FILES	=		fatal_exception.cpp \
 					kqueue_server.cpp \
 					main.cpp \
 					cgi/cgi.cpp \
+					cgi/cgi_handler.cpp \
 					event_loop/connection.cpp \
 					config_parser/exception_config_parser.cpp \
 					config_parser/lexer.cpp \

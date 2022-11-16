@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 15:16:05 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 17:22:13 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ Cgi::Cgi(void) {
 	return ;
 }
 
-Cgi::Cgi(Connection const&	connection, int const& connection_fd) {
+Cgi::Cgi(Connection const&	connection, std::string const& file_location) {
 	create_argv();
-	create_env(connection, connection.get_request(), connection_fd);
+	create_env(connection, connection.get_request(), file_location);
 	initiate_cgi_process();
 }
 
@@ -52,7 +52,7 @@ void	Cgi::create_argv(void) {
 	this->_argv[1] = NULL;
 }
 
-void	Cgi::create_env(Connection const& connection, Connection::t_request const& request, int const& connection_fd) {
+void	Cgi::create_env(Connection const& connection, Connection::t_request const& request, std::string const& file_location) {
 	string	cwd = string(getcwd(NULL, 0));
 
 	if (request.request_line.method.compare("POST"))
@@ -63,7 +63,7 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 		this->_env["CONTENT_TYPE"] = "text/html";
 	else
 		this->_env["CONTENT_TYPE"] = request.headers.find("Content-Type")->second;
-	this->_env["PATH_INFO"] = request.request_line.uri.get_path_full();
+	this->_env["PATH_INFO"] = file_location;
 	this->_env["PATH_TRANSLATED"] = cwd + '/' + request.request_line.uri.get_path_full();
 	this->_env["QUERY_STRING"] = request.request_line.uri.get_query_string();
 	this->_env["REMOTE_HOST"] = request.request_line.uri.get_authority_host();
@@ -71,7 +71,7 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 	this->_env["SCRIPT_FILENAME"] = request.request_line.uri.get_path_full();
 	this->_env["SCRIPT_NAME"] = request.request_line.uri.get_path_full();
 	this->_env["SERVER_NAME"] = request.headers.find("Host")->second;
-	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection_fd));
+	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
 	create_env_from_map();
@@ -79,11 +79,15 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 }
 
 void	Cgi::create_env_from_map(void) {
-	// this->_env_array = malloc(sizeof(char *) * this->_env.size() + 1);
-	// if (!this->_env_array)
-	// 	throw(FatalException("SYSCALL: malloc: Failed\n"));
-	// for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); it++)
-	// 	this->_env_array[]
+	size_t	i(0);
+
+	this->_env_array = (char **)malloc(sizeof(char *) * this->_env.size() + 1);
+	if (!this->_env_array)
+		throw(FatalException("SYSCALL: malloc: Failed\n"));
+	for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); it++) {
+		this->_env_array[i] = strdup(string(it->first + "=" + it->second).c_str());
+		i++;
+	}
 }
 
 void	Cgi::free_env_array(void) {
@@ -97,5 +101,5 @@ void	Cgi::initiate_cgi_process(void) {
 	if (this->_pid == -1)
 		throw(FatalException("SYSCALL: fork: Failed\n"));
 	if (this->_pid == 0)
-		execve(this->_argv[0], this->_argv, NULL);
+		execve(this->_argv[0], this->_argv, _env_array);
 }

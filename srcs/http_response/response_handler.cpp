@@ -6,12 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 15:23:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 17:26:33 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
-
 
 // ResponseHandler::ResponseHandler(Connection& client) {
 
@@ -112,28 +111,29 @@ void	ResponseHandler::handle_response(Connection& client) {
 	// }
 }
 
-// bool	isCGI(std::string const& file_location) {
-// 	size_t pos = file_location.find(".");
+bool	isCGI(std::string const& file_location) {
+	std::string const& extension = file_location.substr(file_location.find("."));
 
-// 	if (pos != std::string::npos) {
-// 		std::pair<string, string> p = split_string_in_half(file_location, ".")
-// 		if (p.second )
-// 	}
-// }
+	if (!extension.empty() && !extension.compare(".php"))
+		return (true);
+	return (false);
+}
 
 static std::string create_content_type(std::string const& file_name) {
 	std::string const& extension = file_name.substr(file_name.find("."));
 
+	std::cout << "file_name = " << file_name << std::endl;
+	std::cout << "extension = " << extension << std::endl;
 	if (extension.empty()) {
 		return ("application/octet-stream");
 	}
-	else if (extension.compare("html")) {
+	else if (!extension.compare(".html")) {
 		return ("text/html");
 	}
-	else if (extension.compare("css")) {
+	else if (!extension.compare(".css")) {
 		return ("text/css");
 	}
-	else if (extension.compare("js")) {
+	else if (!extension.compare(".js")) {
 		return ("text/javascript");
 	}
 	return ("text/plain");
@@ -199,8 +199,9 @@ void	ResponseHandler::handle_get_request(Connection& client, Connection::t_reque
 		return (create_error_response(client, find_error_page_location(client)));
 	}
 	std::cout << file_location << std::endl;
-	// if (isCGI(file_location)) {
-	// 	create_cgi_response(client, file_location, "GET");
-	// }
+	if (isCGI(file_location)) {
+		create_cgi_response(client, file_location);
+		return ;
+	}
 	create_get_response(client, file_location);
 }
