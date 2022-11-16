@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 16:44:37 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:14:07 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/15 13:11:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class SocketListen {
 		void						bind_socket_to_address(void);
 		void						listen_on_socket(void);
 		int							get_port_number_from_socket_fd(void) const;
+		int							get_port_number_from_socket_fd(int const& connection_fd) const;
 		struct sockaddr_in const&	get_addr(void) const;
 		int const&					get_fd(void) const;
 		int	const&					get_port_number(void) const;

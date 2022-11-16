@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/24 17:04:38 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:20:45 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@
 #include "../includes/webserv.hpp"
 
 int		main(int ac, char **av) {
-	if (ac != 2) {
-		cout << "Incorrect amount of arguments, please provide a single configuration file." << endl;
+	string filename;
+	
+	if (ac == 1)
+		filename = "./srcs/config_parser/config_contents.txt";
+	else if (ac == 2)
+		filename = string(av[1]);
+	else {
+		cout << "Error, please provide a valid amount of arguments" << endl;
 		exit (1);
 	}
 	try {
 		vector<Server>		server_blocks;
-		Lexer server_config((string(av[1])));
+		Lexer server_config(filename);
 		// Prints the raw server content before parsing
 		// cout << server_config << endl;
 		vector<Lexer::t_server>	serv = server_config.get_server_blocks();

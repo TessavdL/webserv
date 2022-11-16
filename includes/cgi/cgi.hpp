@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/14 16:08:47 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 14:38:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,24 @@
 
 # include "../event_loop/connection.hpp"
 # include "../config_parser/server.hpp"
+# include "../listening_sockets/socket_listen.hpp"
 
 class Cgi {
 	public:
 		Cgi();
-		Cgi(Connection const& connection);
+		Cgi(Connection const& connection, int const& connection_fd);
 		Cgi(Cgi const& other);
 		Cgi& operator=(Cgi const& rhs);
 		~Cgi();
-		void	create_env(Connection const& connection, Connection::t_request const& request);
+		void	create_argv(void);
+		void	create_env(Connection const& connection, Connection::t_request const& request, int const& connection_fd);
+		void	create_env_from_map(void);
+		void	free_env_array(void);
+		void	initiate_cgi_process(void);
 	private:
 		map<string, string>	_env;
+		char**				_env_array;
+		char*				_argv[3];
 		pid_t				_pid;
 		int					_fd[2][2];
 };
