@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 12:19:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/16 13:34:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,12 @@ int	check_http_protocol(int& status_code, std::string const& protocol) {
 }
 
 // int	add_allow_header(std::vector<std::string> allowed_methods, std::string& headers) {
-// 	headers.append("Allow");
-// 	headers.append(": ");
 // 	for (size_t i = 0; i < allowed_methods.size(); i++) {
 // 		headers.append(allowed_methods[i]);
 // 		if (i + 1 != allowed_methods.size()) {
 // 			headers.append(", ");
 // 		}
 // 	}
-// 	headers.append("\r\n");
 // }
 
 // int	handle_method(int& status_code, std::string const& method, std::vector<std::string> const& allowed_methods, std::string& headers) {

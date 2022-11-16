@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:29:58 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 18:47:51 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/16 11:54:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ bool	is_directory_stat(const char* str) {
 	}
 	return (S_ISDIR(stat_buf.st_mode));
 	
+}
+
+bool	file_exists(const char *str) {
+	struct stat stat_buf;
+
+	if (stat(str, &stat_buf) == 0) {
+		return (true);
+	}
+	return (false);
 }
 
 bool	is_regular_file_stat(const char* str) {

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 17:29:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 19:00:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/16 14:53:06 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ ResponseGenerator::ResponseGenerator(ResponseGenerator const& other) {
 
 ResponseGenerator&	ResponseGenerator::operator=(ResponseGenerator const& other) {
 	if (this != &other) {
-		this->_full_response = other._full_response;
-		this->_status_line = other._status_line;
-		this->_headers = other._headers;
 		this->_body = other._body;
+		this->_full_response = other._full_response;
+		this->_headers = other._headers;
+		this->_status_line = other._status_line;
 	}
 	return (*this);
 }
@@ -45,18 +45,19 @@ void	ResponseGenerator::generate_response(ResponseData response) {
 	this->_status_line.append(std::to_string(response.get_status_code()));
 	this->_status_line.append(" ");
 	this->_status_line.append(response.get_reason_phrase());
+	this->_status_line.append(CRLF);
 
 	// HEADERS
 	this->_headers.append("Date");
 	this->_headers.append(HEADER_SEPERATOR);
 	this->_headers.append(get_date_information());
 	this->_headers.append(CRLF);
-	// for (std::map<std::string, std::string>::const_iterator it = response.get_headers().begin(); it != response.get_headers().end(); it++) {
-	// 	this->_headers.append(it->first);
-	// 	this->_headers.append(HEADER_SEPERATOR);
-	// 	this->_headers.append(it->second);
-	// 	this->_headers.append(CRLF);
-	// }
+	for (std::map<std::string, std::string>::const_iterator it = response.get_headers().begin(); it != response.get_headers().end(); it++) {
+		this->_headers.append(it->first);
+		this->_headers.append(HEADER_SEPERATOR);
+		this->_headers.append(it->second);
+		this->_headers.append(CRLF);
+	}
 	this->_headers.append(CRLF);
 
 	// BODY
