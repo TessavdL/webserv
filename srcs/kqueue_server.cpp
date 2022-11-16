@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 16:18:44 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 17:30:42 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,9 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	// pair<int, string> status = initial_error_checking(client, client.get_request());
 	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
 	std::string r = response.get_full_response();
+	unsigned long size = r.size();
 	const char *buf = r.c_str();
-	send(connection_fd, buf, strlen(buf), 0);
+	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
 	close(connection_fd);
 	printf("--- bounce bye ---\n\n");

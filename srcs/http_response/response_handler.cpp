@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 17:26:33 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 17:30:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,7 @@ void	ResponseHandler::create_error_response(Connection& client, std::string cons
 void	ResponseHandler::handle_response(Connection& client) {
 	Connection::t_request request = client.get_request();
 
-	std::cout << "HELLO DO WE GET HERE" << std::endl;
 	this->_status_code = initial_error_checking(client, request);
-	std::cout << this->_status_code << "<<< STATUS CODE" << std::endl;
 	if (client_or_server_error_occured()) {
 		return (create_error_response(client, find_error_page_location(client)));
 	}
@@ -136,6 +134,9 @@ static std::string create_content_type(std::string const& file_name) {
 	else if (!extension.compare(".js")) {
 		return ("text/javascript");
 	}
+	else if (!extension.compare(".jpg")) {
+		return ("image/jpeg");
+	}
 	return ("text/plain");
 }
 
@@ -169,11 +170,12 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 	ResponseData	response_data;
 
 	std::string body = get_file_contents(file_location);
-	if (!body.empty())
+	if (!body.empty()) {
 		response_data.set_body(body);
+	}
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
-	response_data.set_headers(create_headers(client, file_location, body.length()));
+	response_data.set_headers(create_headers(client, file_location, body.size()));
 	client.set_response(response_data);
 }
 
@@ -181,7 +183,7 @@ void	ResponseHandler::handle_get_request(Connection& client, Connection::t_reque
 	std::string	file_location;
 	
 	file_location = create_path(client.get_virtual_server().get_root(), request.request_line.uri.get_path_full());
-	std::cout << "FILE LOCATION = " << file_location << std::endl;
+	// std::cout << "FILE LOCATION = " << file_location << std::endl;
 	if (file_exists(file_location.c_str())) {
 		if (is_directory(file_location.c_str())) {
 			std::string index = search_for_file_in_dir(client.get_virtual_server().get_index(), file_location);
