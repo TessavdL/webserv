@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   select_location.hpp                                :+:    :+:            */
+/*   search_for_file.hpp                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/09 14:26:01 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 18:25:32 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/11/16 13:27:38 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/16 13:29:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SELECT_LOCATION_HPP
-# define SELECT_LOCATION_HPP
+#ifndef SEARCH_FOR_FILE_HPP
+# define SEARCH_FOR_FILE_HPP
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <dirent.h>
 
-#include "../../includes/config_parser/server.hpp"
 
-#define NO_LOCATION -2
-
-int	select_location_index(std::string const& host, std::vector<LocationBlock> const& v);
+std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::string const& directory);
 
 #endif

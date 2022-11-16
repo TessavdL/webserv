@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 14:20:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:58:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/15 18:28:06 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static size_t	longest_match(std::string str1, std::string str2) {
 }
 
 // assumes that uri_path is not empty
-size_t	select_location(std::string const& uri_path, std::vector<LocationBlock> const& v) {
+int	select_location_index(std::string const& uri_path, std::vector<LocationBlock> const& v) {
 	size_t		l = 0;
 	size_t		max = 0;
-	size_t		location_index = 0;
+	int		location_index = 0;
 
 	if (v.empty())
 		return (NO_LOCATION);

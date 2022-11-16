@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:39:45 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/15 19:11:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@ LocationBlock::LocationBlock(void) {
 }
 
 LocationBlock::LocationBlock(Lexer::t_locations location) {
-	this->_root = "html";
-	this->_client_max_body_size = "1m";
-	this->_autoindex = "off";
-	this->_index.push_back("index.html");
-	this->_limit_except.push_back("GET");
-	this->_limit_except.push_back("POST");
-	this->_limit_except.push_back("DELETE");
 	helper_split(this->_path_and_optional_modifier, location.path_and_optional_modifier);
 	get_directives(location);
 }
