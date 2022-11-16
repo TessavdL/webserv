@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 15:03:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/16 15:23:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ static std::string	find_error_page_location(Connection& client) {
 	if (!client.get_virtual_server().get_error_page().empty()) {
 		file_location = create_path(client.get_virtual_server().get_root(), client.get_virtual_server().get_error_page().back().second);
 		if (file_location.empty()) {
-			return (create_path("/var/www/html", "error_page.html"));
+			return (create_path("", "error_page.html"));
 		}
 		else {
 			return (file_location);
 		}
 	}
 	else {
-		return (create_path("/var/www/html", "error_page.html"));
+		return (create_path("", "error_page.html"));
 	}
 }
 
@@ -95,7 +95,9 @@ void	ResponseHandler::create_error_response(Connection& client, std::string cons
 void	ResponseHandler::handle_response(Connection& client) {
 	Connection::t_request request = client.get_request();
 
+	std::cout << "HELLO DO WE GET HERE" << std::endl;
 	this->_status_code = initial_error_checking(client, request);
+	std::cout << this->_status_code << "<<< STATUS CODE" << std::endl;
 	if (client_or_server_error_occured()) {
 		return (create_error_response(client, find_error_page_location(client)));
 	}
@@ -179,6 +181,7 @@ void	ResponseHandler::handle_get_request(Connection& client, Connection::t_reque
 	std::string	file_location;
 	
 	file_location = create_path(client.get_virtual_server().get_root(), request.request_line.uri.get_path_full());
+	std::cout << "FILE LOCATION = " << file_location << std::endl;
 	if (file_exists(file_location.c_str())) {
 		if (is_directory(file_location.c_str())) {
 			std::string index = search_for_file_in_dir(client.get_virtual_server().get_index(), file_location);

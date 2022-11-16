@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 14:38:31 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 15:15:19 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../event_loop/connection.hpp"
 # include "../config_parser/server.hpp"
 # include "../listening_sockets/socket_listen.hpp"
+# include <unistd.h>
 
 class Cgi {
 	public:
@@ -34,7 +35,7 @@ class Cgi {
 		char**				_env_array;
 		char*				_argv[3];
 		pid_t				_pid;
-		int					_fd[2][2];
+		// int					_fd[2][2];
 };
 
 #endif

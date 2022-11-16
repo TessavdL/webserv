@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 14:47:59 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/16 15:16:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,15 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
 	create_env_from_map();
+	(void)connection;
 }
 
 void	Cgi::create_env_from_map(void) {
-	this->_env_array = malloc(sizeof(char *) * this->_env.size() + 1);
-	if (!this->_env_array)
-		throw(FatalException("SYSCALL: malloc: Failed\n"));
-	for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); it++)
-		this->_env_array[]
+	// this->_env_array = malloc(sizeof(char *) * this->_env.size() + 1);
+	// if (!this->_env_array)
+	// 	throw(FatalException("SYSCALL: malloc: Failed\n"));
+	// for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); it++)
+	// 	this->_env_array[]
 }
 
 void	Cgi::free_env_array(void) {
@@ -96,5 +97,5 @@ void	Cgi::initiate_cgi_process(void) {
 	if (this->_pid == -1)
 		throw(FatalException("SYSCALL: fork: Failed\n"));
 	if (this->_pid == 0)
-		execve(this->_argv[0], this->_argv, this->_env);
+		execve(this->_argv[0], this->_argv, NULL);
 }
