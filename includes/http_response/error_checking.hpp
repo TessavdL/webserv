@@ -6,15 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 12:20:18 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/21 14:50:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_CHECKING_HPP
 # define ERROR_CHECKING_HPP
 
-# include "../../includes/event_loop/connection.hpp"
-# include "../../includes/virtual_server/select_location.hpp"
+# include "../event_loop/connection.hpp"
+# include "../virtual_server/select_location.hpp"
+# include "../http_request_parser/utility_path.hpp"
 
 # include <map>
 # include <string>
@@ -32,10 +33,12 @@ int							check_if_complete(int& status_code, int const bytes_in_data, int const
 int							check_method(int& status_code, std::string const& method, std::vector<std::string> const& allowed_methods);
 int							check_request_size(int& status_code, int request_body_size, int content_length_size);
 int							check_uri_length(int& status_code, std::string const& request_uri);
-// int							add_allow_header(std::vector<std::string> allowed_methods, std::string& headers);
-// int							handle_method(int& status_code, std::string const& method, std::vector<std::string> const& allowed_methods, std::string& headers);
 int							check_http_protocol(int& status_code, std::string const& protocol);
+int							check_if_file_is_processable(int& status_code, std::string const& file_location);
+int							check_if_file_has_read_permission(int& status_code, std::string const& file_location);
+bool						check_if_file_is_found(int& status_code, bool file_location);
 
-int							initial_error_checking(Connection& client, Connection::t_request const& request);
+int							initial_error_checking(int& status_code, Connection& client, Connection::t_request const& request);
+int							check_file_status(int& status_code, std::string const& file);
 
 #endif

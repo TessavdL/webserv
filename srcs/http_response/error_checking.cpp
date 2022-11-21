@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 13:34:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/21 13:40:18 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,29 @@ int	check_http_protocol(int& status_code, std::string const& protocol) {
 	return (OK);
 }
 
-// int	add_allow_header(std::vector<std::string> allowed_methods, std::string& headers) {
-// 	for (size_t i = 0; i < allowed_methods.size(); i++) {
-// 		headers.append(allowed_methods[i]);
-// 		if (i + 1 != allowed_methods.size()) {
-// 			headers.append(", ");
-// 		}
-// 	}
-// }
+int	check_if_file_is_processable(int& status_code, std::string const& file_location) {
+	if (!is_regular_file_stat(file_location.c_str())) {
+		status_code = 422;
+		return (KO);
+	}
+	return (OK);
+}
 
-// int	handle_method(int& status_code, std::string const& method, std::vector<std::string> const& allowed_methods, std::string& headers) {
-// 	check_method(status_code, method, allowed_methods);
-// 	if (status_code = 405) {
-// 		add_allow_header(allowed_methods, headers);
-// 	}
-// }
+int	check_if_file_has_read_permission(int& status_code, std::string const& file_location) {
+	if (!has_read_permission(file_location.c_str())) {
+		status_code = 403;
+		return (KO);
+	}
+	return (OK);
+}
 
+bool	check_if_file_is_found(int& status_code, bool file_location) {
+	if (file_location == false) {
+		status_code = 404;
+		return (KO);
+	}
+	return (OK);
+}
 
 
 /*

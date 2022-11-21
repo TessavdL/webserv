@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:06:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 18:16:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/21 14:49:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ static long	find_content_length(std::map<std::string, std::string> headers) {
 
 // check_uri_length(status_code, request.request_line.uri.
 // need to save total uri length someone or handle it while parsing and just throw the 414
-int	initial_error_checking(Connection& client, Connection::t_request const& request) {
-	int		status_code = 200;
+int	initial_error_checking(int& status_code, Connection& client, Connection::t_request const& request) {
 	long	content_length = find_content_length(request.headers);
 
 	if (check_user_information(status_code, request.request_line.uri.get_authority_user_information())) {
@@ -79,5 +78,15 @@ int	initial_error_checking(Connection& client, Connection::t_request const& requ
 	if (check_http_protocol(status_code, request.request_line.protocol)) {
 		return (status_code);
 	}
-	return (200);
+	return (OK);
+}
+
+int	check_file_status(int& status_code, std::string const& file) {
+	if (check_if_file_is_processable(status_code, file)) {
+		return (status_code);
+	}
+	if (check_if_file_has_read_permission(status_code, file.c_str())) {
+		return (status_code);
+	}
+	return (OK);
 }

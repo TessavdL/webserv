@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 14:00:50 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/21 15:44:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 	
 	name_list_size = scandir(directory.c_str(), &name_list, NULL, alphasort);
 	if (name_list_size == -1) {
-		perror("scandir");
-		exit(EXIT_FAILURE);
+		throw (FatalException("scandir"));
 	}
 	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
 		if (is_file_in_directory_entry((*it).c_str(), name_list, name_list_size)) {
@@ -48,21 +47,80 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 	return (file);
 }
 
-// remove testing main when we start using it later
-// use when path is a directory
-// question: does it has to be an html file? should we check for extension?
-// int	main(int argc, char **argv) {
-// 	std::vector<std::string>	v;
+static std::string	create_path(std::string const& root, std::string const& uri_path) {
+	return (remove_consequetive_characters(create_current_working_directory() + "/" + root + "/" + uri_path, '/'));
+}
 
-// 	for (int i = 1; i < argc; i++) {
-// 		v.push_back(std::string(argv[i]));
-// 	}
-// 	std::string	index = search_for_file_in_dir(v, std::string("test_index"));
-// 	if (index.empty()) {
-// 		std::cout << "There is no file in this directory that matches the index files from the configuration" << std::endl;
-// 	}
-// 	else {
-// 		std::cout << index << std::endl;
-// 	}
-// 	return (0);
-// }
+std::string	create_current_working_directory(void) {
+	char		*buf = NULL;
+	char		*ptr = NULL;
+	long		size;
+	std::string	current_working_directory;
+
+	size = pathconf(".", _PC_PATH_MAX);
+	if ((buf = (char *)malloc((size_t)size)) != NULL) {
+    	ptr = getcwd(buf, (size_t)size);
+	}
+	else {
+		throw (FatalException("GETCWD"));
+	}
+	current_working_directory = std::string(buf);
+	free(buf);
+	return (current_working_directory);
+}
+
+std::string	default_error_page(void) {
+	return (create_current_working_directory() + "/" + "error_page.html");
+}
+
+std::pair<std::string, bool>	handle_file_location(std::string const& path) {
+	if (!file_exists(path.c_str())) {
+		return (std::pair<std::string, bool>("", false));
+	}
+	return (std::pair<std::string, bool>(path, true));
+}
+
+// returns true if the file is found
+// returns false if the file is not found
+// the file is either a direct path or it is created from a directory + index file
+std::pair<std::string, bool>	handle_file_location(std::vector<std::string> const& index, std::string const path) {
+	std::string	file_location = path;
+	
+	if (!file_exists(file_location.c_str())) {
+		return (std::pair<std::string, bool>("", false));
+	}
+	if (is_directory(file_location.c_str())) {
+		std::string const	file_name = search_for_file_in_dir(index, file_location);
+		if (!file_name.empty()) {
+			return (std::pair<std::string, bool>(file_location.append(file_name), true));
+		}
+		else {
+			return (std::pair<std::string, bool>(file_location, false));
+		}
+	}
+	return (std::pair<std::string, bool>(file_location, true));
+}
+
+std::string	find_error_page_location(int& status_code, VirtualServer const& virtual_server) {
+	std::vector<std::pair<std::vector<int>, std::string> > const	error_page = virtual_server.get_error_page();
+	std::string const												root = virtual_server.get_root();
+	
+	if (!error_page.empty()) {
+		for (std::vector<std::pair<std::vector<int>, std::string> >::const_iterator it = error_page.begin(); it != error_page.end(); it++) {
+			for (std::vector<int>::const_iterator it2 = it->first.begin(); it2 != it->first.end(); it2++) {
+				if (*it2 == status_code) {
+					std::pair<std::string, bool>	file_location = handle_file_location(create_path(root, it->second));
+					std::string						file = file_location.first;
+
+					if (check_if_file_is_found(status_code, file_location.second)) {
+						return (default_error_page());
+					}
+					if (check_file_status(status_code, file)) {
+						return (default_error_page());
+					}
+				}
+			}
+		}
+	}
+	return (default_error_page());
+}

@@ -6,16 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 16:43:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/21 15:48:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
 
 
-// ResponseHandler::ResponseHandler(Connection& client) {
+ResponseHandler::ResponseHandler() : _status_code(200) {
 
-// }
+}
 
 ResponseHandler::~ResponseHandler(void) {
 
@@ -38,34 +38,14 @@ bool	ResponseHandler::client_or_server_error_occured(void) const {
 	return (true);
 }
 
-static std::string	create_path(std::string const& root, std::string const& uri_path) {
-	return (remove_consequetive_characters(create_current_working_directory() + "/" + root + "/" + uri_path, '/'));
-}
-
-static std::string	find_error_page_location(Connection& client) {
-	std::string	file_location;
-	
-	if (!client.get_virtual_server().get_error_page().empty()) {
-		file_location = create_path(client.get_virtual_server().get_root(), client.get_virtual_server().get_error_page().back().second);
-		if (file_location.empty()) {
-			return (create_path("", "error_page.html"));
-		}
-		else {
-			return (file_location);
-		}
-	}
-	else {
-		return (create_path("", "error_page.html"));
-	}
-}
-
 static std::string	get_file_contents(std::string const& file_location) {
 	std::ifstream	input_stream;
 	std::string		file_contents;
 	
+	std::cout << file_location << std::endl;
 	input_stream.open(file_location);
 	if (!input_stream) {
-		throw (FatalException("OPEN\n"));
+		throw (FatalException("OPEN in get_file_contents\n"));
 	}
 	else {
 		std::ostringstream ss;
@@ -95,9 +75,10 @@ void	ResponseHandler::create_error_response(Connection& client, std::string cons
 void	ResponseHandler::handle_response(Connection& client) {
 	Connection::t_request request = client.get_request();
 
-	this->_status_code = initial_error_checking(client, request);
+	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured()) {
-		return (create_error_response(client, find_error_page_location(client)));
+		std::string file = find_error_page_location(this->_status_code, client.get_virtual_server());
+		return (create_error_response(client, file));
 	}
 	if (!request.request_line.method.compare("GET")) {
 		handle_get_request(client, request);
@@ -179,30 +160,22 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 	client.set_response(response_data);
 }
 
-void	ResponseHandler::handle_get_request(Connection& client, Connection::t_request request) {
-	std::string	file_location;
-	
-	file_location = create_path(client.get_virtual_server().get_root(), request.request_line.uri.get_path_full());
-	// std::cout << "FILE LOCATION = " << file_location << std::endl;
-	if (file_exists(file_location.c_str())) {
-		if (is_directory(file_location.c_str())) {
-			std::string index = search_for_file_in_dir(client.get_virtual_server().get_index(), file_location);
-			if (!index.empty()) {
-				file_location.append(index);
-			}
-			else {
-				this->_status_code = 404;
-				return (create_error_response(client, find_error_page_location(client)));
-			}
-		}
+void	ResponseHandler::handle_get_request(Connection& client, Connection::t_request const& request) {
+	std::pair<std::string, bool>	file_location = handle_file_location(client.get_virtual_server().get_index(), request.request_line.uri.get_path_full());
+	std::string						file = file_location.first;
+
+	if (check_if_file_is_found(this->_status_code, file_location.second)) {
+		file = find_error_page_location(this->_status_code, client.get_virtual_server());
+		return (create_error_response(client, file));
 	}
-	else {
-		this->_status_code = 404;
-		return (create_error_response(client, find_error_page_location(client)));
+	if (check_file_status(this->_status_code, file)) {
+		file = find_error_page_location(this->_status_code, client.get_virtual_server());
+		return (create_error_response(client, file));
 	}
 	// std::cout << file_location << std::endl;
 	// if (isCGI(file_location)) {
 	// 	create_cgi_response(client, file_location, "GET");
 	// }
-	create_get_response(client, file_location);
+	create_get_response(client, file);
 }
+

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 13:52:00 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/21 09:19:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,4 @@ std::string get_date_information(void) {
 	time(&rawtime);
 	time_information = localtime(&rawtime);
 	return (std::string(custom_asctime(time_information)));
-}
-
-std::string	create_current_working_directory(void) {
-	char		*buf = NULL;
-	char		*ptr = NULL;
-	long		size;
-	std::string	current_working_directory;
-
-	size = pathconf(".", _PC_PATH_MAX);
-	if ((buf = (char *)malloc((size_t)size)) != NULL) {
-    	ptr = getcwd(buf, (size_t)size);
-	}
-	else {
-		throw (FatalException("GETCWD"));
-	}
-	current_working_directory = std::string(buf);
-	free(buf);
-	return (current_working_directory);
 }
