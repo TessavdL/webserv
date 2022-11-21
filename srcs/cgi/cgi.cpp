@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 17:22:13 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/21 17:50:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	get_port_number_from_socket_fd(int const& connection_fd) {
 	struct sockaddr_in	local_sin;
 	socklen_t			local_sin_len = sizeof(local_sin);
 	
-	if (getsockname(connection_fd, (struct sockaddr *)&local_sin, &local_sin_len) != -1)
+	if (getsockname(connection_fd, (struct sockaddr *)&local_sin, &local_sin_len) == -1)
 		throw(FatalException("SYSCALL: getsockname: Failed\n"));
 	return (ntohs(local_sin.sin_port));
 }
@@ -26,9 +26,9 @@ Cgi::Cgi(void) {
 }
 
 Cgi::Cgi(Connection const&	connection, std::string const& file_location) {
-	create_argv();
+	create_argv(file_location);
 	create_env(connection, connection.get_request(), file_location);
-	initiate_cgi_process();
+	initiate_cgi_process(connection.get_request());
 }
 
 Cgi::Cgi(Cgi const& other) {
@@ -43,23 +43,27 @@ Cgi&	Cgi::operator=(Cgi const& rhs) {
 
 Cgi::~Cgi(void) {
 	free_env_array();
+	free(this->_argv[0]);
+	if (this->_argv[1])
+		free(this->_argv[1]);
 	return ;
 }
 
-void	Cgi::create_argv(void) {
-	this->_argv[2] = NULL;
+void	Cgi::create_argv(std::string const& file_location) {
 	this->_argv[0] = strdup("/usr/bin/php");
-	this->_argv[1] = NULL;
+	if (!file_location.empty())
+		this->_argv[1] = strdup(file_location.c_str());
+	this->_argv[2] = NULL;
 }
 
 void	Cgi::create_env(Connection const& connection, Connection::t_request const& request, std::string const& file_location) {
 	string	cwd = string(getcwd(NULL, 0));
 
-	if (request.request_line.method.compare("POST"))
+	if (!request.request_line.method.compare("POST"))
 		this->_env["CONTENT_LENGTH"] = request.bytes_in_data;
 	else
 		this->_env["CONTENT_LENGTH"] = to_string(request.request_line.uri.get_query_string().size());
-	if (request.request_line.method.compare("GET"))
+	if (!request.request_line.method.compare("GET"))
 		this->_env["CONTENT_TYPE"] = "text/html";
 	else
 		this->_env["CONTENT_TYPE"] = request.headers.find("Content-Type")->second;
@@ -88,18 +92,46 @@ void	Cgi::create_env_from_map(void) {
 		this->_env_array[i] = strdup(string(it->first + "=" + it->second).c_str());
 		i++;
 	}
+	this->_env_array[i] = NULL;
 }
 
 void	Cgi::free_env_array(void) {
-	for (int i = 0; this->_env_array[i]; ++i)
+	for (int i = 0; this->_env_array[i]; i++)
 		free(this->_env_array[i]);
 	free(this->_env_array);
 }
 
-void	Cgi::initiate_cgi_process(void) {
+void	Cgi::initiate_cgi_process(Connection::t_request const& request) {
+	if (pipe(this->_fd[0]) < 0 || pipe(this->_fd[1]) < 0)
+		throw(FatalException("SYSCALL: pipe: Failed\n"));
+	if (request.request_line.method.compare("POST")) {
+		close(this->_fd[1][0]);
+		close(this->_fd[1][1]);
+	}
 	this->_pid = fork();
 	if (this->_pid == -1)
 		throw(FatalException("SYSCALL: fork: Failed\n"));
 	if (this->_pid == 0)
-		execve(this->_argv[0], this->_argv, _env_array);
+		child_process(request);
+	parent_process(request);
+}
+
+void	Cgi::child_process(Connection::t_request const& request) {
+	if (!request.request_line.method.compare("POST")) {
+		if (dup2(this->_fd[1][1], STDIN_FILENO) == -1)
+			throw (FatalException("SYSCALL: dup2: Failed\n"));
+	}
+	if (this->_fd[0][1] != STDOUT_FILENO) {
+		if (dup2(this->_fd[0][1], STDOUT_FILENO) == -1)
+			throw (FatalException("SYSCALL: dup2: Failed\n"));
+	}
+	if (!request.request_line.method.compare("POST"))
+		close(this->_fd[1][1]);
+	close(this->_fd[0][0]);
+	if (execve(this->_argv[0], this->_argv, _env_array) == -1)
+		throw (FatalException("SYSCALL: execve: Failed\n"));
+}
+
+void	Cgi::parent_process(Connection::t_request const& request) {
+	
 }
