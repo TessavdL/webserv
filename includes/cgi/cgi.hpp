@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/21 17:23:14 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/22 19:29:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ class Cgi {
 		void	initiate_cgi_process(Connection::t_request const& request);
 		void	child_process(Connection::t_request const& request);
 		void	parent_process(Connection::t_request const& request);
+		void	get_content_from_cgi(void);
+		string const&	get_body(void) const;
 	private:
 		map<string, string>	_env;
+		string				_body;
 		char**				_env_array;
 		char*				_argv[3];
 		pid_t				_pid;

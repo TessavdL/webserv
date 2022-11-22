@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/21 17:50:56 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/22 19:31:54 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 void	Cgi::create_env_from_map(void) {
 	size_t	i(0);
 
-	this->_env_array = (char **)malloc(sizeof(char *) * this->_env.size() + 1);
+	this->_env_array = (char **)malloc(sizeof(char *) * (this->_env.size() + 1));
 	if (!this->_env_array)
 		throw(FatalException("SYSCALL: malloc: Failed\n"));
 	for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); it++) {
@@ -133,5 +133,37 @@ void	Cgi::child_process(Connection::t_request const& request) {
 }
 
 void	Cgi::parent_process(Connection::t_request const& request) {
+	int	exit_status(0);
+	int	ret(0);
 	
+	if (!request.request_line.method.compare("POST"))
+		close(this->_fd[1][0]);
+	close(this->_fd[1][1]);
+	if (waitpid(this->_pid, &exit_status, WNOHANG) == -1)
+		throw (FatalException("SYSCALL: waitpid: Failed"));
+	if (WIFEXITED(exit_status))
+		ret = WEXITSTATUS(exit_status);
+	get_content_from_cgi();
+	close(this->_fd[0][0]);
+}
+
+void	Cgi::get_content_from_cgi(void) {
+	string tmp;
+	int	ret(0);
+
+	this->_body = "\0";
+	tmp.resize(PIPE_BUF);
+	while ((ret = read(this->_fd[0][0], &tmp[0], PIPE_BUF)) > 0) {
+		if (ret == 0 || ret != PIPE_BUF)
+			break ;
+		tmp.resize(ret);
+		this->_body += tmp;
+	}
+	tmp.resize(ret);
+	this->_body += tmp;
+	return ;
+}
+
+string const&	Cgi::get_body(void) const {
+	return (this->_body);
 }
