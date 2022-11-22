@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/21 13:40:18 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/22 17:47:05 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 std::map<int, std::string>	g_status_code_reason_phrase_map = create_status_code_reason_phrase_map();
 
-std::string const&	get_reason_phrase(int status_code) {
+std::string const&	get_reason_phrase(int const status_code) {
 	return (g_status_code_reason_phrase_map.find(status_code)->second);
+}
+
+bool	client_or_server_error_occured(int const status_code) {
+	if (status_code == 200) {
+		return (false);
+	}
+	return (true);
 }
 
 int	check_user_information(int& status_code, std::string const& uri_user_information) {
@@ -29,6 +36,22 @@ int	check_user_information(int& status_code, std::string const& uri_user_informa
 int	check_if_complete(int& status_code, int const bytes_in_data, int const total_bytes_read) {
 	if (bytes_in_data != total_bytes_read) {
 		status_code = 400;
+		return (KO);
+	}
+	return (OK);
+}
+
+int	check_if_forbidden(int& status_code, std::pair<std::string, bool> file_location) {
+	if (!file_location.first.empty() && file_location.second == false) {
+		status_code = 403;
+		return (KO);
+	}
+	return (OK);
+}
+
+int	check_if_file_is_found(int& status_code, std::pair<std::string, bool> file_location) {
+	if (file_location.first.empty() && file_location.second == false) {
+		status_code = 404;
 		return (KO);
 	}
 	return (OK);
@@ -89,15 +112,6 @@ int	check_if_file_has_read_permission(int& status_code, std::string const& file_
 	}
 	return (OK);
 }
-
-bool	check_if_file_is_found(int& status_code, bool file_location) {
-	if (file_location == false) {
-		status_code = 404;
-		return (KO);
-	}
-	return (OK);
-}
-
 
 /*
 incomplete request that keeps connection open

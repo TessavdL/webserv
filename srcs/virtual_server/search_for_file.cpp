@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/21 15:44:30 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/22 18:59:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 	return (file);
 }
 
-static std::string	create_path(std::string const& root, std::string const& uri_path) {
+std::string	create_path(std::string const& root, std::string const& uri_path) {
 	return (remove_consequetive_characters(create_current_working_directory() + "/" + root + "/" + uri_path, '/'));
 }
 
@@ -69,30 +69,37 @@ std::string	create_current_working_directory(void) {
 	return (current_working_directory);
 }
 
-std::string	default_error_page(void) {
+std::string	default_error_page_content(void) {
+	return (ERROR_PAGE_STRING);
+}
+
+std::string default_error_page_location(void) {
 	return (create_current_working_directory() + "/" + "error_page.html");
 }
 
-std::pair<std::string, bool>	handle_file_location(std::string const& path) {
-	if (!file_exists(path.c_str())) {
-		return (std::pair<std::string, bool>("", false));
-	}
-	return (std::pair<std::string, bool>(path, true));
-}
+// std::pair<std::string, bool>	handle_file_location(std::string const& path) {
+// 	if (!file_exists(path.c_str())) {
+// 		return (std::pair<std::string, bool>("", false));
+// 	}
+// 	return (std::pair<std::string, bool>(path, true));
+// }
 
 // returns true if the file is found
 // returns false if the file is not found
 // the file is either a direct path or it is created from a directory + index file
-std::pair<std::string, bool>	handle_file_location(std::vector<std::string> const& index, std::string const path) {
+std::pair<std::string, bool>	search_for_file_to_serve(std::vector<std::string> const& index, std::string const path) {
 	std::string	file_location = path;
-	
+
 	if (!file_exists(file_location.c_str())) {
 		return (std::pair<std::string, bool>("", false));
 	}
-	if (is_directory(file_location.c_str())) {
+	std::cout << "FILE EXISTS" << std::endl;
+	if (is_directory_stat(file_location.c_str())) {
 		std::string const	file_name = search_for_file_in_dir(index, file_location);
+		std::cout << "DIRECTORY" << "filename = " << file_name << std::endl;
 		if (!file_name.empty()) {
-			return (std::pair<std::string, bool>(file_location.append(file_name), true));
+			std::cout << "HERE = " << file_location + file_name << std::endl;
+			return (std::pair<std::string, bool>(remove_consequetive_characters((file_location + "/" + file_name), '/'), true));
 		}
 		else {
 			return (std::pair<std::string, bool>(file_location, false));
@@ -109,18 +116,10 @@ std::string	find_error_page_location(int& status_code, VirtualServer const& virt
 		for (std::vector<std::pair<std::vector<int>, std::string> >::const_iterator it = error_page.begin(); it != error_page.end(); it++) {
 			for (std::vector<int>::const_iterator it2 = it->first.begin(); it2 != it->first.end(); it2++) {
 				if (*it2 == status_code) {
-					std::pair<std::string, bool>	file_location = handle_file_location(create_path(root, it->second));
-					std::string						file = file_location.first;
-
-					if (check_if_file_is_found(status_code, file_location.second)) {
-						return (default_error_page());
-					}
-					if (check_file_status(status_code, file)) {
-						return (default_error_page());
-					}
+					return (it->second);
 				}
 			}
 		}
 	}
-	return (default_error_page());
+	return ("");
 }

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/21 09:19:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/22 19:17:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,27 @@ std::string get_date_information(void) {
 	time(&rawtime);
 	time_information = localtime(&rawtime);
 	return (std::string(custom_asctime(time_information)));
+}
+
+bool	check_if_auto_index_is_on(std::string const& auto_index) {
+	if (!auto_index.compare("on")) {
+		return (true);
+	}
+	return (false);
+}
+
+std::string create_directory_list_page(std::string const& file) {
+	std::vector<std::string>	v = get_directory_file_list(file);
+	std::string					directories;
+	std::string					page = DIRECTORY_LISTING_STRING;
+
+	std::cout << "dir = " << file << std::endl;
+	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
+		std::cout << "file in dir list" << *it << std::endl;
+		directories = directories + "<ul><a href = \"" + *it + "/\"/><p>" + *it + "</p></a></ul>";
+	}
+	page.replace(page.find("$FILE"), strlen("$FILE"), file);
+	page.replace(page.find("$FILE"), strlen("$FILE"), file);
+	page.replace(page.find("$DIRECTORIES"), strlen("$DIRECTORIES"), directories);
+	return (page);
 }
