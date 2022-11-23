@@ -6,12 +6,12 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:51:48 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:51:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 14:00:05 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESPONE_GENERATOR
-# define RESPONE_GENERATOR
+#ifndef RESPONE_GENERATOR_HPP
+# define RESPONE_GENERATOR_HPP
 
 #include <string>
 #include <iostream>

@@ -6,12 +6,12 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:10 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:53:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 14:02:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_BLOCK_HPP
-# define SERVER_BLOCK_HPP
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
 # include "./server_config.hpp"
 # include "./location_block.hpp"
