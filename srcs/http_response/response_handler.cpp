@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:23:31 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 12:28:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,6 @@ void	ResponseHandler::handle_get_response(Connection& client, Connection::t_requ
 	}
 	this->_state = GET;
 	create_get_response(client, file, get_file_content(file));
-}
-
-bool	isCGI(std::string const& file_location) {
-	std::string const& extension = file_location.substr(file_location.find("."));
-
-	if (!extension.empty() && !extension.compare(".php"))
-		return (true);
-	return (false);
 }
 
 // CREATE RESPONSE

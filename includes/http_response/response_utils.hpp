@@ -24,4 +24,6 @@ bool	is_last_iterator(Iter current, Iter end) {
 	return (false);
 }
 
+bool	isCGI(std::string const& file_location);
+
 #endif

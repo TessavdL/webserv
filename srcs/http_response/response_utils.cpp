@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/22 19:17:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 12:28:12 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,12 @@ std::string create_directory_list_page(std::string const& file) {
 	page.replace(page.find("$FILE"), strlen("$FILE"), file);
 	page.replace(page.find("$DIRECTORIES"), strlen("$DIRECTORIES"), directories);
 	return (page);
+}
+
+bool	isCGI(std::string const& file_location) {
+	std::string const& extension = file_location.substr(file_location.find("."));
+
+	if (!extension.empty() && !extension.compare(".php"))
+		return (true);
+	return (false);
 }
