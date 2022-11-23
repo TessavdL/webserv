@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/11/23 12:35:52 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/11/23 12:37:54 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,10 +66,10 @@ $(NAME): $(OBJS)
 
 clean:
 	@echo "Removing object files"
-	@rm $(OBJS)
+	@rm -rf $(OBJS)
 
 fclean: clean
 	@echo "Removing executable: $(NAME)"
-	@rm $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
