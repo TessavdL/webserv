@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:28:31 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 12:50:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,6 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 static std::string create_content_type(std::string const& file_name) {
 	std::string const& extension = file_name.substr(file_name.find("."));
 
-	std::cout << "file_name = " << file_name << std::endl;
-	std::cout << "extension = " << extension << std::endl;
 	if (extension.empty()) {
 		return ("application/octet-stream");
 	}
