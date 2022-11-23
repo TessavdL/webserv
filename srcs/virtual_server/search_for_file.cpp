@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:51:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:00:36 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 }
 
 std::string	create_path(std::string const& root, std::string const& uri_path) {
-	return (remove_consequetive_characters(create_current_working_directory() + "/" + root + "/" + uri_path, '/'));
+	return (remove_multiple_consecutive_characters(create_current_working_directory() + "/" + root + "/" + uri_path, '/'));
 }
 
 std::string	create_current_working_directory(void) {
@@ -96,7 +96,7 @@ std::pair<std::string, bool>	search_for_file_to_serve(std::vector<std::string> c
 	if (is_directory_stat(file_location.c_str())) {
 		std::string const	file_name = search_for_file_in_dir(index, file_location);
 		if (!file_name.empty()) {
-			return (std::pair<std::string, bool>(remove_consequetive_characters((file_location + "/" + file_name), '/'), true));
+			return (std::pair<std::string, bool>(remove_multiple_consecutive_characters((file_location + "/" + file_name), '/'), true));
 		}
 		else {
 			return (std::pair<std::string, bool>(file_location, false));

@@ -2,9 +2,10 @@
 #define RESPONSE_UTILS_HPP
 
 #include <ctime>
-#include <unistd.h>
+#include <map>
 #include <stdlib.h>
 #include <string>
+#include <unistd.h>
 
 #include "../http_request_parser/utility_path.hpp"
 #include "../http_response/directory_listing_string.hpp"
@@ -25,5 +26,7 @@ bool	is_last_iterator(Iter current, Iter end) {
 }
 
 bool	isCGI(std::string const& file_location);
+std::map<int, std::string>	create_status_code_reason_phrase_map(void);
+std::string const&			get_reason_phrase(int const status_code);
 
 #endif
