@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:50:30 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:07:28 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,4 +236,3 @@ std::string	ResponseHandler::get_file_content(std::string const& file_location) 
 	input_stream.close();
 	return (file_contents);
 }
-

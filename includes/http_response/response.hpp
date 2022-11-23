@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 14:07:45 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/14 14:33:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:07:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class ResponseGenerator {
 		~ResponseGenerator();
 		ResponseGenerator(ResponseGenerator const& other);
 		ResponseGenerator&	operator=(ResponseGenerator const& other);
-		void				generate_response(ResponseData response);
+		void				generate_response_string(ResponseData response);
 		std::string const&	get_body() const;
 		std::string const&	get_full_response() const;
 		std::string const&	get_headers() const;

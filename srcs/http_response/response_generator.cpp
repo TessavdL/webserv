@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 17:29:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 14:53:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:21:13 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ ResponseGenerator&	ResponseGenerator::operator=(ResponseGenerator const& other) 
 	return (*this);
 }
 
-void	ResponseGenerator::generate_response(ResponseData response) {
+void	ResponseGenerator::generate_response_string(ResponseData response) {
 	// STATUS LINE
 	this->_status_line.append(HTTP_VERSION);
 	this->_status_line.append(" ");
@@ -104,8 +104,5 @@ void	ResponseGenerator::set_status_line(std::string const& status_line) {
 std::ostream&	operator<<(std::ostream& os, ResponseGenerator const& response) {
 	os << "---STATUS LINE---" << std::endl << response.get_status_line() << std::endl;
 	os << "---HEADERS---" << std::endl << response.get_headers() << std::endl;
-	if (!response.get_body().empty()) {
-		os << "---BODY---" << std::endl << response.get_body() << std::endl;
-	}
 	return (os);
 }

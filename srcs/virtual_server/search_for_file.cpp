@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:00:36 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:06:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,12 @@ std::string default_error_page_location(void) {
 	return (create_current_working_directory() + "/" + "error_page.html");
 }
 
-// std::pair<std::string, bool>	handle_file_location(std::string const& path) {
-// 	if (!file_exists(path.c_str())) {
-// 		return (std::pair<std::string, bool>("", false));
-// 	}
-// 	return (std::pair<std::string, bool>(path, true));
-// }
-
 // returns true if the file is found
+//   file is full path
+//   file is directory + index file
 // returns false if the file is not found
-// the file is either a direct path or it is created from a directory + index file
+//   file is full path
+//   file is directory and no index file is found
 std::pair<std::string, bool>	search_for_file_to_serve(std::vector<std::string> const& index, std::string const path) {
 	std::string	file_location = path;
 

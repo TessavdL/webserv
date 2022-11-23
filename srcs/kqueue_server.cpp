@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 17:30:42 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:26:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> >
 	}
 }
 
+bool	is_event_error(u_short event_flag) {
+	if (event_flag & EV_ERROR) {
+		return (true);
+	}
+	return (false);
+}
+
 bool	client_disconnected(u_short event_flag) {
 	if (event_flag & EV_EOF) {
 		return (true);
@@ -93,10 +100,10 @@ bool	is_new_connection(int event_identifier, map<int, vector<Server> > sockets_w
 int	accept_connection(int event_fd) {
 	struct sockaddr_in	client_addr;
 	socklen_t			client_len = sizeof(client_addr);
-	int connection_fd = accept(event_fd, (struct sockaddr*)&client_addr, &client_len);
+	int 				connection_fd = accept(event_fd, (struct sockaddr*)&client_addr, &client_len);
 
 	if (connection_fd == -1) {
-		error_and_exit("accept");
+		throw (FatalException("SYSCALL: accept in accept_connection\n"));
 	}
 	return (connection_fd);
 }
@@ -115,7 +122,7 @@ void	add_event_to_kqueue(int kq, int event_fd, int event_filter) {
 
 	EV_SET(&monitor_event, event_fd, event_filter, EV_ADD | EV_ENABLE, 0, 0, NULL);
 	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
-		error_and_exit("kevent");
+		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
 	}
 }
 
@@ -146,52 +153,44 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	int						bytes_read = 1;
 	char					buf[BUFF_SIZE];
 
-	cout << "--- reading from client socket ---" << endl;
+	cout << "--- start reading from client ---" << endl;
 	while (bytes_read > 0) {
 		bytes_read = recv(connection_fd, buf, sizeof(buf), 0);
 		if (bytes_read == -1) {
 			break ;
 		}
 		if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
-			cout << "--- finished reading from socket ---" << endl;
+			cout << "--- nothing left to read from client ---" << endl;
 		}
 		buf[bytes_read] = '\0';
 		lexer.process_request(string(buf));
 		if (lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
-			cout << "--- request is invalid ---" << endl;
+			cout << "--- client's request is invalid ---" << endl;
 			break ;
 		}
 		total_bytes_read += bytes_read;
 	}
 	save_request(client, lexer, bytes_in_data, total_bytes_read);
 	client.select_virtual_server();
-	printf("--- done reading ---\n");
+	printf("--- finished reading from client ---\n");
 }
 
 void	send_response_to_client(int connection_fd, Connection& client) {
-	// client.set_server_index(select_virtual_server(client.get_request().request_line.uri.get_authority_host(), client.get_virtual_servers().second));
-	// std::cout << "virtual server index = " << client.get_server_index() << std::endl;
-	
-	// client.set_location_index(select_location(client.get_request().request_line.uri.get_path_full(), client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
-	// std::cout << "location index = " << client.get_location_index() << std::endl;
-	ResponseHandler	response_handler;
-
+	ResponseHandler		response_handler;
 	response_handler.handle_response(client);
-	ResponseGenerator response;
 
-	response.generate_response(client.get_response());
+	ResponseGenerator	response;
+	response.generate_response_string(client.get_response());
 
-	
+	string				response_string = response.get_full_response();
+	unsigned long		size = response_string.size();
+	const char			*buf = response_string.c_str();
 
-	// pair<int, string> status = initial_error_checking(client, client.get_request());
-	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
-	std::string r = response.get_full_response();
-	unsigned long size = r.size();
-	const char *buf = r.c_str();
+	cout << response;
 	send(connection_fd, buf, size, 0);
-	printf("--- done writing to client socket\n");
+	printf("--- finished writing to client\n");
 	close(connection_fd);
-	printf("--- bounce bye ---\n\n");
+	printf("--- bounce client, bye! ---\n\n");
 }
 
 int kqueue_server(vector<Server> server)
@@ -204,7 +203,7 @@ int kqueue_server(vector<Server> server)
 	//	CREATE KERNEL QUEUE
     int	kq = kqueue();
 	if (kq == -1) {
-		return (error_and_exit("An error occured in kqueue().\n"));
+		throw (FatalException("SYSCALL: kq in kqueue_server\n"));
 	}
 
     // Create event 'filter', these are the events we want to monitor.
@@ -216,11 +215,6 @@ int kqueue_server(vector<Server> server)
 		add_event_to_kqueue(kq, (*it).first, EVFILT_READ);
 	}
 
-    // REGISTER SOCKET FD TO KERNEL QUEUE
-    // if (kevent(kq, change_event, 1, NULL, 0, NULL) == -1) {
-	// 	return (error_and_exit("An error occured in kevent() while trying to register the kernel event to the queue.\n"));
-    // }
-
     // EVENT LOOP
     for (;;)
     {
@@ -230,7 +224,7 @@ int kqueue_server(vector<Server> server)
         // Only handle 1 new event per iteration in the loop; 5th argument is 1.
         int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
         if (n_events == -1) {
-			return (error_and_exit("An error occured in kevent() while checking for new events.\n"));
+			throw (FatalException("SYSCALL: kevent in kqueue_server\n"));
         }
 
 		// LOOP OVER n_events
@@ -238,8 +232,12 @@ int kqueue_server(vector<Server> server)
         {
             // When the client disconnects an EOF is sent. By closing the file
             // descriptor the event is automatically removed from the kqueue.
-            if (client_disconnected(EVENT_FLAGS)) {
-                printf("--- a client has disconnected ---\n");
+            if (is_event_error(EVENT_FLAGS)) {
+				throw (FatalException("KEVENT EV_ERROR\n"));
+			}
+			
+			else if (client_disconnected(EVENT_FLAGS)) {
+                printf("--- client has disconnected ---\n");
                 close(EVENT_FD);
 				connections.erase(EVENT_FD);
 				// do not close socket_connection_fd, is bad file descriptor
@@ -248,14 +246,14 @@ int kqueue_server(vector<Server> server)
             // If the new event's file descriptor is the same as the listening
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
-			else if (is_new_connection(EVENT_FD, sockets_with_config) == true) {
+			else if (is_new_connection(EVENT_FD, sockets_with_config)) {
 				int connection_fd = accept_connection(EVENT_FD);
 				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
 				add_connection(EVENT_FD, connection_fd, connections, sockets_with_config);
 			}
 
 			// READY TO READ FROM CLIENT SOCKET
-			else if (is_readable_event(EVENT_FILTER) == true) {
+			else if (is_readable_event(EVENT_FILTER)) {
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
 					receive_request_from_client(EVENT_FD, client, event[i].data);
@@ -265,8 +263,8 @@ int kqueue_server(vector<Server> server)
 			}
 
 			// READY TO WRITE TO CLIENT SOCKET
-			else if (is_writable_event(EVENT_FILTER) == true) {
-				printf("--- writing to client socket ---\n");
+			else if (is_writable_event(EVENT_FILTER)) {
+				printf("--- writing to client ---\n");
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
 					send_response_to_client(EVENT_FD, client);
