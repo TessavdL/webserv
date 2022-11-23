@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 19:16:54 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/22 19:37:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ void	ResponseHandler::handle_get_response(Connection& client, Connection::t_requ
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
 
-	std::cout << "file path = " << file_path << std::endl;
-	std::cout << "file location = " << file_location.first << std::endl;
-	std::cout << "file = " << file << std::endl;
-	std::cout << "status_code = " << this->_status_code << std::endl;
+	// std::cout << "file path = " << file_path << std::endl;
+	// std::cout << "file location = " << file_location.first << std::endl;
+	// std::cout << "file = " << file << std::endl;
+	// std::cout << "status_code = " << this->_status_code << std::endl;
 	if (client_or_server_error_occured(this->_status_code)) {
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
@@ -159,7 +159,6 @@ void	ResponseHandler::create_error_response(Connection& client, std::string cons
 void	ResponseHandler::create_directory_list_response(Connection& client, std::string const& page) {
 	ResponseData	response_data;
 
-	std::cout << "PAGE" << page << std::endl;
 	response_data.set_body(page);
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
