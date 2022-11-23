@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:26:42 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:33:22 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 
 #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
-
 #define EVENT_FD event[i].ident
 #define EVENT_FLAGS event[i].flags
 #define EVENT_FILTER event[i].filter
@@ -128,6 +127,7 @@ void	add_event_to_kqueue(int kq, int event_fd, int event_filter) {
 
 bool	identify_client(int event_identifier, map<int, Connection> connections) {
 	map<int, Connection>::iterator it = connections.find(event_identifier);
+
 	if (it != connections.end()) {
 		return (true);
 	}
@@ -230,17 +230,17 @@ int kqueue_server(vector<Server> server)
 		// LOOP OVER n_events
         for (int i = 0; n_events > i; i++)
         {
-            // When the client disconnects an EOF is sent. By closing the file
-            // descriptor the event is automatically removed from the kqueue.
+			// An error has occured while processing the events
             if (is_event_error(EVENT_FLAGS)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
 			
+			 // When the client disconnects an EOF is sent. By closing the file
+            // descriptor the event is automatically removed from the kqueue.
 			else if (client_disconnected(EVENT_FLAGS)) {
                 printf("--- client has disconnected ---\n");
                 close(EVENT_FD);
 				connections.erase(EVENT_FD);
-				// do not close socket_connection_fd, is bad file descriptor
             }
 
             // If the new event's file descriptor is the same as the listening
