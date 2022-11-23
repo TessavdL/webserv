@@ -6,13 +6,11 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:27 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 15:48:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:57:43 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request_parser/utility_split.hpp"
-
-// send back two empty strings or fill first string with original str?
+#include "../../includes/http_request/utility_split.hpp"
 
 std::string	string_until_deilimeter(std::string const& str, std::string const& delimeter) {
 	std::string	ret;

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   response.hpp                                       :+:    :+:            */
+/*   response_generator.hpp                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/14 14:07:45 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:07:12 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/11/23 13:51:48 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/23 13:51:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESPONSE_GENERATOR_HPP
-# define RESPONSE_GENERATOR_HPP
+#ifndef RESPONE_GENERATOR
+# define RESPONE_GENERATOR
 
 #include <string>
 #include <iostream>

@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   http_request_lexer.hpp                             :+:    :+:            */
+/*   request_handler.hpp                                :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/12 17:37:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:06:58 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/11/23 13:44:56 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/23 13:50:05 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTP_REQUEST_LEXER_HPP
-# define HTTP_REQUEST_LEXER_HPP
+#ifndef REQUEST_HANDLER_HPP
+# define REQUEST_HANDLER_HPP
 
+# include <iostream>
 # include <map>
+# include <sstream>
 # include <string>
 # include <vector>
 
@@ -23,9 +25,7 @@
 # define CLRF "\r\n"
 # define DOUBLE_CLRF "\r\n\r\n"
 
-class HTTPRequestParser;
-
-class HTTPRequestLexer {
+class RequestHandler {
 	public:
 		enum State {
 			REQUEST_START = 0,
@@ -35,10 +35,10 @@ class HTTPRequestLexer {
 			REQUEST_ERROR = -1
 		};
 
-		HTTPRequestLexer();
-		~HTTPRequestLexer();
-		HTTPRequestLexer(HTTPRequestLexer const& other);
-		HTTPRequestLexer&							operator=(HTTPRequestLexer const& other);
+		RequestHandler();
+		~RequestHandler();
+		RequestHandler(RequestHandler const& other);
+		RequestHandler&								operator=(RequestHandler const& other);
 		void										process_request(std::string const& request);
 		void										full_request_line(std::string const& str, size_t& index);
 		void										tokenize_request_line(std::string const& str);
@@ -74,6 +74,6 @@ class HTTPRequestLexer {
 		State										_state;
 };
 
-std::ostream&	operator<<(std::ostream& os, HTTPRequestLexer const& lexer);
+std::ostream&	operator<<(std::ostream& os, RequestHandler const& lexer);
 
 #endif

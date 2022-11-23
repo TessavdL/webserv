@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:27:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 18:06:53 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:55:10 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <cstdio>
 
 #include "../fatal_exception.hpp"
-#include "../http_request_parser/utility_path.hpp"
+#include "../http_request/utility_path.hpp"
 #include "../event_loop/connection.hpp"
 #include "../http_response/error_checking.hpp"
 #include "../http_response/error_page_string.hpp"

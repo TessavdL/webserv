@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:56:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:47:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <vector>
 
 # include "../event_loop/connection.hpp"
-# include "../http_request_parser/utility_path.hpp"
+# include "../http_request/utility_path.hpp"
 # include "../virtual_server/select_location.hpp"
 
 # define NO_CONTENT_LENGTH -2

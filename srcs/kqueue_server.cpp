@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:33:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:56:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,7 @@
 #define EVENT_FLAGS event[i].flags
 #define EVENT_FILTER event[i].filter
 
-int	error_and_exit(const char* error_message)
-{
-	perror(error_message);
-	exit(EXIT_FAILURE);
-}
-
-void	create_sockets_with_config(vector<Server>	server, map<int, vector<Server> > &sockets_with_config)
+void	create_sockets_with_config(vector<Server> server, map<int, vector<Server> >& sockets_with_config)
 {
 	map<int, vector<Server> >	ports_with_config;
 
@@ -134,21 +128,21 @@ bool	identify_client(int event_identifier, map<int, Connection> connections) {
 	return (false);
 }
 
-void	save_request(Connection& client, HTTPRequestLexer lexer, int bytes_in_data, int total_bytes_read) {
+void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, int total_bytes_read) {
 	Connection::t_request	request;
 
-	request.request_line.method = lexer.get_request_line_method();
-	request.request_line.uri = lexer.get_request_line_uri();
-	request.request_line.protocol = lexer.get_request_line_protocol();
-	request.headers = lexer.get_headers();
-	request.body = lexer.get_body();
+	request.request_line.method = parser.get_request_line_method();
+	request.request_line.uri = parser.get_request_line_uri();
+	request.request_line.protocol = parser.get_request_line_protocol();
+	request.headers = parser.get_headers();
+	request.body = parser.get_body();
 	request.bytes_in_data = bytes_in_data;
 	request.total_bytes_read = total_bytes_read;
 	client.set_request(request);
 }
 
 void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
-	HTTPRequestLexer		lexer;
+	RequestHandler			parser;
 	long					total_bytes_read = 0;
 	int						bytes_read = 1;
 	char					buf[BUFF_SIZE];
@@ -163,14 +157,14 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 			cout << "--- nothing left to read from client ---" << endl;
 		}
 		buf[bytes_read] = '\0';
-		lexer.process_request(string(buf));
-		if (lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
+		parser.process_request(string(buf));
+		if (parser.get_state() == RequestHandler::REQUEST_ERROR) {
 			cout << "--- client's request is invalid ---" << endl;
 			break ;
 		}
 		total_bytes_read += bytes_read;
 	}
-	save_request(client, lexer, bytes_in_data, total_bytes_read);
+	save_request(client, parser, bytes_in_data, total_bytes_read);
 	client.select_virtual_server();
 	printf("--- finished reading from client ---\n");
 }
@@ -193,8 +187,7 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	printf("--- bounce client, bye! ---\n\n");
 }
 
-int kqueue_server(vector<Server> server)
-{
+int kqueue_server(vector<Server> server) {
 	map<int, vector<Server> >	sockets_with_config;
 	map<int, Connection>		connections;
 

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 16:14:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:55:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 #include <vector>
 
 #include "../config_parser/server.hpp"
-#include "../http_request_parser/http_request_lexer.hpp"
-#include "../http_request_parser/uri_parser.hpp"
-#include "../http_response/response.hpp"
+#include "../http_request/request_handler.hpp"
+#include "../http_request/uri_parser.hpp"
+#include "../http_response/response_data.hpp"
 #include "../virtual_server/virtual_server.hpp"
 
 class ResponseHandler;

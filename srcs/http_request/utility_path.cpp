@@ -6,11 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:29:58 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:00:36 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:50:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request_parser/utility_path.hpp"
+#include "../../includes/http_request/utility_path.hpp"
 
 bool	is_absolute_path(const char* str) {
 	if (str[0] && str[0] == '/') {

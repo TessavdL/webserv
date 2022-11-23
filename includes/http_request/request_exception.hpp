@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   exception_http_request_parser.hpp                  :+:    :+:            */
+/*   request_exception.hpp                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/12 17:38:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:38:20 by jelvan-d      ########   odam.nl         */
+/*   Created: 2022/11/23 13:45:28 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/23 13:46:18 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTP_REQUEST_EXCEPTION_HPP
-# define HTTP_REQUEST_EXCEPTION_HPP
+#ifndef REQUEST_EXCEPTION_HPP
+# define REQUEST_EXCEPTION_HPP
 
 # include <string>
 # include <stdexcept>
 
-class HTTPRequestException: public std::exception {
+class RequestException: public std::exception {
 	public:
-		HTTPRequestException(void);
-		HTTPRequestException(std::string const message);
-		HTTPRequestException(HTTPRequestException const& src);
-		~HTTPRequestException(void) throw();
-		HTTPRequestException& operator=(HTTPRequestException const& other);
+		RequestException(void);
+		RequestException(std::string const message);
+		RequestException(RequestException const& src);
+		~RequestException(void) throw();
+		RequestException& operator=(RequestException const& other);
 		const char *what(void) const throw();
 	private:
 		std::string	_message;

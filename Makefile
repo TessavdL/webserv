@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/11/23 12:56:20 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/11/23 13:42:48 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,11 +31,11 @@ SRC_FILES	=		fatal_exception.cpp \
 					config_parser/server.cpp \
 					config_parser/server_config.cpp \
 					listening_sockets/socket_listen.cpp \
-					http_request_parser/exception_http_request_parser.cpp \
-					http_request_parser/http_request_lexer.cpp \
-					http_request_parser/uri_parser.cpp \
-					http_request_parser/utility_path.cpp \
-					http_request_parser/utility_split.cpp \
+					http_request/request_exception.cpp \
+					http_request/request_handler.cpp \
+					http_request/uri_parser.cpp \
+					http_request/utility_path.cpp \
+					http_request/utility_split.cpp \
 					http_response/error_checking.cpp \
 					http_response/response_data.cpp \
 					http_response/response_generator.cpp \

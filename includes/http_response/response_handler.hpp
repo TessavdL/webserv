@@ -6,15 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:24:05 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:48:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESPONES_HANDLER_HPP
-# define RESPONES_HANDLER_HPP
+#ifndef RESPONSE_HANDLER_HPP
+# define RESPONSE_HANDLER_HPP
 
 #include "../event_loop/connection.hpp"
-#include "../http_request_parser/utility_path.hpp"
+#include "../http_request/utility_path.hpp"
 #include "../virtual_server/search_for_file.hpp"
 #include "../cgi/cgi_handler.hpp"
 #include "./error_checking.hpp"

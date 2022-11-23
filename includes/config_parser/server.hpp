@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:10 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/24 17:11:09 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:53:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "./server_config.hpp"
 # include "./location_block.hpp"
-# include "../http_request_parser/utility_split.hpp"
+# include "../http_request/utility_split.hpp"
 # include "../listening_sockets/socket_listen.hpp"
 
 class Server : public ServerConfig {

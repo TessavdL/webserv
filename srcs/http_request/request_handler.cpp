@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   http_request_lexer.cpp                             :+:    :+:            */
+/*   request_handler.cpp                                :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/14 12:36:57 by jelvan-d      ########   odam.nl         */
+/*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/11/23 13:49:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request_parser/http_request_lexer.hpp"
+#include "../../includes/http_request/request_handler.hpp"
 
-#include <iostream>
-#include <sstream>
-
-HTTPRequestLexer::HTTPRequestLexer(void) {
+RequestHandler::RequestHandler(void) {
 	this->_state = REQUEST_START;
 }
 
-HTTPRequestLexer::~HTTPRequestLexer(void) {
+RequestHandler::~RequestHandler(void) {
 
 }
 
-HTTPRequestLexer::HTTPRequestLexer(HTTPRequestLexer const& other) {
+RequestHandler::RequestHandler(RequestHandler const& other) {
 	*this = other;
 }
 
 // uri struct
-HTTPRequestLexer&	HTTPRequestLexer::operator=(HTTPRequestLexer const& other) {
+RequestHandler&	RequestHandler::operator=(RequestHandler const& other) {
 	if (this != &other) {
 		this->_remainder = other._remainder;
 		this->_request_line_full = other._request_line_full;
@@ -44,7 +41,7 @@ HTTPRequestLexer&	HTTPRequestLexer::operator=(HTTPRequestLexer const& other) {
 	return (*this);
 }
 
-void	HTTPRequestLexer::full_request_line(std::string const& str, size_t& index) {
+void	RequestHandler::full_request_line(std::string const& str, size_t& index) {
 	std::string	request_line_full = string_until_deilimeter(str, CLRF);
 	if (!request_line_full.empty()) {
 		index += request_line_full.length() + 2;
@@ -55,7 +52,7 @@ void	HTTPRequestLexer::full_request_line(std::string const& str, size_t& index) 
 	}
 }
 
-void	HTTPRequestLexer::tokenize_request_line(std::string const& str) {
+void	RequestHandler::tokenize_request_line(std::string const& str) {
 	std::vector<std::string>	request_line = split_string_on_delimeter(str, ' ');
 	
 	if (!request_line.empty()) {
@@ -69,7 +66,7 @@ void	HTTPRequestLexer::tokenize_request_line(std::string const& str) {
 	}
 }
 
-void	HTTPRequestLexer::full_headers(std::string const& str, size_t& index) {
+void	RequestHandler::full_headers(std::string const& str, size_t& index) {
 	std::string request_headers_full = string_until_deilimeter(str.substr(index), DOUBLE_CLRF);
 	
 	if (!request_headers_full.empty()) {
@@ -81,7 +78,7 @@ void	HTTPRequestLexer::full_headers(std::string const& str, size_t& index) {
 	}
 }
 
-void	HTTPRequestLexer::tokenize_request_headers(std::string const& str) {
+void	RequestHandler::tokenize_request_headers(std::string const& str) {
 	std::vector<std::string>	request_headers_tokens = split_string_on_delimeter_string(str, CLRF);
 	
 	if (!request_headers_tokens.empty()) {
@@ -92,7 +89,7 @@ void	HTTPRequestLexer::tokenize_request_headers(std::string const& str) {
 	}
 }
 
-void	HTTPRequestLexer::create_headers_map(std::vector<std::string> const& v) {
+void	RequestHandler::create_headers_map(std::vector<std::string> const& v) {
 	std::map<std::string, std::string>	request_headers;
 
 	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
@@ -116,7 +113,7 @@ static bool	is_request_chunked(std::map<std::string, std::string> const& m) {
 	return (false);
 }
 
-void	HTTPRequestLexer::process_request(std::string const& request) {
+void	RequestHandler::process_request(std::string const& request) {
 	if (this->_state == REQUEST_START) {
 		process_request_start(request);
 	}
@@ -149,7 +146,7 @@ void	HTTPRequestLexer::process_request(std::string const& request) {
 	}
 }
 
-void	HTTPRequestLexer::process_request_start(std::string const& request) {
+void	RequestHandler::process_request_start(std::string const& request) {
 	size_t 		pos = request.find(DOUBLE_CLRF);
 	std::string	str;
 
@@ -161,7 +158,7 @@ void	HTTPRequestLexer::process_request_start(std::string const& request) {
 	}
 }
 
-// void	HTTPRequestLexer::go_method(std::string const& str, size_t& index) {
+// void	RequestHandler::go_method(std::string const& str, size_t& index) {
 // 	size_t	pos = str.find(" ");
 
 // 	if (pos != std::string::npos) {
@@ -174,7 +171,7 @@ void	HTTPRequestLexer::process_request_start(std::string const& request) {
 // 	}
 // }
 
-// void				HTTPRequestLexer::go_uri(std::string const& str, size_t& index) {
+// void				RequestHandler::go_uri(std::string const& str, size_t& index) {
 // 	std::string remainder = str.substr(index, str.size());
 // 	size_t	pos = remainder.find(" ");
 
@@ -188,7 +185,7 @@ void	HTTPRequestLexer::process_request_start(std::string const& request) {
 // 	}
 // }
 
-// void	HTTPRequestLexer::go_protocol(std::string const& str, size_t& index) {
+// void	RequestHandler::go_protocol(std::string const& str, size_t& index) {
 // 	std::string remainder = str.substr(index, str.size());
 // 	size_t	pos = remainder.find(CLRF);
 
@@ -202,7 +199,7 @@ void	HTTPRequestLexer::process_request_start(std::string const& request) {
 // 	}
 // }
 
-// void	HTTPRequestLexer::go_headers(std::string const& str, size_t& index) {
+// void	RequestHandler::go_headers(std::string const& str, size_t& index) {
 // 	size_t		end = str.find(DOUBLE_CLRF);
 // 	std::string remainder = str.substr(index, end - index);
 
@@ -217,7 +214,7 @@ void	HTTPRequestLexer::process_request_start(std::string const& request) {
 // 	this->_state = REQUEST_BODY;
 // }
 
-void	HTTPRequestLexer::go_body(std::string const& str, size_t& index) {
+void	RequestHandler::go_body(std::string const& str, size_t& index) {
 	this->_request_body = str.substr(index);
 }
 
@@ -230,7 +227,7 @@ static int to_dec(std::string hex) {
 	return (static_cast<int>(x));
 }
 
-void	HTTPRequestLexer::go_chonky_body(std::string const& str, size_t &index) {
+void	RequestHandler::go_chonky_body(std::string const& str, size_t &index) {
 	std::string substring = str.substr(index);
 	size_t		pos = substring.find(CLRF);
 	bool		hex = true;
@@ -264,39 +261,39 @@ void	HTTPRequestLexer::go_chonky_body(std::string const& str, size_t &index) {
 	// std::cout << "END OF CHONKY BODY" << std::endl;
 }
 
-HTTPRequestLexer::State const&	HTTPRequestLexer::get_state(void) const {
+RequestHandler::State const&	RequestHandler::get_state(void) const {
 	return (this->_state);
 }
 
-std::string	const&	HTTPRequestLexer::get_remainder(void) const {
+std::string	const&	RequestHandler::get_remainder(void) const {
 	return (this->_remainder);
 }
 
-std::string	const&	HTTPRequestLexer::get_request_line_method(void) const {
+std::string	const&	RequestHandler::get_request_line_method(void) const {
 	return (this->_request_line_method);
 }
 
-std::string	const&	HTTPRequestLexer::get_request_line_uri_raw(void) const {
+std::string	const&	RequestHandler::get_request_line_uri_raw(void) const {
 	return (this->_request_line_uri_raw);
 }
 
-Uri	const&	HTTPRequestLexer::get_request_line_uri(void) const {
+Uri	const&	RequestHandler::get_request_line_uri(void) const {
 	return (this->_request_line_uri);
 }
 
-std::string const&	HTTPRequestLexer::get_request_line_protocol(void) const {
+std::string const&	RequestHandler::get_request_line_protocol(void) const {
 	return (this->_request_line_protocol);
 }
 
-std::map<std::string, std::string>	const&	HTTPRequestLexer::get_headers(void) const {
+std::map<std::string, std::string>	const&	RequestHandler::get_headers(void) const {
 	return (this->_request_headers);
 }
 
-std::string	const&	HTTPRequestLexer::get_body(void) const {
+std::string	const&	RequestHandler::get_body(void) const {
 	return (this->_request_body);
 }
 
-std::ostream&	operator<<(std::ostream& os, HTTPRequestLexer const& lexer) {
+std::ostream&	operator<<(std::ostream& os, RequestHandler const& lexer) {
 	if (!lexer.get_request_line_method().empty()) {
 		os << "method = " << lexer.get_request_line_method() << std::endl;
 	}

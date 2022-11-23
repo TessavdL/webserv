@@ -6,12 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:07:28 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:52:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
-
 
 ResponseHandler::ResponseHandler() : _status_code(200), _state(UNSET) {
 
