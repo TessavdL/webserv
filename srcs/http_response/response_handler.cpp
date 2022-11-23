@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 19:37:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 12:23:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,10 @@ void	ResponseHandler::handle_get_response(Connection& client, Connection::t_requ
 			return (create_error_response(client, file, get_file_content(file)));
 		}
 	}
-	// if (isCGI(file_location)) {
-	// 	create_cgi_response(client, file_location, "GET");
-	// }
+	if (isCGI(file)) {
+		create_cgi_response(client, file);
+		return ;
+	}
 	if (this->_state == DIRECTORY_LIST) {
 		return (create_directory_list_response(client, file));
 	}
@@ -128,14 +129,13 @@ void	ResponseHandler::handle_get_response(Connection& client, Connection::t_requ
 	create_get_response(client, file, get_file_content(file));
 }
 
-// bool	isCGI(std::string const& file_location) {
-// 	size_t pos = file_location.find(".");
+bool	isCGI(std::string const& file_location) {
+	std::string const& extension = file_location.substr(file_location.find("."));
 
-// 	if (pos != std::string::npos) {
-// 		std::pair<string, string> p = split_string_in_half(file_location, ".")
-// 		if (p.second )
-// 	}
-// }
+	if (!extension.empty() && !extension.compare(".php"))
+		return (true);
+	return (false);
+}
 
 // CREATE RESPONSE
 
@@ -184,6 +184,8 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 static std::string create_content_type(std::string const& file_name) {
 	std::string const& extension = file_name.substr(file_name.find("."));
 
+	std::cout << "file_name = " << file_name << std::endl;
+	std::cout << "extension = " << extension << std::endl;
 	if (extension.empty()) {
 		return ("application/octet-stream");
 	}

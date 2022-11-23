@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 15:18:08 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/21 13:24:14 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		main(int ac, char **av) {
 	string filename;
 	
 	if (ac == 1)
-		filename = "./srcs/config_parser/config_contents.txt";
+		filename = "./basic.conf";
 	else if (ac == 2)
 		filename = string(av[1]);
 	else {

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 15:15:19 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/22 19:29:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,26 @@
 class Cgi {
 	public:
 		Cgi();
-		Cgi(Connection const& connection, int const& connection_fd);
+		Cgi(Connection const& connection, std::string const& file_location);
 		Cgi(Cgi const& other);
 		Cgi& operator=(Cgi const& rhs);
 		~Cgi();
-		void	create_argv(void);
-		void	create_env(Connection const& connection, Connection::t_request const& request, int const& connection_fd);
+		void	create_argv(std::string const& file_location);
+		void	create_env(Connection const& connection, Connection::t_request const& request, std::string const& file_location);
 		void	create_env_from_map(void);
 		void	free_env_array(void);
-		void	initiate_cgi_process(void);
+		void	initiate_cgi_process(Connection::t_request const& request);
+		void	child_process(Connection::t_request const& request);
+		void	parent_process(Connection::t_request const& request);
+		void	get_content_from_cgi(void);
+		string const&	get_body(void) const;
 	private:
 		map<string, string>	_env;
+		string				_body;
 		char**				_env_array;
 		char*				_argv[3];
 		pid_t				_pid;
-		// int					_fd[2][2];
+		int					_fd[2][2];
 };
 
 #endif

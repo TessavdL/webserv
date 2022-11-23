@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 17:42:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/16 16:27:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ Connection&	Connection::operator=(Connection const& other) {
 		this->_request.headers = other._request.headers;
 		this->_request.body = other._request.body;
 		this->_response = other._response;
+		this->_connection_fd = other._connection_fd;
 	}
 	return (*this);
 }
@@ -63,6 +64,10 @@ void	Connection::select_virtual_server(void) {
 	// this->_location_index = determine_location_index(this->_request.request_line.uri.get_path_full(), this->_virtual_servers.second[this->_server_index].get_location_block());
 }
 
+int const&	Connection::get_connection_fd(void) const {
+	return (this->_connection_fd);
+}
+
 ResponseData const&	Connection::get_response(void) const {
 	return (this->_response);
 }
@@ -86,6 +91,10 @@ std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void
 // size_t const&	Connection::get_server_index(void) const {
 // 	return (this->_server_index);
 // }
+
+void	Connection::set_connection_fd(int const& connection_fd) {
+	this->_connection_fd = connection_fd;
+}
 
 void	Connection::set_response(ResponseData const& response) {
 	this->_response = response;

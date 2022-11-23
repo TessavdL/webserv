@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 18:23:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 12:24:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../event_loop/connection.hpp"
 #include "../http_request_parser/utility_path.hpp"
 #include "../virtual_server/search_for_file.hpp"
+#include "../cgi/cgi_handler.hpp"
 #include "./error_checking.hpp"
 #include "./response_utils.hpp"
 #include "./error_page_string.hpp"

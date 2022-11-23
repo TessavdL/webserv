@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 16:39:55 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/16 17:30:42 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 	pair<int, Connection>	new_connection;
 	map<int, vector<Server> >::const_iterator it = virtual_servers.find(event_fd);
 	new_connection.first = connection_fd;
+	new_connection.second.set_connection_fd(connection_fd);
 	new_connection.second.set_virtual_servers(*it);
 	connections.insert(new_connection);
 }
