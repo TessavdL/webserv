@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 15:06:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/21 14:49:30 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/01 17:12:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,15 @@ static long	find_content_length(std::map<std::string, std::string> headers) {
 int	initial_error_checking(int& status_code, Connection& client, Connection::t_request const& request) {
 	long	content_length = find_content_length(request.headers);
 
+	(void)status_code;
+	(void)client;
+	(void)request;
 	if (check_user_information(status_code, request.request_line.uri.get_authority_user_information())) {
 		return (status_code);
 	}
-	if (check_if_complete(status_code, request.bytes_in_data, request.total_bytes_read)) {
-		return (status_code);
-	}
+	// if (check_if_complete(status_code, request.bytes_in_data, request.total_bytes_read)) {
+	// 	return (status_code);
+	// }
 	if (check_method(status_code, request.request_line.method, client.get_virtual_server().get_limit_except())) {
 		return (status_code);
 	}
@@ -72,9 +75,9 @@ int	initial_error_checking(int& status_code, Connection& client, Connection::t_r
 		status_code = 400;
 		return (status_code);
 	}
-	if (check_request_size(status_code, request.body.size(), content_length)) {
-		return (status_code);
-	}
+	// if (check_request_size(status_code, request.body.size(), content_length)) {
+	// 	return (status_code);
+	// }
 	if (check_http_protocol(status_code, request.request_line.protocol)) {
 		return (status_code);
 	}

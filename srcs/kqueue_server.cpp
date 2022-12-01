@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/16 17:30:42 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/01 16:26:20 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,11 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	HTTPRequestLexer		lexer;
 	long					total_bytes_read = 0;
 	int						bytes_read = 1;
-	char					buf[BUFF_SIZE];
+	char					buf[BUFF_SIZE + 1];
 
 	cout << "--- reading from client socket ---" << endl;
 	while (bytes_read > 0) {
-		bytes_read = recv(connection_fd, buf, sizeof(buf), 0);
+		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
 		if (bytes_read == -1) {
 			break ;
 		}

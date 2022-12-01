@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 18:59:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/01 15:59:28 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ std::pair<std::string, bool>	search_for_file_to_serve(std::vector<std::string> c
 	if (!file_exists(file_location.c_str())) {
 		return (std::pair<std::string, bool>("", false));
 	}
-	std::cout << "FILE EXISTS" << std::endl;
 	if (is_directory_stat(file_location.c_str())) {
 		std::string const	file_name = search_for_file_in_dir(index, file_location);
 		std::cout << "DIRECTORY" << "filename = " << file_name << std::endl;

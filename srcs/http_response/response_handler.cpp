@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:28:31 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/01 17:20:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ ResponseHandler&	ResponseHandler::operator=(ResponseHandler const& other) {
 void	ResponseHandler::handle_response(Connection& client) {
 	Connection::t_request request = client.get_request();
 
-	initial_error_checking(this->_status_code, client, request);
+	// initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
@@ -50,12 +50,27 @@ void	ResponseHandler::handle_response(Connection& client) {
 	if (!request.request_line.method.compare("GET")) {
 		handle_get_response(client, request);
 	}
-	// if (request.request_line.method.compare("POST")) {
-
-	// }
+	if (!request.request_line.method.compare("POST")) {
+		handle_post_response(client, request);
+	}
 	// if (request.request_line.method.compare("DELETE")) {
 
 	// }
+}
+
+void		ResponseHandler::handle_post_response(Connection& client, Connection::t_request const& request) {
+	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.request_line.uri.get_path_full());
+	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
+	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
+
+	if (client_or_server_error_occured(this->_status_code)) {
+		if (this->_state == DEFAULT_ERROR) {
+			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
+		}
+		else if (this->_state == CUSTOM_ERROR) {
+			return (create_error_response(client, file, get_file_content(file)));
+		}
+	}
 }
 
 std::string	ResponseHandler::error_page_location_handler(std::pair<std::string, bool> error_page) {

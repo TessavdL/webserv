@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 16:39:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/22 19:33:18 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/01 15:04:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	create_cgi_response(Connection& connection, std::string const& file_locatio
 	map<string, string> 	headers;
 
 	headers["Content-Length"] = to_string(cgi_session.get_body().size());
-	headers["Content-Type"] = "text/plain";
+	headers["Content-Type"] = "text/html";
 	data.set_status_code(200);
 	data.set_reason_phrase(get_reason_phrase(200));
 	data.set_headers(headers);

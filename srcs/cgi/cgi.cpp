@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/22 19:31:54 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/01 15:13:19 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ Cgi::~Cgi(void) {
 }
 
 void	Cgi::create_argv(std::string const& file_location) {
-	this->_argv[0] = strdup("/usr/bin/php");
+	this->_argv[0] = strdup("/Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi");
 	if (!file_location.empty())
 		this->_argv[1] = strdup(file_location.c_str());
 	this->_argv[2] = NULL;
@@ -68,12 +68,11 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 	else
 		this->_env["CONTENT_TYPE"] = request.headers.find("Content-Type")->second;
 	this->_env["PATH_INFO"] = file_location;
-	this->_env["PATH_TRANSLATED"] = cwd + '/' + request.request_line.uri.get_path_full();
+	this->_env["PATH_TRANSLATED"] = file_location;
 	this->_env["QUERY_STRING"] = request.request_line.uri.get_query_string();
 	this->_env["REMOTE_HOST"] = request.request_line.uri.get_authority_host();
 	this->_env["REQUEST_METHOD"] = request.request_line.method;
-	this->_env["SCRIPT_FILENAME"] = request.request_line.uri.get_path_full();
-	this->_env["SCRIPT_NAME"] = request.request_line.uri.get_path_full();
+	this->_env["SCRIPT_NAME"] = "Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi";
 	this->_env["SERVER_NAME"] = request.headers.find("Host")->second;
 	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
