@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/01 15:13:19 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/02 17:04:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,9 @@ void	Cgi::parent_process(Connection::t_request const& request) {
 	
 	if (!request.request_line.method.compare("POST"))
 		close(this->_fd[1][0]);
-	close(this->_fd[1][1]);
+	close(this->_fd[0][1]);
+	if (!request.request_line.method.compare("POST"))
+		write(this->_fd[1][1], request.body.c_str(), request.body.size());
 	if (waitpid(this->_pid, &exit_status, WNOHANG) == -1)
 		throw (FatalException("SYSCALL: waitpid: Failed"));
 	if (WIFEXITED(exit_status))
