@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/02 17:04:50 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/06 15:50:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	Cgi::child_process(Connection::t_request const& request) {
 void	Cgi::parent_process(Connection::t_request const& request) {
 	int	exit_status(0);
 	int	ret(0);
-	
+
 	if (!request.request_line.method.compare("POST"))
 		close(this->_fd[1][0]);
 	close(this->_fd[0][1]);

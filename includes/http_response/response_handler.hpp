@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/01 15:43:51 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/07 12:50:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class ResponseHandler {
 		void								handle_response(Connection& client);
 		void								handle_get_response(Connection& client, Connection::t_request const& request);
 		void								handle_post_response(Connection& client, Connection::t_request const& request);
+		state const&						get_status(void) const;
 
 	private:
 		int		_status_code;

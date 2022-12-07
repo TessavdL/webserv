@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/01 16:26:20 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/07 13:16:44 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,17 +175,19 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	// client.set_location_index(select_location(client.get_request().request_line.uri.get_path_full(), client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
 	// std::cout << "location index = " << client.get_location_index() << std::endl;
 	ResponseHandler	response_handler;
+	std::string r;
 
 	response_handler.handle_response(client);
-	ResponseGenerator response;
+	if (response_handler.get_status() == ResponseHandler::CGI)
+		r = client.get_response().get_full_response();
+	else {
+		ResponseGenerator response;
 
-	response.generate_response(client.get_response());
-
-	
-
+		response.generate_response(client.get_response());
+		r = response.get_full_response();
+	}
 	// pair<int, string> status = initial_error_checking(client, client.get_request());
 	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
-	std::string r = response.get_full_response();
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
 	send(connection_fd, buf, size, 0);
@@ -259,7 +261,7 @@ int kqueue_server(vector<Server> server)
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
 					receive_request_from_client(EVENT_FD, client, event[i].data);
-					client.print_request();
+					// client.print_request();
 					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
 				}
 			}
