@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:55:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/07 14:46:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,20 @@ static long	find_content_length(std::map<std::string, std::string> headers) {
 	return (NO_CONTENT_LENGTH);
 }
 
+int	check_if_request_parser_threw_exception(int status_code, int const client_response_data_status_code) {
+	if (client_response_data_status_code > 399) {
+		status_code = client_response_data_status_code;
+		return (KO);
+	}
+	return (OK);
+}
+
 int	initial_error_checking(int& status_code, Connection& client, Connection::t_request const& request) {
 	long	content_length = find_content_length(request.headers);
 
+	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
+		return (status_code);
+	}
 	if (check_user_information(status_code, request.request_line.uri.get_authority_user_information())) {
 		return (status_code);
 	}

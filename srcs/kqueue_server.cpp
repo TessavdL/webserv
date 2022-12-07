@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:56:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/07 14:50:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,13 @@ bool	identify_client(int event_identifier, map<int, Connection> connections) {
 	return (false);
 }
 
+void	prepare_error_response_to_client(Connection& client, int const status_code) {
+	ResponseData	response_data;
+
+	response_data.set_status_code(e.get_status_code());
+	client.set_response(response_data);
+}
+
 void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, int total_bytes_read) {
 	Connection::t_request	request;
 
@@ -142,10 +149,10 @@ void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, 
 }
 
 void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
-	RequestHandler			parser;
-	long					total_bytes_read = 0;
-	int						bytes_read = 1;
-	char					buf[BUFF_SIZE];
+	RequestHandler	parser;
+	long			total_bytes_read = 0;
+	int				bytes_read = 1;
+	char			buf[BUFF_SIZE];
 
 	cout << "--- start reading from client ---" << endl;
 	while (bytes_read > 0) {
@@ -153,16 +160,15 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		if (bytes_read == -1) {
 			break ;
 		}
-		if (bytes_read > 0 && bytes_read < BUFF_SIZE) {
-			cout << "--- nothing left to read from client ---" << endl;
-		}
 		buf[bytes_read] = '\0';
-		parser.process_request(string(buf));
-		if (parser.get_state() == RequestHandler::REQUEST_ERROR) {
-			cout << "--- client's request is invalid ---" << endl;
-			break ;
-		}
 		total_bytes_read += bytes_read;
+		try {
+			parser.process_request(string(buf));
+		}
+		catch (RequestException const& e) {
+			printf("--- finished reading from client ---\n");
+			return (prepare_error_response_to_client(client, e.get_status_code()));
+		}
 	}
 	save_request(client, parser, bytes_in_data, total_bytes_read);
 	client.select_virtual_server();

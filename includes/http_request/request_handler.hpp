@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:44:56 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:50:05 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/07 13:54:22 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,17 @@
 # include <string>
 # include <vector>
 
+# include "./chunked_request.hpp"
 # include "./uri_parser.hpp"
 # include "./utility_split.hpp"
+# include "./request_exception.hpp"
 
-# define CLRF "\r\n"
-# define DOUBLE_CLRF "\r\n\r\n"
+# define CRLF "\r\n"
+# define CRLFLEN 4
+
+# define DOUBLE_CRLF "\r\n\r\n"
+# define MAX_HEADER_SIZE 1000
+# define MAX_URI_SIZE 2000
 
 class RequestHandler {
 	public:
@@ -31,8 +37,7 @@ class RequestHandler {
 			REQUEST_START = 0,
 			REQUEST_LINE = 1,
 			REQUEST_HEADERS = 2,
-			REQUEST_BODY = 3,
-			REQUEST_ERROR = -1
+			REQUEST_BODY = 3
 		};
 
 		RequestHandler();
@@ -40,18 +45,21 @@ class RequestHandler {
 		RequestHandler(RequestHandler const& other);
 		RequestHandler&								operator=(RequestHandler const& other);
 		void										process_request(std::string const& request);
+		void										process_request_start(std::string const& request);
+
+		void										handle_request_line(std::string const& str, size_t& index);
 		void										full_request_line(std::string const& str, size_t& index);
 		void										tokenize_request_line(std::string const& str);
+
+		void										handle_headers(std::string const& str, size_t& index);
 		void										full_headers(std::string const& str, size_t& index);
 		void										tokenize_request_headers(std::string const& str);
 		void										create_headers_map(std::vector<std::string> const& v);
-		void										process_request_start(std::string const& request);
-		void										go_method(std::string const& str, size_t& index);
-		void										go_uri(std::string const& str, size_t& index);
-		void										go_protocol(std::string const& str, size_t& index);
-		void										go_headers(std::string const& str, size_t& index);
-		void										go_body(std::string const& str, size_t& index);
-		void										go_chonky_body(std::string const& str, size_t &index);
+
+		void										handle_body(std::string const& str, size_t& index);
+		void										handle_normal_body(std::string const& str, size_t& index);
+		void										handle_chunked_body(std::string const& str, size_t &index);
+
 		State const&								get_state(void) const;
 		std::string const&							get_remainder(void) const;
 		std::string const&							get_request_line_method(void) const;
