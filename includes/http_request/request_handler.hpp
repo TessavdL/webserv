@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:44:56 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/07 13:54:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 11:15:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ class RequestHandler {
 			REQUEST_START = 0,
 			REQUEST_LINE = 1,
 			REQUEST_HEADERS = 2,
-			REQUEST_BODY = 3
+			REQUEST_CHECK = 3,
+			REQUEST_BODY = 4
 		};
 
 		RequestHandler();
@@ -55,6 +56,8 @@ class RequestHandler {
 		void										full_headers(std::string const& str, size_t& index);
 		void										tokenize_request_headers(std::string const& str);
 		void										create_headers_map(std::vector<std::string> const& v);
+
+		void										check_request();
 
 		void										handle_body(std::string const& str, size_t& index);
 		void										handle_normal_body(std::string const& str, size_t& index);

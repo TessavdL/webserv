@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:48:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 14:52:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class ResponseHandler {
 		std::string							handle_error_page(VirtualServer const& virtual_server);
 		std::string							file_location_handler(VirtualServer const& virtual_server, std::pair<std::string, bool> const& file_location);
 		void								handle_response(Connection& client);
-		void								handle_get_response(Connection& client, Connection::t_request const& request);
+		void								handle_get_response(Connection& client, RequestData const& request);
 
 	private:
 		int		_status_code;

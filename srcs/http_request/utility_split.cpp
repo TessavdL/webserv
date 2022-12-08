@@ -6,11 +6,18 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:27 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:59:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 13:03:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_request/utility_split.hpp"
+
+std::string	string_to_lower(std::string const& str) {
+	std::string ret = str;
+
+	std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
+	return (ret);
+}
 
 std::string	string_until_deilimeter(std::string const& str, std::string const& delimeter) {
 	std::string	ret;
@@ -61,7 +68,6 @@ std::pair<std::string, std::string>	split_string_in_half(std::string const& str,
 	return (std::pair<std::string, std::string>(str1, str2));
 }
 
-//unused
 std::pair<std::string, std::string>	split_string_in_half_on_any_match(std::string const& str, std::string delimeter) {
 	size_t	pos = str.find_first_of(delimeter);
 	std::string	str1;

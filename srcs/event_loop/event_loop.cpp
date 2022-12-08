@@ -58,8 +58,8 @@ int	accept_connection(int event_fd) {
 	return (connection_fd);
 }
 
-void	add_connection(int event_fd, int connection_fd, std::map<int, Connection>& connections, std::map<int, std::vector<Server> > virtual_servers) {
-	std::pair<int, Connection>	new_connection;
+void	add_connection(int event_fd, int connection_fd, std::map<int, RequestData>& connections, std::map<int, std::vector<Server> > virtual_servers) {
+	std::pair<int, RequestData>	new_connection;
 	std::map<int, std::vector<Server> >::const_iterator it = virtual_servers.find(event_fd);
 	new_connection.first = connection_fd;
 	new_connection.second.set_virtual_servers(*it);
@@ -77,7 +77,7 @@ bool	is_new_connection(int event_identifier, std::map<int, std::vector<Server> >
 int	main(void) {
 	// initiate connection map
 	std::map<int, std::vector<Server> >	virtual_servers;
-	std::map<int, Connection>			connections;
+	std::map<int, RequestData>			connections;
 	
 	// create kernel kqueue
 	int	kq = kqueue();

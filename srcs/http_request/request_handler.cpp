@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/07 14:28:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 13:05:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	RequestHandler::process_request(std::string const& request) {
 			handle_request_line(str, index);
 		case REQUEST_HEADERS:
 			handle_headers(str, index);
+		case REQUEST_CHECK:
+			check_request();
 		case REQUEST_BODY:
 			handle_body(str, index);
 			break ;
@@ -122,7 +124,7 @@ void	RequestHandler::handle_headers(std::string const& str, size_t& index) {
 	}
 	tokenize_request_headers(this->_request_headers_full);
 	create_headers_map(this->_request_headers_tokens);
-	this->_state = REQUEST_BODY;
+	this->_state = REQUEST_CHECK;
 }
 
 void	RequestHandler::full_headers(std::string const& str, size_t& index) {
@@ -160,6 +162,23 @@ void	RequestHandler::create_headers_map(std::vector<std::string> const& v) {
 		request_headers[header_key_and_value.first] = header_key_and_value.second;
 	}
 	this->_request_headers = request_headers;
+}
+
+// CHECK REQUEST
+
+void	RequestHandler::check_request(void) {
+	std::map<std::string, std::string>::const_iterator	expect_header = this->_request_headers.find("Expect");
+	
+	if (expect_header != this->_request_headers.end()) {
+		std::string const	expectation = string_to_lower(expect_header->second);
+		if (!expectation.compare("100-continue")) {
+			throw (RequestException(100, "RequestHandler::check_request"));
+		}
+		else {
+			throw (RequestException(417, "RequestHandler::check_request"));
+		}
+	}
+	this->_state = REQUEST_BODY;
 }
 
 // HANDLE BODY

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:48:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:49:15 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 11:53:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ bool	is_last_iterator(Iter current, Iter end) {
 		return (true);
 	return (false);
 }
-
 
 #endif

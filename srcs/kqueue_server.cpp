@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/07 14:50:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 16:42:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,50 +128,84 @@ bool	identify_client(int event_identifier, map<int, Connection> connections) {
 	return (false);
 }
 
-void	prepare_error_response_to_client(Connection& client, int const status_code) {
+int	prepare_error_response_to_client(Connection& client, int const status_code) {
 	ResponseData	response_data;
 
-	response_data.set_status_code(e.get_status_code());
+	response_data.set_status_code(status_code);
 	client.set_response(response_data);
+	return (-1);
+}
+
+static bool	ready_to_check_request_line_and_headers(RequestHandler::State state) {
+	if (state >= RequestHandler::REQUEST_CHECK) {
+		return (true);
+	}
+	return (false);
 }
 
 void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, int total_bytes_read) {
-	Connection::t_request	request;
-
-	request.request_line.method = parser.get_request_line_method();
-	request.request_line.uri = parser.get_request_line_uri();
-	request.request_line.protocol = parser.get_request_line_protocol();
-	request.headers = parser.get_headers();
-	request.body = parser.get_body();
-	request.bytes_in_data = bytes_in_data;
-	request.total_bytes_read = total_bytes_read;
+	RequestData	request;
+	
+	request.set_bytes_in_data(bytes_in_data);
+	request.set_total_bytes_read(total_bytes_read);
+	request.set_method(parser.get_request_line_method());
+	request.set_uri(parser.get_request_line_uri());
+	request.set_protocol(parser.get_request_line_protocol());
+	request.set_headers(parser.get_headers());
+	request.set_body(parser.get_body());
 	client.set_request(request);
+}
+
+void	save_request_line_and_headers(Connection& client, RequestHandler parser) {
+	RequestData request;
+	
+	request.set_method(parser.get_request_line_method());
+	request.set_uri(parser.get_request_line_uri());
+	request.set_protocol(parser.get_request_line_protocol());
+	request.set_headers(parser.get_headers());
+	client.set_request(request);
+}
+
+int	parse_received_data(Connection& client, RequestHandler& parser, char buf[BUFF_SIZE + 1]) {
+	try {
+		parser.process_request(string(buf));
+	}
+	catch (RequestException const& e) {
+		return (prepare_error_response_to_client(client, e.get_status_code()));
+	}
+	if (ready_to_check_request_line_and_headers(parser.get_state())) {
+		save_request_line_and_headers(client, parser);
+		client.select_virtual_server();
+		try {
+			error_check_request_line_and_headers(client, client.get_request());
+		}
+		catch (RequestException const& e2) {
+			return (prepare_error_response_to_client(client, e2.get_status_code()));
+		}
+	}
+	return (0);
 }
 
 void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
 	RequestHandler	parser;
 	long			total_bytes_read = 0;
 	int				bytes_read = 1;
-	char			buf[BUFF_SIZE];
+	char			buf[BUFF_SIZE + 1];
 
 	cout << "--- start reading from client ---" << endl;
 	while (bytes_read > 0) {
-		bytes_read = recv(connection_fd, buf, sizeof(buf), 0);
+		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
 		if (bytes_read == -1) {
 			break ;
 		}
 		buf[bytes_read] = '\0';
 		total_bytes_read += bytes_read;
-		try {
-			parser.process_request(string(buf));
-		}
-		catch (RequestException const& e) {
+		if (parse_received_data(client, parser, buf) == -1) {
 			printf("--- finished reading from client ---\n");
-			return (prepare_error_response_to_client(client, e.get_status_code()));
+			return ;
 		}
 	}
 	save_request(client, parser, bytes_in_data, total_bytes_read);
-	client.select_virtual_server();
 	printf("--- finished reading from client ---\n");
 }
 
