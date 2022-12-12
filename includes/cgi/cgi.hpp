@@ -6,11 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2022/12/08 14:36:17 by tevan-de      ########   odam.nl         */
-=======
-/*   Updated: 2022/12/08 14:56:25 by jelvan-d      ########   odam.nl         */
->>>>>>> feature_post
+/*   Updated: 2022/12/12 13:27:28 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +30,7 @@ class Cgi {
 		void	create_env_from_map(void);
 		void	free_env_array(void);
 		void	initiate_cgi_process(RequestData const& request);
-		void	child_process(RequestData const& request);
+		void	child_process(RequestData const& client);
 		void	parent_process(RequestData const& request);
 		void	get_content_from_cgi(void);
 		string const&	get_body(void) const;

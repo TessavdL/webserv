@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 12:27:19 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/12 13:21:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 	if (!request.get_method().compare("GET")) {
 		handle_get_response(client, request);
 	}
-	if (!request.request_line.method.compare("POST")) {
+	if (!request.get_method().compare("POST")) {
 		handle_post_response(client, request);
 	}
 	// if (request.request_line.method.compare("DELETE")) {
@@ -57,8 +57,8 @@ void	ResponseHandler::handle_response(Connection& client) {
 	// }
 }
 
-void		ResponseHandler::handle_post_response(Connection& client, Connection::t_request const& request) {
-	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.request_line.uri.get_path_full());
+void		ResponseHandler::handle_post_response(Connection& client, RequestData const& request) {
+	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.get_uri().get_path_full());
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
 

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/12 12:30:14 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/12 14:17:21 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ int kqueue_server(vector<Server> server) {
 				if (identify_client(EVENT_FD, connections) == true) {
 					Connection& client = connections[EVENT_FD];
 					receive_request_from_client(EVENT_FD, client, event[i].data);
-					client.print_request();
+					// client.print_request();
 					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
 				}
 			}

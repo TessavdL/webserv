@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 16:40:01 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/08 14:32:54 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/12 13:30:15 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include "../http_response/error_checking.hpp"
 # include "../http_response/response_utils.hpp"
 
-void	create_cgi_response(RequestData& connection, std::string const& file_location);
+void	create_cgi_response(Connection& connection, std::string const& file_location);
 
 #endif

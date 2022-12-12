@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/08 15:05:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/12 13:51:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Connection::Connection(Connection const& other) {
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
 		this->_virtual_servers = other._virtual_servers;
+		this->_virtual_server = other._virtual_server;
 		this->_request = other._request;
 		this->_response = other._response;
 		this->_connection_fd = other._connection_fd;
