@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:35:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/14 12:36:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/08 16:11:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,12 @@ static bool	is_request_chunked(std::map<std::string, std::string> const& m) {
 	return (false);
 }
 
-void	HTTPRequestLexer::process_request(std::string const& request) {
+void	HTTPRequestLexer::process_request(std::string const& request, int const bytes_read) {
 	if (this->_state == REQUEST_START) {
 		process_request_start(request);
 	}
 
-	std::string str = this->_remainder.append(request);
+	std::string str = this->_remainder.append(request, bytes_read);
 	size_t		index = 0;
 
 	switch (this->_state) {

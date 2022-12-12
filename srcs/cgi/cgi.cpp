@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/06 15:50:50 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/08 16:04:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 	string	cwd = string(getcwd(NULL, 0));
 
 	if (!request.request_line.method.compare("POST"))
-		this->_env["CONTENT_LENGTH"] = request.bytes_in_data;
+		this->_env["CONTENT_LENGTH"] = to_string(request.body.length());
 	else
 		this->_env["CONTENT_LENGTH"] = to_string(request.request_line.uri.get_query_string().size());
 	if (!request.request_line.method.compare("GET"))
@@ -77,6 +77,7 @@ void	Cgi::create_env(Connection const& connection, Connection::t_request const& 
 	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
+	cout << "CONTENT_LEN = " << this->_env["CONTENT_LENGTH"] << "       " << request.body.size() << endl;
 	create_env_from_map();
 	(void)connection;
 }
@@ -116,10 +117,13 @@ void	Cgi::initiate_cgi_process(Connection::t_request const& request) {
 }
 
 void	Cgi::child_process(Connection::t_request const& request) {
+	string s;
+
 	if (!request.request_line.method.compare("POST")) {
-		if (dup2(this->_fd[1][1], STDIN_FILENO) == -1)
+		if (dup2(this->_fd[1][0], STDIN_FILENO) == -1)
 			throw (FatalException("SYSCALL: dup2: Failed\n"));
 	}
+	cout << "this line is printed" << s << endl;
 	if (this->_fd[0][1] != STDOUT_FILENO) {
 		if (dup2(this->_fd[0][1], STDOUT_FILENO) == -1)
 			throw (FatalException("SYSCALL: dup2: Failed\n"));
@@ -138,8 +142,9 @@ void	Cgi::parent_process(Connection::t_request const& request) {
 	if (!request.request_line.method.compare("POST"))
 		close(this->_fd[1][0]);
 	close(this->_fd[0][1]);
+	cout << request.body << endl;
 	if (!request.request_line.method.compare("POST"))
-		write(this->_fd[1][1], request.body.c_str(), request.body.size());
+		write(this->_fd[1][1], request.body.c_str(), request.body.length());
 	if (waitpid(this->_pid, &exit_status, WNOHANG) == -1)
 		throw (FatalException("SYSCALL: waitpid: Failed"));
 	if (WIFEXITED(exit_status))
