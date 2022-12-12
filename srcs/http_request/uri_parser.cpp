@@ -6,11 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 16:33:21 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/14 16:38:57 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:43:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request_parser/uri_parser.hpp"
+#include "../../includes/http_request/uri_parser.hpp"
 
 Uri::Uri() : _authority_port(0) {
 

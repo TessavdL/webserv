@@ -6,15 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/07 12:50:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/12 13:17:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESPONES_HANDLER_HPP
-# define RESPONES_HANDLER_HPP
+#ifndef RESPONSE_HANDLER_HPP
+# define RESPONSE_HANDLER_HPP
 
 #include "../event_loop/connection.hpp"
-#include "../http_request_parser/utility_path.hpp"
+#include "../http_request/utility_path.hpp"
 #include "../virtual_server/search_for_file.hpp"
 #include "../cgi/cgi_handler.hpp"
 #include "./error_checking.hpp"
@@ -51,8 +51,8 @@ class ResponseHandler {
 		std::string							handle_error_page(VirtualServer const& virtual_server);
 		std::string							file_location_handler(VirtualServer const& virtual_server, std::pair<std::string, bool> const& file_location);
 		void								handle_response(Connection& client);
-		void								handle_get_response(Connection& client, Connection::t_request const& request);
-		void								handle_post_response(Connection& client, Connection::t_request const& request);
+		void								handle_get_response(Connection& client, RequestData const& request);
+		void								handle_post_response(Connection& client, RequestData const& request);
 		state const&						get_status(void) const;
 
 	private:
