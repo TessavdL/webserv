@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/08 16:11:12 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/12 14:25:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 			cout << "--- finished reading from socket ---" << endl;
 		}
 		buf[bytes_read] = '\0';
-		lexer.process_request(string(buf), bytes_read);
+		lexer.process_request(string(buf));
 		if (lexer.get_state() == HTTPRequestLexer::REQUEST_ERROR) {
 			cout << "--- request is invalid ---" << endl;
 			break ;
