@@ -17,7 +17,7 @@ std::vector<std::string>	get_directory_file_list(std::string const& filename);
 bool						has_read_permission(const char* str);
 bool						has_write_permission(const char* str);
 bool						has_execute_permission(const char* str);
-std::string					remove_consequetive_characters(std::string const& str, char c);
+std::string					remove_multiple_consecutive_characters(std::string const& str, char c);
 std::string					root_plus_uri_path(std::string const& uri_path, std::string const& root);
 
 #endif

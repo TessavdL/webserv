@@ -6,12 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/01 17:20:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/12 12:19:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
-
 
 ResponseHandler::ResponseHandler() : _status_code(200), _state(UNSET) {
 
@@ -35,7 +34,7 @@ ResponseHandler&	ResponseHandler::operator=(ResponseHandler const& other) {
 // HANDLE RESPONSE
 
 void	ResponseHandler::handle_response(Connection& client) {
-	Connection::t_request request = client.get_request();
+	RequestData request = client.get_request();
 
 	// initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
@@ -47,7 +46,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 			return (create_error_response(client, error_page, get_file_content(error_page)));
 		}
 	}
-	if (!request.request_line.method.compare("GET")) {
+	if (!request.get_method().compare("GET")) {
 		handle_get_response(client, request);
 	}
 	if (!request.request_line.method.compare("POST")) {
@@ -116,8 +115,8 @@ std::string	ResponseHandler::file_location_handler(VirtualServer const& virtual_
 	return (file);
 }
 
-void	ResponseHandler::handle_get_response(Connection& client, Connection::t_request const& request) {
-	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.request_line.uri.get_path_full());
+void	ResponseHandler::handle_get_response(Connection& client, RequestData const& request) {
+	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.get_uri().get_path_full());
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
 
@@ -133,10 +132,10 @@ void	ResponseHandler::handle_get_response(Connection& client, Connection::t_requ
 			return (create_error_response(client, file, get_file_content(file)));
 		}
 	}
-	if (isCGI(file)) {
-		create_cgi_response(client, file);
-		return ;
-	}
+	// if (isCGI(file)) {
+	// 	create_cgi_response(client, file);
+	// 	return ;
+	// }
 	if (this->_state == DIRECTORY_LIST) {
 		return (create_directory_list_response(client, file));
 	}
@@ -191,8 +190,6 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 static std::string create_content_type(std::string const& file_name) {
 	std::string const& extension = file_name.substr(file_name.find("."));
 
-	std::cout << "file_name = " << file_name << std::endl;
-	std::cout << "extension = " << extension << std::endl;
 	if (extension.empty()) {
 		return ("application/octet-stream");
 	}
@@ -253,4 +250,3 @@ std::string	ResponseHandler::get_file_content(std::string const& file_location) 
 	input_stream.close();
 	return (file_contents);
 }
-

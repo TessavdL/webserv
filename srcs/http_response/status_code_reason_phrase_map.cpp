@@ -6,11 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:20:43 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:23:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:52:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_response/error_checking.hpp"
+#include "../../includes/http_response/response_utils.hpp"
 
 std::map<int, std::string>	create_status_code_reason_phrase_map(void) {
 	std::map<int, std::string>	m;

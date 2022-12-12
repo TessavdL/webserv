@@ -6,12 +6,12 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:45:18 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:45:23 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 14:02:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_PARSER_EXCEPTION_HPP
-# define LEXER_PARSER_EXCEPTION_HPP
+#ifndef EXCEPTION_CONFIG_PARSER
+# define EXCEPTION_CONFIG_PARSER
 
 # include <string>
 # include <stdexcept>

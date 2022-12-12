@@ -6,11 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:29:58 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/21 12:09:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/23 13:50:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request_parser/utility_path.hpp"
+#include "../../includes/http_request/utility_path.hpp"
 
 bool	is_absolute_path(const char* str) {
 	if (str[0] && str[0] == '/') {
@@ -90,7 +90,7 @@ bool	has_execute_permission(const char* str) {
 	return (true);
 }
 
-std::string	remove_consequetive_characters(std::string const& str, char c) {
+std::string	remove_multiple_consecutive_characters(std::string const& str, char c) {
 	std::string	ret;
 
 	for (size_t i = 0; i < str.length(); i++) {
@@ -103,5 +103,5 @@ std::string	remove_consequetive_characters(std::string const& str, char c) {
 }
 
 std::string	root_plus_uri_path(std::string const& root, std::string const& uri_path) {
-	return (remove_consequetive_characters(root + uri_path,'/'));
+	return (remove_multiple_consecutive_characters(root + uri_path,'/'));
 }

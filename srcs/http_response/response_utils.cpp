@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:28:12 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/23 12:54:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ std::string create_directory_list_page(std::string const& file) {
 	std::string					directories;
 	std::string					page = DIRECTORY_LISTING_STRING;
 
-	std::cout << "dir = " << file << std::endl;
 	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
-		std::cout << "file in dir list" << *it << std::endl;
 		directories = directories + "<ul><a href = \"" + *it + "/\"/><p>" + *it + "</p></a></ul>";
 	}
 	page.replace(page.find("$FILE"), strlen("$FILE"), file);
@@ -72,4 +70,10 @@ bool	isCGI(std::string const& file_location) {
 	if (!extension.empty() && !extension.compare(".php"))
 		return (true);
 	return (false);
+}
+
+std::map<int, std::string>	g_status_code_reason_phrase_map = create_status_code_reason_phrase_map();
+
+std::string const&	get_reason_phrase(int const status_code) {
+	return (g_status_code_reason_phrase_map.find(status_code)->second);
 }

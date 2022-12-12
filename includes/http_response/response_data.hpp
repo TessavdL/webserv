@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 13:17:25 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 14:51:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/08 15:30:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,17 @@ class ResponseData
 		std::string const&							get_reason_phrase(void) const;
 		std::map<std::string, std::string> const&	get_headers(void) const;
 		std::string const&							get_body(void) const;
+		int const&									get_bytes_in_data(void) const;
+		int const&									get_total_bytes_read(void) const;
+		void										set_bytes_in_data(int const& bytes_in_data);
+		void										set_total_bytes_read(int const& total_bytes_read);
 		void										set_body(std::string const& body);
 		void										set_headers(std::map<std::string, std::string> const& headers);
 		void										set_reason_phrase(std::string const& reason_phrase);
 		void										set_status_code(int const& status_code);	
 	private:
+		int									_bytes_in_data;
+		int									_total_bytes_read;
 		std::string							_body;
 		std::map<std::string, std::string>	_headers;
 		std::string							_reason_phrase;
