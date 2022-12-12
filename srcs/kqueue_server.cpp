@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/12 14:31:28 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/12 15:38:54 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,21 +210,33 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 }
 
 void	send_response_to_client(int connection_fd, Connection& client) {
-	ResponseHandler		response_handler;
+// client.set_server_index(select_virtual_server(client.get_request().request_line.uri.get_authority_host(), client.get_virtual_servers().second));
+	// std::cout << "virtual server index = " << client.get_server_index() << std::endl;
+
+	// client.set_location_index(select_location(client.get_request().request_line.uri.get_path_full(), client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
+	// std::cout << "location index = " << client.get_location_index() << std::endl;
+	ResponseHandler	response_handler;
+	std::string r;
 	response_handler.handle_response(client);
 
-	ResponseGenerator	response;
-	response.generate_response_string(client.get_response());
+	if (response_handler.get_status() == ResponseHandler::CGI)
+		r = client.get_response().get_full_response();
+	else {
+		ResponseGenerator response;
 
-	string				response_string = response.get_full_response();
-	unsigned long		size = response_string.size();
-	const char			*buf = response_string.c_str();
+		response.generate_response_string(client.get_response());
+		r = response.get_full_response();
+	}
+	// pair<int, string> status = initial_error_checking(client, client.get_request());
+	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
+	unsigned long size = r.size();
+	const char *buf = r.c_str();
 
-	cout << response;
+	// cout << "response = " << r << endl;
 	send(connection_fd, buf, size, 0);
-	printf("--- finished writing to client\n");
+	printf("--- done writing to client socket\n");
 	close(connection_fd);
-	printf("--- bounce client, bye! ---\n\n");
+	printf("--- bounce bye ---\n\n");
 }
 
 int kqueue_server(vector<Server> server) {
