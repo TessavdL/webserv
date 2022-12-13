@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/08 16:39:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/13 18:35:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static long	find_content_length(std::map<std::string, std::string> headers) {
 	return (NO_CONTENT_LENGTH);
 }
 
-int	check_if_request_parser_threw_exception(int status_code, int const client_response_data_status_code) {
+int	check_if_request_parser_threw_exception(int& status_code, int const client_response_data_status_code) {
 	if (client_response_data_status_code > 399) {
 		status_code = client_response_data_status_code;
 		return (KO);
@@ -107,6 +107,7 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 	long	content_length = find_content_length(request.get_headers());
 
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
+		std::cout << status_code << std::endl;
 		return (status_code);
 	}
 	if (check_if_all_data_was_read(status_code, request.get_bytes_in_data(), request.get_total_bytes_read())) {
@@ -165,7 +166,11 @@ void	check_http_protocol(std::string const& protocol) {
 }
 
 void	error_check_request_line_and_headers(Connection const& client, RequestData const& request) {
+	std::cout << request.get_method() << std::endl;
 	check_method(request.get_method(), client.get_virtual_server().get_limit_except());
+	for (std::vector<std::string>::const_iterator it = client.get_virtual_server().get_limit_except().begin(); it != client.get_virtual_server().get_limit_except().end(); ++it) {
+		std::cout << *it << std::endl;
+	}
 	check_uri_length(request.get_uri().get_path_full());
 	check_user_information(request.get_uri().get_authority_user_information());
 	check_http_protocol(request.get_protocol());

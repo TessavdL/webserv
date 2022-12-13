@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 14:20:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 18:40:39 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 17:52:09 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int	select_location_index(std::string const& uri_path, std::vector<LocationBlock
 		return (NO_LOCATION);
 	for (size_t i = 0; i < v.size(); i++) {
 		if (v[i].get_path_and_optional_modifier().size() > 1 && !v[i].get_path_and_optional_modifier()[0].compare("=")) {
-			if (v[i].get_path_and_optional_modifier()[1] == uri_path) {
+			if (v[i].get_path_and_optional_modifier().back() == uri_path) {
 				return (i);
 			}
 			else {
 				continue ;
 			}
 		}
-		l = longest_match(uri_path, v[i].get_path_and_optional_modifier()[1]);
+		l = longest_match(uri_path, v[i].get_path_and_optional_modifier().back());
 		if (max < l) {
 			max = l;
 			location_index = i;

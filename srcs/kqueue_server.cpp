@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/13 12:46:07 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 18:43:58 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void	add_event_to_kqueue(int kq, int event_fd, int event_filter) {
 	struct kevent	monitor_event;
 
 	EV_SET(&monitor_event, event_fd, event_filter, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	std::cout << "EV_SET EVENT FILTER " << event_filter << std::endl;
 	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
 		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
 	}
@@ -171,6 +172,8 @@ int	parse_received_data(Connection& client, RequestHandler& parser, std::string 
 		parser.process_request(buf);
 	}
 	catch (RequestException const& e) {
+		std::cout << e.what() << std::endl;
+		std::cout << e.get_status_code() << std::endl;
 		return (prepare_error_response_to_client(client, e.get_status_code()));
 	}
 	if (ready_to_check_request_line_and_headers(parser.get_state())) {
@@ -180,6 +183,8 @@ int	parse_received_data(Connection& client, RequestHandler& parser, std::string 
 			error_check_request_line_and_headers(client, client.get_request());
 		}
 		catch (RequestException const& e2) {
+			std::cout << e2.what() << std::endl;
+			std::cout << e2.get_status_code() << std::endl;
 			return (prepare_error_response_to_client(client, e2.get_status_code()));
 		}
 	}
@@ -192,7 +197,7 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	int				bytes_read = 1;
 	char			buf[BUFF_SIZE + 1];
 
-	cout << "--- start reading from client ---" << endl;
+	cout << "--- start reading from client ---" << connection_fd << endl;
 	while (bytes_read > 0) {
 		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
 		if (bytes_read == -1) {
@@ -232,7 +237,7 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
 
-	// cout << "response = " << r << endl;
+	cout << "response = " << r << endl;
 	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
 	close(connection_fd);
@@ -275,6 +280,7 @@ int kqueue_server(vector<Server> server) {
 		// LOOP OVER n_events
         for (int i = 0; n_events > i; i++)
         {
+			// sleep(1);
 			// An error has occured while processing the events
             if (is_event_error(EVENT_FLAGS)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
@@ -292,7 +298,9 @@ int kqueue_server(vector<Server> server) {
             // socket's file descriptor, we are sure that a new client wants 
             // to connect to our socket.
 			else if (is_new_connection(EVENT_FD, sockets_with_config)) {
+				std::cout << "--- a client has connected ----" << std::endl;
 				int connection_fd = accept_connection(EVENT_FD);
+				std::cout << "--- client fd = " << connection_fd << " ---" << std::endl;
 				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
 				add_connection(EVENT_FD, connection_fd, connections, sockets_with_config);
 			}
@@ -304,6 +312,7 @@ int kqueue_server(vector<Server> server) {
 					receive_request_from_client(EVENT_FD, client, event[i].data);
 					// client.print_request();
 					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
+					client.print_request();
 				}
 			}
 

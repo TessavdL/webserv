@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 13:21:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 17:30:02 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
 
-ResponseHandler::ResponseHandler() : _status_code(200), _state(UNSET) {
+ResponseHandler::ResponseHandler() :_state(UNSET) {
 
 }
 
@@ -36,7 +36,7 @@ ResponseHandler&	ResponseHandler::operator=(ResponseHandler const& other) {
 void	ResponseHandler::handle_response(Connection& client) {
 	RequestData request = client.get_request();
 
-	// initial_error_checking(this->_status_code, client, request);
+	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {

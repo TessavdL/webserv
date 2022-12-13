@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/08 16:35:42 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/13 17:29:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int							check_request_size(int& status_code, int request_body_size, int conten
 int							check_if_file_is_processable(int& status_code, std::string const& file_location);
 int							check_if_file_has_read_permission(int& status_code, std::string const& file_location);
 
+int                         check_if_request_parser_threw_exception(int& status_code, int const client_response_data_status_code);
 int							initial_error_checking(int& status_code, Connection& client, RequestData const& request);
 int							check_file_status(int& status_code, std::string const& file);
 
