@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/08 14:59:56 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/13 16:35:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Connection {
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
 		void										print_request() const;
+		void										handle_rewrite(void);
 		void										select_virtual_server();
 		int	const&									get_connection_fd() const;
 		ResponseData const&							get_response() const;

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 13:21:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:15:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,39 @@ ResponseHandler&	ResponseHandler::operator=(ResponseHandler const& other) {
 
 // HANDLE RESPONSE
 
+static bool	check_return(VirtualServer const& virtual_server) {
+	if (!virtual_server.get_return().empty()) {
+		return (true);
+	}
+	return (false);
+}
+
+static std::map<std::string, std::string>	create_location_header(std::string const& new_location) {
+	std::map<std::string, std::string>	headers;
+
+	headers["Location"] = new_location;
+	return (headers);
+}
+
+static void	create_return_response(Connection& client, std::pair<int, std::string> return_information) {
+	ResponseData	response_data;
+
+	response_data.set_status_code(return_information.first);
+	response_data.set_reason_phrase(get_reason_phrase(return_information.first));
+	response_data.set_headers(create_location_header(return_information.second));
+	client.set_response(response_data);
+}
+
 void	ResponseHandler::handle_response(Connection& client) {
 	RequestData request = client.get_request();
 
-	// initial_error_checking(this->_status_code, client, request);
+	initial_error_checking(this->_status_code, client, request);
+	// if (check_return(client.get_virtual_server())) {
+	// 	return (create_return_response(client, client.get_virtual_server().get_return()));
+	// }
+	// if (check_continue()) {
+	// 	return (create_continue_response(client));
+	// }
 	if (client_or_server_error_occured(this->_status_code)) {
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
@@ -52,9 +81,9 @@ void	ResponseHandler::handle_response(Connection& client) {
 	if (!request.get_method().compare("POST")) {
 		handle_post_response(client, request);
 	}
-	// if (request.request_line.method.compare("DELETE")) {
-
-	// }
+	if (!request.get_method.compare("DELETE")) {
+		handle_delete_response(client, request);
+	}
 }
 
 void		ResponseHandler::handle_post_response(Connection& client, RequestData const& request) {
@@ -138,15 +167,40 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 		}
 	}
 	if (isCGI(file)) {
-		create_cgi_response(client, file);
 		this->_state = CGI;
-		return ;
+		return (create_cgi_response(client, file));
 	}
 	if (this->_state == DIRECTORY_LIST) {
 		return (create_directory_list_response(client, file));
 	}
 	this->_state = GET;
 	create_get_response(client, file, get_file_content(file));
+}
+
+void	ResponseHandler::handle_delete_response(Connection& client, RequestData const& request) {
+	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.get_uri().get_path_full());
+	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
+	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
+
+	if (client_or_server_error_occured(this->_status_code)) {
+		if (this->_state == DEFAULT_ERROR) {
+			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
+		}
+		else if (this->_state == CUSTOM_ERROR) {
+			return (create_error_response(client, file, get_file_content(file)));
+		}
+	}
+	if (remove(file.c_str())) {
+		this->_status_code = 500;
+		std::string const	error_page = find_error_page_location(this->_status_code, client.get_virtual_server());
+		if (error_page.empty()) {
+			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
+		}
+		else {
+			return (create_error_response(client, error_page, get_file_content(error_page)))
+		}
+		create_delete_response(client, file);
+	}
 }
 
 // CREATE RESPONSE
@@ -175,6 +229,15 @@ void	ResponseHandler::create_directory_list_response(Connection& client, std::st
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
 	response_data.set_headers(create_headers(client, ".html", page.length()));
+	client.set_response(response_data);
+}
+
+void	ResponeHandler::create_delete_respones(Connection& client, std::string const& file) {
+	ResponseData	respone_data;
+
+	response_data.set_status_code(this->_status_code);
+	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
+	response_data.set_body(file + " has been deleted"));
 	client.set_response(response_data);
 }
 
@@ -217,7 +280,7 @@ static std::string create_content_type(std::string const& file_name) {
 static std::string	create_allowed_methods(std::vector<std::string> allowed_methods) {
 	std::string	ret;
 	
-	for (std::vector<std::string>::const_iterator it = allowed_methods.begin(); it != allowed_methods.cend(); it++) {
+	for (std::vector<std::string>::const_iterator it = allowed_methods.cbegin(); it != allowed_methods.cend(); it++) {
 		ret.append(*it);
 		if (!is_last_iterator(it, allowed_methods.cend())) {
 			ret.append(", ");

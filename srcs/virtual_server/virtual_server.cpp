@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 19:04:01 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:58:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	VirtualServer::initialize_virtual_server(std::string const& host, std::stri
 	this->_error_page = virtual_server.get_error_page();
 	this->_index = virtual_server.get_index();
 	this->_listen = virtual_server.get_listen();
+	this->_return = virtual_server.get_return();
+	this->_rewrite = virtual_server.get_rewrite();
 	this->_root = virtual_server.get_root();
 	this->_server_name = host;
 	this->_limit_except.push_back("GET");
@@ -44,6 +46,9 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	if (!location_block.get_autoindex().empty()) {
 		this->_autoindex = location_block.get_autoindex();
 	}
+	if (!location_block.get_cgi().first.empty()) {
+		this->_cgi = location_block.get_cgi();
+	}
 	if (!location_block.get_client_max_body_size().empty()) {
 		this->_client_max_body_size = location_block.get_client_max_body_size();
 	}
@@ -55,6 +60,12 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	}
 	if (!location_block.get_limit_except().empty()) {
 		this->_limit_except = location_block.get_limit_except();
+	}
+	if (location_block.get_return().first != 0) {
+		this->_return = location_block.get_return();
+	}
+	if (!location_block.get_rewrite().empty()) {
+		this->_rewrite = location_block.get_rewrite();
 	}
 	if (!location_block.get_root().empty()) {
 		this->_root = location_block.get_root();
@@ -72,11 +83,14 @@ VirtualServer::VirtualServer(VirtualServer const& other) {
 VirtualServer&	VirtualServer::operator=(VirtualServer const& other) {
 	if (this != &other) {
 		this->_autoindex = other._autoindex;
+		this->_cgi = other._cgi;
 		this->_client_max_body_size = other._client_max_body_size;
 		this->_error_page = other._error_page;
 		this->_index = other._index;
 		this->_limit_except = other._limit_except;
 		this->_listen = other._listen;
+		this->_return = other._return;
+		this->_rewrite = other._rewrite;
 		this->_root = other._root;
 		this->_server_name =other._server_name;
 	}
@@ -85,6 +99,10 @@ VirtualServer&	VirtualServer::operator=(VirtualServer const& other) {
 
 std::string const &												VirtualServer::get_autoindex(void) const {
 	return (this->_autoindex);
+}
+
+std::pair<std::string, std::string> const &						VirtualServer::get_cgi(void) const {
+	return (this->_cgi);
 }
 
 std::string const &												VirtualServer::get_client_max_body_size(void) const {
@@ -105,6 +123,14 @@ std::vector<std::string> const &								VirtualServer::get_limit_except(void) co
 
 std::vector<std::string> const &								VirtualServer::get_listen(void) const {
 	return (this->_listen);
+}
+
+std::pair<int, std::string> const&								VirtualServer::get_return(void) const {
+	return (this->_return);
+}
+
+std::string const &												VirtualServer::get_rewrite(void) const {
+	return (this->_rewrite);
 }
 
 std::string const &												VirtualServer::get_root(void) const {

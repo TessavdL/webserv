@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 13:51:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 16:37:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,22 @@ void	Connection::print_request(void) const {
 	std::cout << "bytes read = " << this->_request.get_total_bytes_read() << std::endl;
 }
 
+void	Connection::handle_rewrite(void) {
+	for (size_t i = 0; i < 10; i++) {
+		std::string const uri_replacement = this->_virtual_server.get_rewrite();
+		if (uri_replacement.empty()) {
+			return ;
+		}
+		Uri	new_uri;
+		new_uri.parse_uri(uri_replacement);
+		this->_request.set_uri(new_uri);
+		this->_virtual_server.initialize_virtual_server(this->_request.get_uri().get_authority_host(), this->_request.get_uri().get_path_full(), this->_virtual_servers.second);
+	}
+}
+
 void	Connection::select_virtual_server(void) {
 	this->_virtual_server.initialize_virtual_server(this->_request.get_uri().get_authority_host(), this->_request.get_uri().get_path_full(), this->_virtual_servers.second);
-	// this->_server_index = determine_server_index(this->_request.request_line.uri.get_authority_host(), this->get_virtual_servers().second);
-	// this->_location_index = determine_location_index(this->_request.request_line.uri.get_path_full(), this->_virtual_servers.second[this->_server_index].get_location_block());
+	handle_rewrite();
 }
 
 int const&	Connection::get_connection_fd(void) const {
@@ -79,14 +91,6 @@ std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void
 	return (this->_virtual_servers);
 }
 
-// size_t const&	Connection::get_location_index(void) const {
-// 	return (this->_location_index);
-// }
-
-// size_t const&	Connection::get_server_index(void) const {
-// 	return (this->_server_index);
-// }
-
 void	Connection::set_connection_fd(int const& connection_fd) {
 	this->_connection_fd = connection_fd;
 }
@@ -106,11 +110,3 @@ void	Connection::set_virtual_server(VirtualServer const& virtual_server) {
 void	Connection::set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers) {
 	this->_virtual_servers = virtual_servers;
 }
-
-// void	Connection::set_location_index(size_t location_index) {
-// 	this->_location_index = location_index;
-// }
-
-// void	Connection::set_server_index(size_t server_index) {
-// 	this->_server_index = server_index;
-// }
