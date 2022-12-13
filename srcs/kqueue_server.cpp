@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/12 15:38:54 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 12:46:07 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ void	save_request_line_and_headers(Connection& client, RequestHandler parser) {
 	client.set_request(request);
 }
 
-int	parse_received_data(Connection& client, RequestHandler& parser, char buf[BUFF_SIZE + 1]) {
+int	parse_received_data(Connection& client, RequestHandler& parser, std::string const& buf) {
 	try {
-		parser.process_request(string(buf));
+		parser.process_request(buf);
 	}
 	catch (RequestException const& e) {
 		return (prepare_error_response_to_client(client, e.get_status_code()));
@@ -200,7 +200,7 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		}
 		buf[bytes_read] = '\0';
 		total_bytes_read += bytes_read;
-		if (parse_received_data(client, parser, buf) == -1) {
+		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
 			printf("--- finished reading from client ---\n");
 			return ;
 		}

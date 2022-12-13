@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/12 15:42:42 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/13 13:07:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	Cgi::create_env(Connection const& connection, RequestData const& request, s
 	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
-	// for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
-	// 	cout << it->first << "=" << it->second << endl;
+	// // for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
+	// // 	cout << it->first << "=" << it->second << endl;
 	create_env_from_map();
 	(void)connection;
 }
