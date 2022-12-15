@@ -6,11 +6,12 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 12:54:54 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/15 13:14:10 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_utils.hpp"
+#include "../../includes/virtual_server/search_for_file.hpp"
 
 char*	custom_asctime(const struct tm* time_information)
 {
@@ -56,7 +57,12 @@ std::string create_directory_list_page(std::string const& file) {
 	std::string					page = DIRECTORY_LISTING_STRING;
 
 	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
-		directories = directories + "<ul><a href = \"" + *it + "/\"/><p>" + *it + "</p></a></ul>";
+		if (is_directory_stat((file + *it).c_str())) {
+			directories = directories + "<ul><a href = \"" + *it + "/\"/><p>" + *it + "</p></a></ul>";
+		}
+		else {
+			directories = directories + "<ul><a href = \"" + *it + "\"/><p>" + *it + "</p></a></ul>";
+		}
 	}
 	page.replace(page.find("$FILE"), strlen("$FILE"), file);
 	page.replace(page.find("$FILE"), strlen("$FILE"), file);
