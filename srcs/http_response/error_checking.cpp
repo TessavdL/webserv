@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 18:35:37 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 16:59:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,16 @@ int	check_if_file_has_read_permission(int& status_code, std::string const& file_
 }
 
 static long	find_content_length(std::map<std::string, std::string> headers) {
-	std::map<std::string, std::string>::const_iterator it = headers.find("Content-length");
+	std::map<std::string, std::string>::const_iterator it = headers.find("Content-Length");
 
 	if (it != headers.end()) {
 		char	*p;
 		long	number = strtol(it->second.c_str(), &p, 10);
 		if (*p) {
-			return (number);
+			return (INVALID_CONTENT_LENGTH);
 		}
 		else {
-			return (INVALID_CONTENT_LENGTH);
+			return (number);
 		}	
 	}
 	return (NO_CONTENT_LENGTH);
@@ -111,13 +111,18 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 		return (status_code);
 	}
 	if (check_if_all_data_was_read(status_code, request.get_bytes_in_data(), request.get_total_bytes_read())) {
+		std::cout << "check if all data was read " << std::endl;
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {
+		std::cout << "check content length" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
 	if (check_request_size(status_code, request.get_body().length(), content_length)) {
+		std::cout << "check request size" << std::endl;
+		std::cout << "body size = " << request.get_body().size() << " " << request.get_body().length() << std::endl;
+		std::cout << "content length = " << content_length << std::endl;
 		return (status_code);
 	}
 

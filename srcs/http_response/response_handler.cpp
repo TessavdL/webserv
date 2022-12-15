@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 17:30:02 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 17:04:51 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 
 	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
+		std::cout << "doe we get here?" << std::endl;
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
@@ -125,11 +126,13 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
 
-	// std::cout << "file path = " << file_path << std::endl;
-	// std::cout << "file location = " << file_location.first << std::endl;
-	// std::cout << "file = " << file << std::endl;
+	std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
+	std::cout << "file path = " << file_path << std::endl;
+	std::cout << "file location = " << file_location.first << std::endl;
+	std::cout << "file = " << file << std::endl;
 	// std::cout << "status_code = " << this->_status_code << std::endl;
 	if (client_or_server_error_occured(this->_status_code)) {
+		cout << "WE HAVE FOUND AN ERROR" << endl;
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
 		}

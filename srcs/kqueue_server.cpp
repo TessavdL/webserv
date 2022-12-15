@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/13 20:15:38 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 17:02:02 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,6 @@ bool	is_writable_event(short event_filter) {
 	return (false);
 }
 
-bool	client_already_exists_in_active_connections(int event_identifier, map<int, Connection> connections) {
-	map<int, Connection>::const_iterator it = connections.find(event_identifier);
-
-	if (it != connections.end()) {
-		return (true);
-	}
-	return (false);
-}
-
 bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
 	map<int, vector<Server> >::const_iterator it = listening_sockets_with_config.find(event_identifier);
 
@@ -100,11 +91,8 @@ bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, 
 	return (false);
 }
 
-bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening_sockets_with_config, map<int, Connection> connections) {
+bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
 	if (event_identifier_equals_listening_socket_fd(event_identifier, listening_sockets_with_config)) {
-		if (client_already_exists_in_active_connections(event_identifier, connections)) {
-			return (false);
-		}
 		return (true);
 	}
 	return (false);
@@ -311,7 +299,7 @@ int kqueue_server(vector<Server> server) {
                 close(EVENT_FD);
 				connections.erase(EVENT_FD);
             }
-			else if (is_new_connection(EVENT_FD, listening_sockets_with_config, connections)) {
+			else if (is_new_connection(EVENT_FD, listening_sockets_with_config)) {
 				int connection_fd = accept_connection(EVENT_FD);
 				add_read_event_to_kqueue(kq, connection_fd);
 				add_connection(EVENT_FD, connection_fd, connections, listening_sockets_with_config);

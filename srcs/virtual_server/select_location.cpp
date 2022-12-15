@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 14:20:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 17:52:09 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 13:27:45 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	select_location_index(std::string const& uri_path, std::vector<LocationBlock
 			location_index = i;
 		}
 	}
+	std::cout << "Location_index = " << location_index << std::endl;
 	return (location_index);
 }
 
