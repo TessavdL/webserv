@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/13 12:46:07 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 15:41:37 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 
 #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
-#define EVENT_FD event[i].ident
-#define EVENT_FLAGS event[i].flags
-#define EVENT_FILTER event[i].filter
+// #define event_fd event[i].ident
+// #define EVENT_FLAGS event[i].flags
+// #define EVENT_FILTER event[i].filter
 
-void	create_sockets_with_config(vector<Server> server, map<int, vector<Server> >& sockets_with_config)
+void	create_listening_sockets_with_config(vector<Server> server, map<int, vector<Server> >& listening_sockets_with_config)
 {
 	map<int, vector<Server> >	ports_with_config;
 
@@ -50,7 +50,7 @@ void	create_sockets_with_config(vector<Server> server, map<int, vector<Server> >
 	}
 	for (map<int, vector<Server> >::iterator it = ports_with_config.begin(); it != ports_with_config.end(); ++it) {
 		SocketListen	socket((*it).first);
-		sockets_with_config[socket.get_fd()] = (*it).second;
+		listening_sockets_with_config[socket.get_fd()] = (*it).second;
 	}
 }
 
@@ -82,9 +82,26 @@ bool	is_writable_event(short event_filter) {
 	return (false);
 }
 
-bool	is_new_connection(int event_identifier, map<int, vector<Server> > sockets_with_config) {
-	map<int, vector<Server> >::const_iterator it = sockets_with_config.find(event_identifier);
-	if (it != sockets_with_config.end()) {
+bool	client_already_exists_in_active_connections(int event_identifier, map<int, Connection> connections) {
+	map<int, Connection>::const_iterator it = connections.find(event_identifier);
+
+	if (it != connections.end()) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
+	map<int, vector<Server> >::const_iterator it = listening_sockets_with_config.find(event_identifier);
+
+	if (it != listening_sockets_with_config.end()) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
+	if (event_identifier_equals_listening_socket_fd(event_identifier, listening_sockets_with_config) == true) {
 		return (true);
 	}
 	return (false);
@@ -102,20 +119,53 @@ int	accept_connection(int event_fd) {
 }
 
 void	add_connection(int event_fd, int connection_fd, map<int, Connection>& connections, map<int, vector<Server> > virtual_servers) {
-	pair<int, Connection>	new_connection;
-	map<int, vector<Server> >::const_iterator it = virtual_servers.find(event_fd);
+	pair<int, Connection>						new_connection;
+	map<int, vector<Server> >::const_iterator	it = virtual_servers.find(event_fd);
+
 	new_connection.first = connection_fd;
 	new_connection.second.set_connection_fd(connection_fd);
 	new_connection.second.set_virtual_servers(*it);
 	connections.insert(new_connection);
 }
 
-void	add_event_to_kqueue(int kq, int event_fd, int event_filter) {
+void	add_write_event_to_kqueue(int kq, int event_fd) {
 	struct kevent	monitor_event;
 
-	EV_SET(&monitor_event, event_fd, event_filter, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	EV_SET(&monitor_event, event_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
 	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
 		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
+	}
+}
+
+void	add_new_event_to_kqueue(int kq, int event_fd) {
+	struct kevent	monitor_event;
+
+	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
+		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
+	}
+}
+
+void	add_read_event_to_kqueue(int kq, int event_fd) {
+	struct kevent	monitor_event;
+
+	std::cout << "ADDING READ EVENT TO KQUEUE = " << event_fd << std::endl;
+	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
+		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
+	}
+}
+
+void	register_listening_sockets_to_kernel_events_kqueue(int const kq, map<int, vector<Server> > listening_sockets_with_config) {
+	for (map<int, vector<Server> >::iterator it = listening_sockets_with_config.begin(); it != listening_sockets_with_config.end(); it++) {
+		add_new_event_to_kqueue(kq, (*it).first);
+	}
+}
+
+void	new_kernel_event_queue(int& kq) {
+	kq = kqueue();
+	if (kq == -1) {
+		throw (FatalException("SYSCALL: kq in kqueue_server\n"));
 	}
 }
 
@@ -192,7 +242,7 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	int				bytes_read = 1;
 	char			buf[BUFF_SIZE + 1];
 
-	cout << "--- start reading from client ---" << endl;
+	cout << "--- start reading " << bytes_in_data << " amount of bytes from client ---" << endl;
 	while (bytes_read > 0) {
 		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
 		if (bytes_read == -1) {
@@ -201,6 +251,14 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		buf[bytes_read] = '\0';
 		total_bytes_read += bytes_read;
 		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
+			while (bytes_read > 0) {
+				bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
+						if (bytes_read == -1) {
+			break ;
+		}
+		buf[bytes_read] = '\0';
+		total_bytes_read += bytes_read;
+			}
 			printf("--- finished reading from client ---\n");
 			return ;
 		}
@@ -210,11 +268,6 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 }
 
 void	send_response_to_client(int connection_fd, Connection& client) {
-// client.set_server_index(select_virtual_server(client.get_request().request_line.uri.get_authority_host(), client.get_virtual_servers().second));
-	// std::cout << "virtual server index = " << client.get_server_index() << std::endl;
-
-	// client.set_location_index(select_location(client.get_request().request_line.uri.get_path_full(), client.get_virtual_servers().second[client.get_server_index()].get_location_block()));
-	// std::cout << "location index = " << client.get_location_index() << std::endl;
 	ResponseHandler	response_handler;
 	std::string r;
 	response_handler.handle_response(client);
@@ -227,96 +280,70 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 		response.generate_response_string(client.get_response());
 		r = response.get_full_response();
 	}
-	// pair<int, string> status = initial_error_checking(client, client.get_request());
-	// std::cout << "status_code = " << status.first << " reason_phrase = " << status.second << std::endl;
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
 
-	// cout << "response = " << r << endl;
 	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
 	close(connection_fd);
-	printf("--- bounce bye ---\n\n");
+	std::cout << "--- closed event fd = " << connection_fd << "---\n" << std::endl;
 }
 
 int kqueue_server(vector<Server> server) {
-	map<int, vector<Server> >	sockets_with_config;
+	int							kq;
+	map<int, vector<Server> >	listening_sockets_with_config;
 	map<int, Connection>		connections;
 
-	create_sockets_with_config(server, sockets_with_config);
+	create_listening_sockets_with_config(server, listening_sockets_with_config);
+	new_kernel_event_queue(kq);
+	register_listening_sockets_to_kernel_events_kqueue(kq, listening_sockets_with_config);
 
-	//	CREATE KERNEL QUEUE
-    int	kq = kqueue();
-	if (kq == -1) {
-		throw (FatalException("SYSCALL: kq in kqueue_server\n"));
-	}
-
-    // Create event 'filter', these are the events we want to monitor.
-    // Here we want to monitor: socket_listen_fd, for the events: EVFILT_READ 
-    // (when there is data to be read on the socket), and perform the following
-    // actions on this kevent: EV_ADD and EV_ENABLE (add the event to the kqueue 
-    // and enable it).
-	for (map<int, vector<Server> >::iterator it = sockets_with_config.begin(); it != sockets_with_config.end(); it++) {
-		add_event_to_kqueue(kq, (*it).first, EVFILT_READ);
-	}
-
-    // EVENT LOOP
-    for (;;)
-    {
+	for (;;) {
+		// https://stackoverflow.com/questions/19641000/favicon-is-not-loading-in-chrome
+		// remove inner for loop and check one event at the time
 		struct kevent	event[MAX_EVENTS];
-        // CHECK FOR NEW EVENTS
-		// Do not register new events with the kqueue. Hence the 2nd and 3rd arguments are NULL, 0.
-        // Only handle 1 new event per iteration in the loop; 5th argument is 1.
-        int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
-        if (n_events == -1) {
+		int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
+		std::cout << "amount of events = " << n_events << std::endl;
+		if (n_events == -1) {
 			throw (FatalException("SYSCALL: kevent in kqueue_server\n"));
-        }
-
-		// LOOP OVER n_events
-        for (int i = 0; n_events > i; i++)
-        {
-			// An error has occured while processing the events
-            if (is_event_error(EVENT_FLAGS)) {
+		}
+		for (int i = 0; n_events > i; i++) {
+			int event_fd = event[i].ident;
+			std::cout << "event loop start event = " << event_fd << std::endl;
+			std::cout << "data ? " << event[i].data << std::endl;
+			std::cout << "filter ?" << event[i].filter << std::endl << std::endl;
+			if (is_event_error(event[i].flags)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
-			
-			 // When the client disconnects an EOF is sent. By closing the file
-            // descriptor the event is automatically removed from the kqueue.
-			else if (client_disconnected(EVENT_FLAGS)) {
-                printf("--- client has disconnected ---\n");
-                close(EVENT_FD);
-				connections.erase(EVENT_FD);
-            }
-
-            // If the new event's file descriptor is the same as the listening
-            // socket's file descriptor, we are sure that a new client wants 
-            // to connect to our socket.
-			else if (is_new_connection(EVENT_FD, sockets_with_config)) {
-				int connection_fd = accept_connection(EVENT_FD);
-				add_event_to_kqueue(kq, connection_fd, EVFILT_READ);
-				add_connection(EVENT_FD, connection_fd, connections, sockets_with_config);
+			else if (client_disconnected(event[i].flags)) {
+				printf("--- client has disconnected ---\n");
+				close(event_fd);
+				connections.erase(event_fd);
 			}
-
-			// READY TO READ FROM CLIENT SOCKET
-			else if (is_readable_event(EVENT_FILTER)) {
-				if (identify_client(EVENT_FD, connections) == true) {
-					Connection& client = connections[EVENT_FD];
-					receive_request_from_client(EVENT_FD, client, event[i].data);
-					// client.print_request();
-					add_event_to_kqueue(kq, EVENT_FD, EVFILT_WRITE);
-				}
+			else if (is_new_connection(event_fd, listening_sockets_with_config)) {
+				std::cout << "in is_new_connection = " << event_fd << std::endl;
+				int connection_fd = accept_connection(event_fd);
+				std::cout << "connection fd = " << connection_fd << std::endl;
+				add_read_event_to_kqueue(kq, connection_fd);
+				add_connection(event_fd, connection_fd, connections, listening_sockets_with_config);
 			}
-
-			// READY TO WRITE TO CLIENT SOCKET
-			else if (is_writable_event(EVENT_FILTER)) {
+			else if (is_readable_event(event[i].filter)) {
+				std::cout << "is readable event = " << event_fd << std::endl;
+				Connection& client = connections[event_fd];
+				receive_request_from_client(event_fd, client, event[i].data);
+				client.print_request();
+				add_write_event_to_kqueue(kq, event_fd);
+			}
+			else if (is_writable_event(event[i].filter)) {
 				printf("--- writing to client ---\n");
-				if (identify_client(EVENT_FD, connections) == true) {
-					Connection& client = connections[EVENT_FD];
-					send_response_to_client(EVENT_FD, client);
-					connections.erase(EVENT_FD);
-				}
+				std::cout << "is writable event = " << event_fd << std::endl;
+				Connection& client = connections[event_fd];
+				send_response_to_client(event_fd, client);
+				connections.erase(event_fd);
 			}
 		}
+		usleep(400);
+		std::cout << "end of event loop\n" << std::endl;
 	}
 	return (0);
 }

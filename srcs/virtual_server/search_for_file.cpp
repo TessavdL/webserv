@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 12:21:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 13:46:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ std::string	search_for_file_in_dir(std::vector<std::string>	const& v, std::strin
 	
 	name_list_size = scandir(directory.c_str(), &name_list, NULL, alphasort);
 	if (name_list_size == -1) {
-		throw (FatalException("scandir"));
+		throw (FatalException("scandir in search_for_file_in_dir"));
 	}
 	for (std::vector<std::string>::const_iterator it = v.begin(); it != v.end(); it++) {
 		if (is_file_in_directory_entry((*it).c_str(), name_list, name_list_size)) {
@@ -62,7 +62,7 @@ std::string	create_current_working_directory(void) {
     	ptr = getcwd(buf, (size_t)size);
 	}
 	else {
-		throw (FatalException("GETCWD"));
+		throw (FatalException("getcwd in create_current_working_directory"));
 	}
 	current_working_directory = std::string(buf);
 	free(buf);
