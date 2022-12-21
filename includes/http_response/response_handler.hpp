@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 15:16:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 19:12:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ class ResponseHandler {
 			POST = 3,
 			DELETE = 4,
 			CGI = 5,
-			RETURN = 6
+			RETURN = 6,
+			CONTINUE
 		}	state;
 
 		ResponseHandler();

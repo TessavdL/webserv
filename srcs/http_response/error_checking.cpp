@@ -6,14 +6,14 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 17:31:43 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 19:44:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/error_checking.hpp"
 
 bool	client_or_server_error_occured(int const status_code) {
-	if (status_code < 400) {
+	if (status_code < 399) {
 		return (false);
 	}
 	return (true);

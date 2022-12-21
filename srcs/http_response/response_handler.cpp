@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 17:36:55 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 19:46:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,26 @@ void	ResponseHandler::create_return_response(Connection& client, std::pair<int, 
 	client.set_response(response_data);
 }
 
+static std::map<std::string, std::string>	continue_headers(void) {
+	std::map<std::string, std::string>	headers;
+
+	headers["Connection"] = "Keep-Alive";
+	headers["Server"] = "Codyserv (macOS)";
+	return (headers);
+}
+
+static void	create_continue_response(Connection& client) {
+	ResponseData	response_data;
+
+	response_data.set_status_code(100);
+	response_data.set_reason_phrase(get_reason_phrase(100));
+	response_data.set_headers(continue_headers());
+	client.set_response(response_data);
+}
+
 void	ResponseHandler::handle_response(Connection& client) {
 	RequestData request = client.get_request();
 
-	std::cout << "HANDLE RESPONSE " << std::endl;
 	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
 		std::string const error_page = handle_error_page(client.get_virtual_server());
@@ -67,6 +83,10 @@ void	ResponseHandler::handle_response(Connection& client) {
 		else if (this->_state == CUSTOM_ERROR) {
 			return (create_error_response(client, error_page, get_file_content(error_page)));
 		}
+	}
+	if (this->_status_code == 100) {
+		this->_state = CONTINUE;
+		return (create_continue_response(client));
 	}
 	if (check_return(client.get_virtual_server())) {
 		this->_state = RETURN;

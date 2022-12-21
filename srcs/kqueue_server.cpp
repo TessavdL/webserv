@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 17:35:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 19:40:07 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,14 +245,15 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		}
 		buf[bytes_read] = '\0';
 		total_bytes_read += bytes_read;
+		std::cout << buf << std::endl;
 		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
 			while (bytes_read > 0) {
 				bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-						if (bytes_read == -1) {
-			break ;
-		}
-			buf[bytes_read] = '\0';
-			total_bytes_read += bytes_read;
+				if (bytes_read == -1) {
+					break ;
+				}
+				buf[bytes_read] = '\0';
+				total_bytes_read += bytes_read;
 			}
 			printf("--- finished reading from client ---\n");
 			return ;
@@ -260,6 +261,18 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	}
 	save_request(client, parser, bytes_in_data, total_bytes_read);
 	printf("--- finished reading from client ---\n");
+}
+
+static bool	is_continue(std::map<std::string, std::string> const& headers) {
+	std::map<std::string, std::string>::const_iterator it = headers.find("Connection");
+
+	if (it != headers.end()) {
+		if (!it->second.compare("Keep-Alive")) {
+			return (true);
+		}
+		return (false);
+	}
+	return (false);
 }
 
 void	send_response_to_client(int connection_fd, Connection& client) {
@@ -281,7 +294,9 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 
 	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
-	close(connection_fd);
+	if (!is_continue(client.get_response().get_headers())) {
+		close(connection_fd);
+	}
 	std::cout << "--- closed event fd = " << connection_fd << "---\n" << std::endl;
 }
 
@@ -332,7 +347,11 @@ int kqueue_server(vector<Server> server) {
 				std::cout << "writable event = " << event[i].ident << std::endl;
 				Connection& client = connections[event[i].ident];
 				send_response_to_client(event[i].ident, client);
-				connections.erase(event[i].ident);
+				if (!is_continue(client.get_response().get_headers()))
+					connections.erase(event[i].ident);
+				else {
+					add_read_event_to_kqueue(kq, event[i].ident);
+				}
 			}
 		}
 		usleep(400);
