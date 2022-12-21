@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:47:42 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:50:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,13 +311,13 @@ int kqueue_server(vector<Server> server) {
 			if (is_event_error(event[i].flags)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
-			else if (client_disconnected(EVENT_FLAGS)) {
+			else if (client_disconnected(event[i].flags)) {
                 printf("--- client has disconnected ---\n");
-                close(EVENT_FD);
-				connections.erase(EVENT_FD);
+                close(event[i].ident);
+				connections.erase(event[i].ident);
             }
-			else if (is_new_connection(EVENT_FD, listening_sockets_with_config)) {
-				int connection_fd = accept_connection(EVENT_FD);
+			else if (is_new_connection(event[i].ident, listening_sockets_with_config)) {
+				int connection_fd = accept_connection(event[i].ident);
 				add_read_event_to_kqueue(kq, connection_fd);
 				add_connection(event_fd, connection_fd, connections, listening_sockets_with_config);
 			}
