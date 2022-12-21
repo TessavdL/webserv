@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/27 15:20:47 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/15 16:59:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ void			Server::get_directives(Lexer::t_server server) {
 				helper_split(this->_autoindex, *it);
 				if (this->_autoindex != "on" && this->_autoindex != "off")
 					throw LexerParserException("Error; autoindex is not \"on\" or \"off\"");
+				break ;
+			case	RETURN:
+				helper_split(this->_return, *it);
+				break ;
+			case	REWRITE:
+				helper_split(this->_rewrite, *it);
 				break ;
 			default:
 				cout << *it << " is not a supported directive in the server block." << endl;

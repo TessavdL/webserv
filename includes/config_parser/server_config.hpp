@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:26:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:49:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/21 11:59:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ enum	directives_list	{
 	ERROR_PAGE,
 	AUTOINDEX,
 	PATH,
+	CGI,
+	RETURN,
+	REWRITE,
 	DIRECTIVE_LIST_ERROR = -1
 };
 
@@ -42,11 +45,13 @@ class ServerConfig
 {
 	private:
 	protected:
-		string								_root;
-		string								_client_max_body_size;
 		string								_autoindex;
-		vector<string>						_index;
+		string								_client_max_body_size;
 		vector<pair<vector<int>, string> >	_error_page;
+		vector<string>						_index;
+		pair<int, string>					_return;
+		string								_rewrite;
+		string								_root;
 	public:
 		ServerConfig();
 		ServerConfig(ServerConfig const& other);
@@ -55,12 +60,16 @@ class ServerConfig
 		directives_list	hash_string(string const& directive);
 		void				helper_split(vector<string> &str, string to_split);
 		void				helper_split(string &str, string to_split);
+		void				helper_split(pair<string, string> &ret, string to_split);
+		void				helper_split(pair<int, string> &ret, string to_split);
 		void				helper_split(vector<pair<vector<int>, string> > &error_page, string to_split);
-		string const&								get_root() const;
-		string const&								get_client_max_body_size() const;
 		string const&								get_autoindex() const;
-		vector<string> const&						get_index() const;
+		string const&								get_client_max_body_size() const;
 		vector<pair<vector<int>, string> > const&	get_error_page() const;
+		vector<string> const&						get_index() const;
+		pair<int, string> const&					get_return() const;
+		string const&								get_rewrite() const;
+		string const&								get_root() const;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/15 19:11:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:35:53 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ LocationBlock::LocationBlock(LocationBlock const& other) {
 LocationBlock &LocationBlock::operator=(LocationBlock const& rhs) {
 	if (this != &rhs)
 	{
-		this->_path_and_optional_modifier = rhs._path_and_optional_modifier;
-		this->_root = rhs._root;
-		this->_client_max_body_size = rhs._client_max_body_size;
-		this->_index = rhs._index;
-		this->_error_page = rhs._error_page;
 		this->_autoindex = rhs._autoindex;
+		this->_client_max_body_size = rhs._client_max_body_size;
+		this->_cgi = rhs._cgi;
+		this->_error_page = rhs._error_page;
+		this->_index = rhs._index;
+		this->_path_and_optional_modifier = rhs._path_and_optional_modifier;
+		this->_return = rhs._return;
+		this->_rewrite = rhs._rewrite;
+		this->_root = rhs._root;
 		this->_limit_except = rhs._limit_except;
 	}	
 	return (*this);
@@ -71,6 +74,15 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 				if (this->_autoindex != "on" && this->_autoindex != "off")
 					throw LexerParserException("Error; autoindex is not \"on\" or \"off\"");
 				break ;
+			case	CGI:
+				helper_split(this->_cgi, *it);
+				break ;
+			case	RETURN:
+				helper_split(this->_return, *it);
+				break ;
+			case	REWRITE:
+				helper_split(this->_rewrite, *it);
+				break ;
 			default:
 				exit (1);
 		}
@@ -99,10 +111,14 @@ void		LocationBlock::error_check_limit_except(vector<string> const& limit_except
 		throw LexerParserException("Repeated limit_except argument");
 }
 
-vector<string> const&			LocationBlock::get_path_and_optional_modifier() const {
-	return (this->_path_and_optional_modifier);
+pair<string, string> const&	LocationBlock::get_cgi(void) const {
+	return (this->_cgi);
 }
 
-vector<string> const&	LocationBlock::get_limit_except() const {
+vector<string> const&	LocationBlock::get_limit_except(void) const {
 	return (this->_limit_except);
+}
+
+vector<string> const&	LocationBlock::get_path_and_optional_modifier(void) const {
+	return (this->_path_and_optional_modifier);
 }

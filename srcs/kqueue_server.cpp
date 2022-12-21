@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/15 15:41:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:11:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	}
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
+	cout << buf << endl;
 
 	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
