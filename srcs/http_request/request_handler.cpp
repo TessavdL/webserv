@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 20:10:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/13 20:15:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,15 @@ void	RequestHandler::full_request_line(std::string const& str, size_t& index) {
 void	RequestHandler::tokenize_request_line(std::string const& str) {
 	std::vector<std::string>	request_line = split_string_on_delimeter(str, ' ');
 	
+	if (request_line.empty() == true) {
+		std::cout << "empty" << std::endl;
+	}
+	else {
+	// for (size_t i = 0; i < request_line.size(); i++) {
+		std::cout << request_line[0].substr(0, 50) << std::endl;
+	}
+	// }
+
 	if (!request_line.empty() && request_line.size() == 3) {
 		this->_request_line_method = request_line[0];
 		this->_request_line_uri_raw = request_line[1];

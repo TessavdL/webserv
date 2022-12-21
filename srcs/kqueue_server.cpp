@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:11:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:47:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,6 @@ bool	is_writable_event(short event_filter) {
 	return (false);
 }
 
-bool	client_already_exists_in_active_connections(int event_identifier, map<int, Connection> connections) {
-	map<int, Connection>::const_iterator it = connections.find(event_identifier);
-
-	if (it != connections.end()) {
-		return (true);
-	}
-	return (false);
-}
-
 bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
 	map<int, vector<Server> >::const_iterator it = listening_sockets_with_config.find(event_identifier);
 
@@ -101,7 +92,7 @@ bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, 
 }
 
 bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
-	if (event_identifier_equals_listening_socket_fd(event_identifier, listening_sockets_with_config) == true) {
+	if (event_identifier_equals_listening_socket_fd(event_identifier, listening_sockets_with_config)) {
 		return (true);
 	}
 	return (false);
@@ -221,6 +212,8 @@ int	parse_received_data(Connection& client, RequestHandler& parser, std::string 
 		parser.process_request(buf);
 	}
 	catch (RequestException const& e) {
+		std::cout << e.what() << std::endl;
+		std::cout << e.get_status_code() << std::endl;
 		return (prepare_error_response_to_client(client, e.get_status_code()));
 	}
 	if (ready_to_check_request_line_and_headers(parser.get_state())) {
@@ -230,6 +223,8 @@ int	parse_received_data(Connection& client, RequestHandler& parser, std::string 
 			error_check_request_line_and_headers(client, client.get_request());
 		}
 		catch (RequestException const& e2) {
+			std::cout << e2.what() << std::endl;
+			std::cout << e2.get_status_code() << std::endl;
 			return (prepare_error_response_to_client(client, e2.get_status_code()));
 		}
 	}
@@ -242,7 +237,7 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	int				bytes_read = 1;
 	char			buf[BUFF_SIZE + 1];
 
-	cout << "--- start reading " << bytes_in_data << " amount of bytes from client ---" << endl;
+	cout << "--- start reading from client ---" << connection_fd << endl;
 	while (bytes_read > 0) {
 		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
 		if (bytes_read == -1) {
@@ -316,15 +311,13 @@ int kqueue_server(vector<Server> server) {
 			if (is_event_error(event[i].flags)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
-			else if (client_disconnected(event[i].flags)) {
-				printf("--- client has disconnected ---\n");
-				close(event_fd);
-				connections.erase(event_fd);
-			}
-			else if (is_new_connection(event_fd, listening_sockets_with_config)) {
-				std::cout << "in is_new_connection = " << event_fd << std::endl;
-				int connection_fd = accept_connection(event_fd);
-				std::cout << "connection fd = " << connection_fd << std::endl;
+			else if (client_disconnected(EVENT_FLAGS)) {
+                printf("--- client has disconnected ---\n");
+                close(EVENT_FD);
+				connections.erase(EVENT_FD);
+            }
+			else if (is_new_connection(EVENT_FD, listening_sockets_with_config)) {
+				int connection_fd = accept_connection(EVENT_FD);
 				add_read_event_to_kqueue(kq, connection_fd);
 				add_connection(event_fd, connection_fd, connections, listening_sockets_with_config);
 			}

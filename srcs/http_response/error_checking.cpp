@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/08 16:39:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/15 16:59:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,22 @@ int	check_if_file_has_read_permission(int& status_code, std::string const& file_
 }
 
 static long	find_content_length(std::map<std::string, std::string> headers) {
-	std::map<std::string, std::string>::const_iterator it = headers.find("Content-length");
+	std::map<std::string, std::string>::const_iterator it = headers.find("Content-Length");
 
 	if (it != headers.end()) {
 		char	*p;
 		long	number = strtol(it->second.c_str(), &p, 10);
 		if (*p) {
-			return (number);
+			return (INVALID_CONTENT_LENGTH);
 		}
 		else {
-			return (INVALID_CONTENT_LENGTH);
+			return (number);
 		}	
 	}
 	return (NO_CONTENT_LENGTH);
 }
 
-int	check_if_request_parser_threw_exception(int status_code, int const client_response_data_status_code) {
+int	check_if_request_parser_threw_exception(int& status_code, int const client_response_data_status_code) {
 	if (client_response_data_status_code > 399) {
 		status_code = client_response_data_status_code;
 		return (KO);
@@ -107,16 +107,22 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 	long	content_length = find_content_length(request.get_headers());
 
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
+		std::cout << status_code << std::endl;
 		return (status_code);
 	}
 	if (check_if_all_data_was_read(status_code, request.get_bytes_in_data(), request.get_total_bytes_read())) {
+		std::cout << "check if all data was read " << std::endl;
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {
+		std::cout << "check content length" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
 	if (check_request_size(status_code, request.get_body().length(), content_length)) {
+		std::cout << "check request size" << std::endl;
+		std::cout << "body size = " << request.get_body().size() << " " << request.get_body().length() << std::endl;
+		std::cout << "content length = " << content_length << std::endl;
 		return (status_code);
 	}
 
@@ -165,7 +171,11 @@ void	check_http_protocol(std::string const& protocol) {
 }
 
 void	error_check_request_line_and_headers(Connection const& client, RequestData const& request) {
+	std::cout << request.get_method() << std::endl;
 	check_method(request.get_method(), client.get_virtual_server().get_limit_except());
+	for (std::vector<std::string>::const_iterator it = client.get_virtual_server().get_limit_except().begin(); it != client.get_virtual_server().get_limit_except().end(); ++it) {
+		std::cout << *it << std::endl;
+	}
 	check_uri_length(request.get_uri().get_path_full());
 	check_user_information(request.get_uri().get_authority_user_information());
 	check_http_protocol(request.get_protocol());

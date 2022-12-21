@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:37:48 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:48:18 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	Connection::print_request(void) const {
 			std::cout << "\t" << it->first << "=" << it->second << std::endl;
 		}
 	}
-	if (!this->_request.get_body().empty())
-		std::cout << this->_request.get_body() << std::endl;
+	// if (!this->_request.get_body().empty())
+	// 	std::cout << this->_request.get_body() << std::endl;
 	std::cout << "bytes in client request = " << this->_request.get_bytes_in_data() << std::endl;
 	std::cout << "bytes read = " << this->_request.get_total_bytes_read() << std::endl;
 }
