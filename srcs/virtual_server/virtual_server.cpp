@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:47:49 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 16:52:06 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,9 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	}
 	if (!location_block.get_limit_except().empty()) {
 		this->_limit_except = location_block.get_limit_except();
-		for (size_t i = 0; i < this->_limit_except.size(); i++) {
-			std::cout << this->_limit_except[i] << std::endl;
-		}
 	}
 	if (location_block.get_return().first) {
 		this->_return = location_block.get_return();
-		std::cout << this->_return.first << "<---------------------" << std::endl;
 	}
 	if (!location_block.get_rewrite().empty()) {
 		this->_rewrite = location_block.get_rewrite();

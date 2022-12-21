@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 13:02:54 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 17:36:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,26 @@ static bool	check_return(VirtualServer const& virtual_server) {
 	return (false);
 }
 
-static std::map<std::string, std::string>	create_location_header(std::string const& new_location) {
-	std::map<std::string, std::string>	headers;
-
-	headers["Location"] = new_location;
-	return (headers);
-}
-
-static void	create_return_response(Connection& client, std::pair<int, std::string> return_information) {
+void	ResponseHandler::create_return_response(Connection& client, std::pair<int, std::string> return_information) {
 	ResponseData	response_data;
 
 	if (return_information.first == -1) {
 		response_data.set_status_code(301);
 	}
-	response_data.set_status_code(return_information.first);
+	else {
+		response_data.set_status_code(return_information.first);
+	}
 	response_data.set_reason_phrase(get_reason_phrase(return_information.first));
-	response_data.set_headers(create_location_header(return_information.second));
+	response_data.set_headers(create_headers(client, return_information.second, 0));
 	client.set_response(response_data);
 }
 
 void	ResponseHandler::handle_response(Connection& client) {
 	RequestData request = client.get_request();
 
+	std::cout << "HANDLE RESPONSE " << std::endl;
 	initial_error_checking(this->_status_code, client, request);
-	if (check_return(client.get_virtual_server())) {
-		std::cout << "ITSA RETURN" << std::endl;
-		return (create_return_response(client, client.get_virtual_server().get_return()));
-	}
-	// if (check_continue()) {
-	// 	return (create_continue_response(client));
-	// }
 	if (client_or_server_error_occured(this->_status_code)) {
-		std::cout << "doe we get here?" << std::endl;
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
@@ -79,6 +67,10 @@ void	ResponseHandler::handle_response(Connection& client) {
 		else if (this->_state == CUSTOM_ERROR) {
 			return (create_error_response(client, error_page, get_file_content(error_page)));
 		}
+	}
+	if (check_return(client.get_virtual_server())) {
+		this->_state = RETURN;
+		return (create_return_response(client, client.get_virtual_server().get_return()));
 	}
 	if (!request.get_method().compare("GET")) {
 		handle_get_response(client, request);
@@ -159,13 +151,12 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
 
-	std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
-	std::cout << "file path = " << file_path << std::endl;
-	std::cout << "file location = " << file_location.first << std::endl;
-	std::cout << "file = " << file << std::endl;
+	// std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
+	// std::cout << "file path = " << file_path << std::endl;
+	// std::cout << "file location = " << file_location.first << std::endl;
+	// std::cout << "file = " << file << std::endl;
 	// std::cout << "status_code = " << this->_status_code << std::endl;
 	if (client_or_server_error_occured(this->_status_code)) {
-		cout << "WE HAVE FOUND AN ERROR" << endl;
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
 		}
@@ -180,8 +171,8 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 	if (this->_state == DIRECTORY_LIST) {
 		return (create_directory_list_response(client, file));
 	}
-	this->_state = GET;
 	this->_status_code = 200;
+	this->_state = GET;
 	create_get_response(client, file, get_file_content(file));
 }
 
@@ -265,12 +256,14 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 // CREATE RESPONSE HELPERS
 
 static std::string create_content_type(std::string const& file_name) {
-	std::string const& extension = file_name.substr(file_name.find("."));
-
-	if (extension.empty()) {
+	size_t				pos = file_name.find(".");
+	std::string			extension;
+	
+	if (pos == std::string::npos) {
 		return ("application/octet-stream");
 	}
-	else if (!extension.compare(".html")) {
+	extension = file_name.substr(pos);
+	if (!extension.compare(".html")) {
 		return ("text/html");
 	}
 	else if (!extension.compare(".css")) {
@@ -279,11 +272,11 @@ static std::string create_content_type(std::string const& file_name) {
 	else if (!extension.compare(".js")) {
 		return ("text/javascript");
 	}
+	else if (!extension.compare(".ico")) {
+		return ("image/vnd.microsoft.icon");
+	}
 	else if (!extension.compare(".jpg")) {
 		return ("image/jpeg");
-	}
-	else if (!extension.compare(".ico")) {
-		return ("image/x-icon");
 	}
 	else if (!extension.compare(".png")) {
 		return ("image/png");
@@ -308,6 +301,9 @@ std::map<std::string, std::string>	ResponseHandler::create_headers(Connection& c
 
 	if (this->_status_code == 405) {
 		headers["Allow"] = create_allowed_methods(client.get_virtual_server().get_limit_except());
+	}
+	if (this->_state == RETURN) {
+		headers["Location"] = file_name;
 	}
 	headers["Connection"] = "close";
 	headers["Content-Length"] = std::to_string(body_size);

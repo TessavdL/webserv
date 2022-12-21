@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:50:55 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 17:35:31 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,8 +251,8 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 						if (bytes_read == -1) {
 			break ;
 		}
-		buf[bytes_read] = '\0';
-		total_bytes_read += bytes_read;
+			buf[bytes_read] = '\0';
+			total_bytes_read += bytes_read;
 			}
 			printf("--- finished reading from client ---\n");
 			return ;
@@ -304,36 +304,35 @@ int kqueue_server(vector<Server> server) {
 			throw (FatalException("SYSCALL: kevent in kqueue_server\n"));
 		}
 		for (int i = 0; n_events > i; i++) {
-			int event_fd = event[i].ident;
-			std::cout << "event loop start event = " << event_fd << std::endl;
-			std::cout << "data ? " << event[i].data << std::endl;
-			std::cout << "filter ?" << event[i].filter << std::endl << std::endl;
+			std::cout << "event[i].ident = " << event[i].ident << std::endl;
+			std::cout << "data = " << event[i].data << std::endl;
+			std::cout << "filter = " << event[i].filter << std::endl << std::endl;
 			if (is_event_error(event[i].flags)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
 			else if (client_disconnected(event[i].flags)) {
-                printf("--- client has disconnected ---\n");
+				std::cout << "--- Client " << event[i].ident << " has disconnected" << std::endl;
                 close(event[i].ident);
 				connections.erase(event[i].ident);
             }
 			else if (is_new_connection(event[i].ident, listening_sockets_with_config)) {
+				std::cout << "new connection = " << event[i].ident << std::endl;
 				int connection_fd = accept_connection(event[i].ident);
 				add_read_event_to_kqueue(kq, connection_fd);
-				add_connection(event_fd, connection_fd, connections, listening_sockets_with_config);
+				add_connection(event[i].ident, connection_fd, connections, listening_sockets_with_config);
 			}
 			else if (is_readable_event(event[i].filter)) {
-				std::cout << "is readable event = " << event_fd << std::endl;
-				Connection& client = connections[event_fd];
-				receive_request_from_client(event_fd, client, event[i].data);
+				std::cout << "readable event = " << event[i].ident << std::endl;
+				Connection& client = connections[event[i].ident];
+				receive_request_from_client(event[i].ident, client, event[i].data);
 				client.print_request();
-				add_write_event_to_kqueue(kq, event_fd);
+				add_write_event_to_kqueue(kq, event[i].ident);
 			}
 			else if (is_writable_event(event[i].filter)) {
-				printf("--- writing to client ---\n");
-				std::cout << "is writable event = " << event_fd << std::endl;
-				Connection& client = connections[event_fd];
-				send_response_to_client(event_fd, client);
-				connections.erase(event_fd);
+				std::cout << "writable event = " << event[i].ident << std::endl;
+				Connection& client = connections[event[i].ident];
+				send_response_to_client(event[i].ident, client);
+				connections.erase(event[i].ident);
 			}
 		}
 		usleep(400);

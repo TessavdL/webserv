@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 13:17:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/21 15:16:38 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ class ResponseHandler {
 			GET = 2,
 			POST = 3,
 			DELETE = 4,
-			CGI = 5
+			CGI = 5,
+			RETURN = 6
 		}	state;
 
 		ResponseHandler();
@@ -46,6 +47,7 @@ class ResponseHandler {
 		void								create_error_response(Connection& client, std::string const& file_location, std::string const& file_content);
 		std::map<std::string, std::string>	create_headers(Connection& client, std::string const& file_name, size_t body_size);
 		void								create_get_response(Connection& client, std::string const& file_location, std::string file_content);
+		void								create_return_response(Connection& client, std::pair<int, std::string> return_information);
 		std::string							get_file_content(std::string const& file_location);
 		std::string							error_page_location_handler(std::pair<std::string, bool> error_page);
 		std::string							handle_error_page(VirtualServer const& virtual_server);

@@ -6,15 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 17:29:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:52:05 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 16:36:53 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_generator.hpp"
 
-#define HTTP_VERSION "HTTP1/1"
-#define CRLF "\r\n"
+#define HTTP_VERSION "HTTP/1.1"
 #define HEADER_SEPERATOR ": "
+#define CRLF "\r\n"
 
 ResponseGenerator::ResponseGenerator(void) {
 
