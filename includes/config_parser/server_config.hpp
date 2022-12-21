@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:26:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:51:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:52:36 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,7 @@ class ServerConfig
 	private:
 	protected:
 		string								_autoindex;
-<<<<<<< HEAD
 		string								_client_max_body_size;
-=======
-		string								_rewrite;
-		string								_return;
-		vector<string>						_index;
->>>>>>> main
 		vector<pair<vector<int>, string> >	_error_page;
 		vector<string>						_index;
 		pair<int, string>					_return;
