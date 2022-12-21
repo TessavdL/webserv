@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:48:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/21 13:02:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 		return (create_directory_list_response(client, file));
 	}
 	this->_state = GET;
+	this->_status_code = 200;
 	create_get_response(client, file, get_file_content(file));
 }
 
@@ -280,6 +281,12 @@ static std::string create_content_type(std::string const& file_name) {
 	}
 	else if (!extension.compare(".jpg")) {
 		return ("image/jpeg");
+	}
+	else if (!extension.compare(".ico")) {
+		return ("image/x-icon");
+	}
+	else if (!extension.compare(".png")) {
+		return ("image/png");
 	}
 	return ("text/plain");
 }
