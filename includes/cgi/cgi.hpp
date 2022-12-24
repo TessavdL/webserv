@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/12 13:27:28 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/21 15:19:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Cgi {
 		Cgi(Cgi const& other);
 		Cgi& operator=(Cgi const& rhs);
 		~Cgi();
-		void	create_argv(std::string const& file_location);
+		void	create_argv(std::string const& file_location, RequestData const& request);
 		void	create_env(Connection const& connection, RequestData const& request, std::string const& file_location);
 		void	create_env_from_map(void);
 		void	free_env_array(void);

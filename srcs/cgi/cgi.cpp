@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:55:35 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/21 16:10:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Cgi::Cgi(void) {
 }
 
 Cgi::Cgi(Connection const& connection, std::string const& file_location) {
-	create_argv(file_location);
+	create_argv(file_location, connection.get_request());
 	create_env(connection, connection.get_request(), file_location);
 	initiate_cgi_process(connection.get_request());
 }
@@ -49,11 +49,12 @@ Cgi::~Cgi(void) {
 	return ;
 }
 
-void	Cgi::create_argv(std::string const& file_location) {
+void	Cgi::create_argv(std::string const& file_location, RequestData const& request) {
 	this->_argv[0] = strdup("/Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi");
 	if (!file_location.empty())
 		this->_argv[1] = strdup(file_location.c_str());
 	this->_argv[2] = NULL;
+	(void)request;
 }
 
 void	Cgi::create_env(Connection const& connection, RequestData const& request, std::string const& file_location) {

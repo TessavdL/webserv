@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 17:51:45 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:09:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	if (!location_block.get_root().empty()) {
 		this->_root = location_block.get_root();
 	}
+	// if (!location_block.)
 }
 
 VirtualServer::~VirtualServer(void) {
@@ -75,11 +76,12 @@ VirtualServer::VirtualServer(VirtualServer const& other) {
 
 VirtualServer&	VirtualServer::operator=(VirtualServer const& other) {
 	if (this != &other) {
-		this->_autoindex = other._autoindex;
-		this->_client_max_body_size = other._client_max_body_size;
 		this->_error_page = other._error_page;
+		this->_cgi = other._cgi;
 		this->_index = other._index;
 		this->_limit_except = other._limit_except;
+		this->_autoindex = other._autoindex;
+		this->_client_max_body_size = other._client_max_body_size;
 		this->_listen = other._listen;
 		this->_root = other._root;
 		this->_server_name =other._server_name;
@@ -87,16 +89,12 @@ VirtualServer&	VirtualServer::operator=(VirtualServer const& other) {
 	return (*this);
 }
 
-std::string const &												VirtualServer::get_autoindex(void) const {
-	return (this->_autoindex);
-}
-
-std::string const &												VirtualServer::get_client_max_body_size(void) const {
-	return (this->_client_max_body_size);
-}
-
 std::vector<std::pair<std::vector<int>, std::string> > const &	VirtualServer::get_error_page(void) const {
 	return (this->_error_page);
+}
+
+std::pair<std::string, std::string> const&						VirtualServer::get_cgi() const {
+	return (this->_cgi);
 }
 
 std::vector<std::string> const &								VirtualServer::get_index(void) const {
@@ -105,6 +103,14 @@ std::vector<std::string> const &								VirtualServer::get_index(void) const {
 
 std::vector<std::string> const &								VirtualServer::get_limit_except(void) const {
 	return (this->_limit_except);
+}
+
+std::string const &												VirtualServer::get_autoindex(void) const {
+	return (this->_autoindex);
+}
+
+std::string const &												VirtualServer::get_client_max_body_size(void) const {
+	return (this->_client_max_body_size);
 }
 
 std::vector<std::string> const &								VirtualServer::get_listen(void) const {
