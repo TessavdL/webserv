@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:03 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:47:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:12:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class VirtualServer {
 		std::pair<std::string, std::string> const &						get_cgi() const;
 		std::string const &												get_client_max_body_size() const;
 		std::vector<std::pair<std::vector<int>, std::string> > const &	get_error_page() const;
+		std::pair<std::string, std::string> const&						get_cgi() const;
 		std::vector<std::string> const &								get_index() const;
 		std::vector<std::string> const &								get_limit_except() const;
 		std::vector<std::string> const &								get_listen() const;
@@ -44,6 +45,7 @@ class VirtualServer {
 		std::pair<std::string, std::string>						_cgi;
 		std::string												_client_max_body_size;
 		std::vector<std::pair<std::vector<int>, std::string> >	_error_page;
+		std::pair<std::string, std::string>						_cgi;
 		std::vector<std::string>								_index;
 		std::vector<std::string>								_limit_except;
 		std::vector<std::string>								_listen;
