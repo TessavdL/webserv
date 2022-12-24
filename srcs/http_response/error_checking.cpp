@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 13:54:19 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/24 13:55:52 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	check_if_request_parser_threw_exception(int& status_code, int const client_r
 }
 
 static int	is_valid_cgi(int& status_code, Connection& client, RequestData const& request) {
-	if (is_cgi(request.get_uri().get_path_full() && client.get_virtual_server().get_cgi().first.empty())) {
+	if (is_cgi(request.get_uri().get_path_full()) && client.get_virtual_server().get_cgi().first.empty()) {
 		status_code = 400;
 		return (KO);
 	}
