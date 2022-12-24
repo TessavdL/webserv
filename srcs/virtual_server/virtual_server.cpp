@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 12:11:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:18:48 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	if (!location_block.get_root().empty()) {
 		this->_root = location_block.get_root();
 	}
-	// if (!location_block.)
 }
 
 VirtualServer::~VirtualServer(void) {
@@ -99,23 +98,11 @@ VirtualServer&	VirtualServer::operator=(VirtualServer const& other) {
 	return (*this);
 }
 
-std::string const &												VirtualServer::get_autoindex(void) const {
-	return (this->_autoindex);
-}
-
-std::pair<std::string, std::string> const &						VirtualServer::get_cgi(void) const {
-	return (this->_cgi);
-}
-
-std::string const &												VirtualServer::get_client_max_body_size(void) const {
-	return (this->_client_max_body_size);
-}
-
 std::vector<std::pair<std::vector<int>, std::string> > const &	VirtualServer::get_error_page(void) const {
 	return (this->_error_page);
 }
 
-std::pair<std::string, std::string> const&						VirtualServer::get_cgi() const {
+std::pair<std::string, std::string> const &						VirtualServer::get_cgi(void) const {
 	return (this->_cgi);
 }
 

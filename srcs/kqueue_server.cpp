@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/24 11:54:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:17:49 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,6 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 	long			total_bytes_read = 0;
 	int				bytes_read = 1;
 	char			buf[BUFF_SIZE + 1];
-	int				begin = 0;
 
 	cout << "--- start reading from client ---" << connection_fd << endl;
 	while (bytes_read > 0) {
@@ -246,13 +245,6 @@ void	receive_request_from_client(int connection_fd, Connection& client, int byte
 		}
 		buf[bytes_read] = '\0';
 		total_bytes_read += bytes_read;
-		if (begin == 0) {
-			write(1, &buf[0], 2000);
-			begin = 1;
-		}
-		// if (client.get_response().get_status_code() == 100) {
-		// 	parser.
-		// }
 		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
 			while (bytes_read > 0) {
 				bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
