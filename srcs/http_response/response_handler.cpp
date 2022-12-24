@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 19:46:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:50:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void		ResponseHandler::handle_post_response(Connection& client, RequestData cons
 			return (create_error_response(client, file, get_file_content(file)));
 		}
 	}
-	if (isCGI(file)) {
+	if (is_cgi(file)) {
 		create_cgi_response(client, file);
 		this->_state = CGI;
 		return ;
@@ -184,7 +184,7 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 			return (create_error_response(client, file, get_file_content(file)));
 		}
 	}
-	if (isCGI(file)) {
+	if (is_cgi(file)) {
 		this->_state = CGI;
 		return (create_cgi_response(client, file));
 	}
