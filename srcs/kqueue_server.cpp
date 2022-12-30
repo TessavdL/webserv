@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/24 11:54:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 13:36:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@
 
 #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
-// #define event_fd event[i].ident
-// #define EVENT_FLAGS event[i].flags
-// #define EVENT_FILTER event[i].filter
 
 void	create_listening_sockets_with_config(vector<Server> server, map<int, vector<Server> >& listening_sockets_with_config)
 {
