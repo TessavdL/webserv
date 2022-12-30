@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:20:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/24 13:31:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ int		main(int ac, char **av) {
 
 	} catch(FatalException const& e) {
 		cout << e.what() << endl;
-	} catch(LexerParserException const& e) {
+		exit(1);
+	}
+	catch(LexerParserException const& e) {
 		cout << e.what() << endl;
 	}
+	exit(1);
 	return (0);
 }

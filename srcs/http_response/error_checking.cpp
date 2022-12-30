@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 12:54:07 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/24 13:55:52 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ bool	client_or_server_error_occured(int const status_code) {
 	return (true);
 }
 
-int	check_if_all_data_was_read(int& status_code, int const bytes_in_data, int const total_bytes_read) {
-	if (bytes_in_data != total_bytes_read) {
-		status_code = 400;
-		return (KO);
-	}
-	return (OK);
-}
+// int	check_if_all_data_was_read(int& status_code, int const bytes_in_data, int const total_bytes_read) {
+// 	if (bytes_in_data != total_bytes_read) {
+// 		status_code = 400;
+// 		return (KO);
+// 	}
+// 	return (OK);
+// }
 
 int	check_if_forbidden(int& status_code, std::pair<std::string, bool> file_location) {
 	if (!file_location.first.empty() && file_location.second == false) {
@@ -104,7 +104,7 @@ int	check_if_request_parser_threw_exception(int& status_code, int const client_r
 }
 
 static int	is_valid_cgi(int& status_code, Connection& client, RequestData const& request) {
-	if (is_cgi(request.get_uri().get_path_full() && client.get_virtual_server().get_cgi().first.empty())) {
+	if (is_cgi(request.get_uri().get_path_full()) && client.get_virtual_server().get_cgi().first.empty()) {
 		status_code = 400;
 		return (KO);
 	}
@@ -117,14 +117,17 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
 		return (status_code);
 	}
-	if (check_if_all_data_was_read(status_code, request.get_bytes_in_data(), request.get_total_bytes_read())) {
-		return (status_code);
-	}
+	// if (check_if_all_data_was_read(status_code, request.get_bytes_in_data(), request.get_total_bytes_read())) {
+	// 	std::cout << "HELLO2" << std::endl;
+	// 	return (status_code);
+	// }
 	if (content_length == INVALID_CONTENT_LENGTH) {
+		std::cout << "HELLO3" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
 	if (check_request_size(status_code, request.get_body().length(), content_length)) {
+		std::cout << "HELLO4" << std::endl;
 		return (status_code);
 	}
 	if (is_valid_cgi(status_code, client, request)) {

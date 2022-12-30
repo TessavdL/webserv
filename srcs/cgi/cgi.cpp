@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 16:10:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/24 13:27:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Cgi::Cgi(void) {
 }
 
 Cgi::Cgi(Connection const& connection, std::string const& file_location) {
-	create_argv(file_location, connection.get_request());
+	create_argv(file_location, connection);
 	create_env(connection, connection.get_request(), file_location);
 	initiate_cgi_process(connection.get_request());
 }
@@ -49,12 +49,13 @@ Cgi::~Cgi(void) {
 	return ;
 }
 
-void	Cgi::create_argv(std::string const& file_location, RequestData const& request) {
-	this->_argv[0] = strdup("/Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi");
+void	Cgi::create_argv(std::string const& file_location, Connection const& connection) {
+	this->_argv[0] = strdup(connection.get_virtual_server().get_cgi().second.c_str());
 	if (!file_location.empty())
 		this->_argv[1] = strdup(file_location.c_str());
+	else
+		this->_argv[1] = NULL;
 	this->_argv[2] = NULL;
-	(void)request;
 }
 
 void	Cgi::create_env(Connection const& connection, RequestData const& request, std::string const& file_location) {
@@ -147,8 +148,10 @@ void	Cgi::parent_process(RequestData const& request) {
 		write(this->_fd[1][1], request.get_body().c_str(), request.get_body().size());
 	if (waitpid(this->_pid, &exit_status, WNOHANG) == -1)
 		throw (FatalException("SYSCALL: waitpid: Failed"));
+	cout << "EXIT STATUS = " << exit_status << endl;
 	if (WIFEXITED(exit_status))
 		ret = WEXITSTATUS(exit_status);
+	cout << "RET = " << ret << endl;
 	get_content_from_cgi();
 	close(this->_fd[0][0]);
 }
