@@ -6,11 +6,18 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:44:55 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:45:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 14:02:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/kqueue_utils.hpp"
+
+void	new_kernel_event_queue(int& kq) {
+	kq = kqueue();
+	if (kq == -1) {
+		throw (FatalException("SYSCALL: kq in kqueue_server\n"));
+	}
+}
 
 bool	is_event_error(u_short event_flag) {
 	if (event_flag & EV_ERROR) {
@@ -40,7 +47,7 @@ bool	is_writable_event(short event_filter) {
 	return (false);
 }
 
-bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
+bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
 	map<int, vector<Server> >::const_iterator it = listening_sockets_with_config.find(event_identifier);
 
 	if (it != listening_sockets_with_config.end()) {
@@ -49,9 +56,36 @@ bool	event_identifier_equals_listening_socket_fd(int event_identifier, map<int, 
 	return (false);
 }
 
-bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening_sockets_with_config) {
-	if (event_identifier_equals_listening_socket_fd(event_identifier, listening_sockets_with_config)) {
-		return (true);
+void	add_write_event_to_kqueue(int kq, int event_fd) {
+	struct kevent	monitor_event;
+
+	EV_SET(&monitor_event, event_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
+	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
+		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
 	}
-	return (false);
+}
+
+void	add_new_event_to_kqueue(int kq, int event_fd) {
+	struct kevent	monitor_event;
+
+	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
+		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
+	}
+}
+
+void	add_read_event_to_kqueue(int kq, int event_fd) {
+	struct kevent	monitor_event;
+
+	std::cout << "ADDING READ EVENT TO KQUEUE = " << event_fd << std::endl;
+	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
+		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
+	}
+}
+
+void	register_listening_sockets_to_kernel_events_kqueue(int const kq, map<int, vector<Server> > listening_sockets_with_config) {
+	for (map<int, vector<Server> >::iterator it = listening_sockets_with_config.begin(); it != listening_sockets_with_config.end(); it++) {
+		add_new_event_to_kqueue(kq, (*it).first);
+	}
 }

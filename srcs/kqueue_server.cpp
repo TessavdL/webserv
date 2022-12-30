@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:48:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 14:04:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	create_listening_sockets_with_config(vector<Server> server, map<int, vector
 	}
 }
 
-
 int	accept_connection(int event_fd) {
 	struct sockaddr_in	client_addr;
 	socklen_t			client_len = sizeof(client_addr);
@@ -72,56 +71,6 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 	new_connection.second.set_connection_fd(connection_fd);
 	new_connection.second.set_virtual_servers(*it);
 	connections.insert(new_connection);
-}
-
-void	add_write_event_to_kqueue(int kq, int event_fd) {
-	struct kevent	monitor_event;
-
-	EV_SET(&monitor_event, event_fd, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
-	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
-		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
-	}
-}
-
-void	add_new_event_to_kqueue(int kq, int event_fd) {
-	struct kevent	monitor_event;
-
-	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
-	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
-		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
-	}
-}
-
-void	add_read_event_to_kqueue(int kq, int event_fd) {
-	struct kevent	monitor_event;
-
-	std::cout << "ADDING READ EVENT TO KQUEUE = " << event_fd << std::endl;
-	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
-	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
-		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));
-	}
-}
-
-void	register_listening_sockets_to_kernel_events_kqueue(int const kq, map<int, vector<Server> > listening_sockets_with_config) {
-	for (map<int, vector<Server> >::iterator it = listening_sockets_with_config.begin(); it != listening_sockets_with_config.end(); it++) {
-		add_new_event_to_kqueue(kq, (*it).first);
-	}
-}
-
-void	new_kernel_event_queue(int& kq) {
-	kq = kqueue();
-	if (kq == -1) {
-		throw (FatalException("SYSCALL: kq in kqueue_server\n"));
-	}
-}
-
-bool	identify_client(int event_identifier, map<int, Connection> connections) {
-	map<int, Connection>::iterator it = connections.find(event_identifier);
-
-	if (it != connections.end()) {
-		return (true);
-	}
-	return (false);
 }
 
 int	prepare_error_response_to_client(Connection& client, int const status_code) {
@@ -265,7 +214,6 @@ int kqueue_server(vector<Server> server) {
 
 	for (;;) {
 		// https://stackoverflow.com/questions/19641000/favicon-is-not-loading-in-chrome
-		// remove inner for loop and check one event at the time
 		struct kevent	event[MAX_EVENTS];
 		int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
 		std::cout << "amount of events = " << n_events << std::endl;
@@ -308,7 +256,6 @@ int kqueue_server(vector<Server> server) {
 				}
 			}
 		}
-		usleep(400);
 		std::cout << "end of event loop\n" << std::endl;
 	}
 	return (0);

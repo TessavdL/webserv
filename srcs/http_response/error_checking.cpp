@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:56:14 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 13:58:44 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ bool	client_or_server_error_occured(int const status_code) {
 	}
 	return (true);
 }
-
-// int	check_if_all_data_was_read(int& status_code, int const bytes_in_data, int const total_bytes_read) {
-// 	if (bytes_in_data != total_bytes_read) {
-// 		status_code = 400;
-// 		return (KO);
-// 	}
-// 	return (OK);
-// }
 
 int	check_if_forbidden(int& status_code, std::pair<std::string, bool> file_location) {
 	if (!file_location.first.empty() && file_location.second == false) {
@@ -139,11 +131,6 @@ int	check_file_status(int& status_code, std::string const& file) {
 	}
 	return (OK);
 }
-
-/*
-incomplete request that keeps connection open
-https://stackoverflow.com/questions/69386098/how-to-send-an-incomplete-http-request-using-netcat
-*/
 
 // ERRORS IN REQUEST STATUS LINE
 
