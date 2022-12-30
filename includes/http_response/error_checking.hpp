@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 13:56:42 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/30 19:32:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int                         check_if_request_parser_threw_exception(int& status_
 int							initial_error_checking(int& status_code, Connection& client, RequestData const& request);
 int							check_file_status(int& status_code, std::string const& file);
 
-int							check_method(int& status_code, std::string const& method, std::vector<std::string> const& allowed_methods);
-int							check_user_information(int& status_code, std::string const& uri_user_information);
-int							check_uri_length(int& status_code, std::string const& request_uri);
-int							check_http_protocol(int& status_code, std::string const& protocol);
-
-void						error_check_request_line_and_headers(Connection const& client, RequestData const& request);
+void						check_method(int& status_code, std::string const& method, std::vector<std::string> const& allowed_methods);
+void						check_user_information(int& status_code, std::string const& uri_user_information);
+void						check_uri_length(int& status_code, std::string const& request_uri);
+void						check_http_protocol(int& status_code, std::string const& protocol);
+void						check_continue(std::map<std::string, std::string> const& headers);
+void						check_request_line_and_headers(Connection const& client, RequestData const& request);
 
 #endif

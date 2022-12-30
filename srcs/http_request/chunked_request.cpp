@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/07 12:23:47 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 17:40:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 20:58:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ static int	handle_hexadecimal(std::string str, size_t& index) {
 	return (-1);
 }
 
-static std::string	handle_pair(std::string str, size_t& index) {
+static std::string	handle_pair(std::string const s, size_t& index) {
 	size_t	start = index;
+	std::string str = s;
 
 	int number_of_bytes_in_data = handle_hexadecimal(str, index);
 	if (number_of_bytes_in_data == -1) {
@@ -60,6 +61,7 @@ static std::string	handle_pair(std::string str, size_t& index) {
 
 	str = str.substr(index);
 	for (size_t pos = str.find(CRLF); pos != std::string::npos; pos = str.find(CRLF)) {
+		std::cout << "here" << std::endl;
 		std::string to_add = str.substr(0, pos);
 		if (to_add.empty() && number_of_bytes_in_data == 0) {
 			return ("");
@@ -85,6 +87,7 @@ std::string chunked_request(std::string const& str, std::string& remainder) {
 	size_t		index = 0;
 	std::string	res;
 
+	std::cout << "INDEX = " << index << std::endl;
 	while (1) {
 		std::string hex_data_pair;
 		hex_data_pair = handle_pair(str, index);
@@ -93,6 +96,7 @@ std::string chunked_request(std::string const& str, std::string& remainder) {
 			break ;
 		res.append(hex_data_pair);
 	}
+	std::cout << "INDEX AFTER = " << index << std::endl;
 	remainder.clear();
 	remainder = str.substr(index);
 	return (res);

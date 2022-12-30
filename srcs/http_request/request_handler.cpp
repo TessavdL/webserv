@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 17:34:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 21:05:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,14 @@ void	RequestHandler::process_request(std::string const& request) {
 		case REQUEST_HEADERS:
 			handle_headers(str, index);
 		case REQUEST_CHECK:
-			check_request();
+			this->_remainder.clear();
+			this->_remainder = str.substr(index);
+			return ;
 		case REQUEST_BODY:
-			handle_body(str, index);
+			std::cout << "BODY" << std::endl;
+			std::cout << str.substr(index, 50) << std::endl;
+			if (!str.substr(index).empty())
+				handle_body(str, index);
 			break ;
 		default:
 			throw (RequestException(400, "RequestHandler::process_request"));
@@ -166,20 +171,19 @@ void	RequestHandler::create_headers_map(std::vector<std::string> const& v) {
 
 // CHECK REQUEST
 
-void	RequestHandler::check_request(void) {
-	std::map<std::string, std::string>::const_iterator	expect_header = this->_request_headers.find("Expect");
+// void	RequestHandler::check_request(void) {
+// 	std::map<std::string, std::string>::const_iterator	expect_header = this->_request_headers.find("Expect");
 	
-	if (expect_header != this->_request_headers.end()) {
-		std::string const	expectation = string_to_lower(expect_header->second);
-		if (!expectation.compare("100-continue")) {
-			throw (RequestException(100, "RequestHandler::check_request"));
-		}
-		else {
-			throw (RequestException(417, "RequestHandler::check_request"));
-		}
-	}
-	this->_state = REQUEST_BODY;
-}
+// 	if (expect_header != this->_request_headers.end()) {
+// 		std::string const	expectation = string_to_lower(expect_header->second);
+// 		if (!expectation.compare("100-continue")) {
+// 			throw (RequestException(100, "RequestHandler::check_request"));
+// 		}
+// 		else {
+// 			throw (RequestException(417, "RequestHandler::check_request"));
+// 		}
+// 	}
+// }
 
 // HANDLE BODY
 
@@ -243,8 +247,10 @@ void	RequestHandler::handle_chunked_body(std::string const& str, size_t &index) 
 	// }
 	// this->_remainder.clear();
 	// this->_remainder = substring;
-	std::cout << "HANDLED CHUNKY BODY" << std::endl;
-	chunked_request(str.substr(index), this->_remainder);
+	std::cout << "HANDLING CHUNKY BODY" << std::endl;
+	std::cout << "index = " << index << std::endl;
+	std::cout << "str size = " << str.size() << std::endl;
+	this->_request_body.append(chunked_request(str.substr(index), this->_remainder));
 }
 
 // GETTERS
@@ -299,4 +305,8 @@ std::ostream&	operator<<(std::ostream& os, RequestHandler const& lexer) {
 		os << "body = " << std::endl << lexer.get_body() << std::endl;
 	}
 	return (os);
+}
+
+void	RequestHandler::set_state(RequestHandler::State state) {
+	this->_state = state;
 }

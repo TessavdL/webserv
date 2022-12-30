@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:58:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 19:32:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,24 @@ void	check_http_protocol(std::string const& protocol) {
 	}
 }
 
-void	error_check_request_line_and_headers(Connection const& client, RequestData const& request) {
+void	check_continue(std::map<std::string, std::string> const& headers) {
+	std::map<std::string, std::string>::const_iterator	expect_header = headers.find("Expect");
+	
+	if (expect_header != headers.end()) {
+		std::string const	expectation = string_to_lower(expect_header->second);
+		if (!expectation.compare("100-continue")) {
+			throw (RequestException(100, "RequestHandler::check_request"));
+		}
+		else {
+			throw (RequestException(417, "RequestHandler::check_request"));
+		}
+	}
+}
+
+void	check_request_line_and_headers(Connection const& client, RequestData const& request) {
 	check_method(request.get_method(), client.get_virtual_server().get_limit_except());
 	check_uri_length(request.get_uri().get_path_full());
 	check_user_information(request.get_uri().get_authority_user_information());
 	check_http_protocol(request.get_protocol());
+	check_continue(request.get_headers());
 }

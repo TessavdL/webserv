@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:56:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 20:11:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 			return (create_error_response(client, error_page, get_file_content(error_page)));
 		}
 	}
-	if (this->_status_code == 100) {
+	if (this->_status_code == 100 && this->_state != CONTINUE) {
 		this->_state = CONTINUE;
 		return (create_continue_response(client));
 	}
