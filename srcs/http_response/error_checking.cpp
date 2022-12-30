@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 13:55:52 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/30 13:56:14 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,11 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
 		return (status_code);
 	}
-	// if (check_if_all_data_was_read(status_code, request.get_bytes_in_data(), request.get_total_bytes_read())) {
-	// 	std::cout << "HELLO2" << std::endl;
-	// 	return (status_code);
-	// }
 	if (content_length == INVALID_CONTENT_LENGTH) {
-		std::cout << "HELLO3" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
 	if (check_request_size(status_code, request.get_body().length(), content_length)) {
-		std::cout << "HELLO4" << std::endl;
 		return (status_code);
 	}
 	if (is_valid_cgi(status_code, client, request)) {
