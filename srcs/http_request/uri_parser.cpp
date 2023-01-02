@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 16:33:21 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:43:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 15:57:04 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	Uri::parse_authority(std::string const& str, size_t& index) {
 		std::string port_string = authority_string.substr(pos_port_start + 1);
 		authority_string.erase(pos_port_start);
 		if (!port_string.empty()) {
-			this->_authority_port = stoi(port_string);
+			this->_authority_port = atoi(port_string.c_str());
 		}
 	}
 	if (!authority_string.empty()) {

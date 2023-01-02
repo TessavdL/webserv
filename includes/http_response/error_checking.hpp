@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 13:56:42 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:32:54 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int							check_request_size(int& status_code, int request_body_size, int conten
 int							check_if_file_is_processable(int& status_code, std::string const& file_location);
 int							check_if_file_has_read_permission(int& status_code, std::string const& file_location);
 
-int                         check_if_request_parser_threw_exception(int& status_code, int const client_response_data_status_code);
+int							check_if_request_parser_threw_exception(int& status_code, int const client_response_data_status_code);
 int							initial_error_checking(int& status_code, Connection& client, RequestData const& request);
 int							check_file_status(int& status_code, std::string const& file);
 
@@ -44,6 +44,7 @@ int							check_method(int& status_code, std::string const& method, std::vector<
 int							check_user_information(int& status_code, std::string const& uri_user_information);
 int							check_uri_length(int& status_code, std::string const& request_uri);
 int							check_http_protocol(int& status_code, std::string const& protocol);
+void						error_client_max_body_size(int client_max_body_size, std::string content_length);
 
 void						error_check_request_line_and_headers(Connection const& client, RequestData const& request);
 

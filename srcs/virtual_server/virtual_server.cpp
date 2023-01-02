@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/24 12:18:48 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/12/30 19:17:54 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	if (!location_block.get_cgi().first.empty()) {
 		this->_cgi = location_block.get_cgi();
 	}
-	if (!location_block.get_client_max_body_size().empty()) {
+	if (location_block.get_client_max_body_size() != -1) {
 		this->_client_max_body_size = location_block.get_client_max_body_size();
 	}
 	if (!location_block.get_error_page().empty()) {
@@ -118,7 +118,7 @@ std::string const &												VirtualServer::get_autoindex(void) const {
 	return (this->_autoindex);
 }
 
-std::string const &												VirtualServer::get_client_max_body_size(void) const {
+int const &														VirtualServer::get_client_max_body_size(void) const {
 	return (this->_client_max_body_size);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:56:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 14:30:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ void	ResponseHandler::handle_response(Connection& client) {
 	if (!request.get_method().compare("POST")) {
 		handle_post_response(client, request);
 	}
-	// if (!request.get_method.compare("DELETE")) {
-	// 	handle_delete_response(client, request);
-	// }
+// 	if (!request.get_method.compare("DELETE")) {
+// 		handle_delete_response(client, request);
+// 	}
 }
 
 void		ResponseHandler::handle_post_response(Connection& client, RequestData const& request) {

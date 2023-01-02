@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/15 16:59:04 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 16:14:33 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Server::Server(void) {
 
 Server::Server(Lexer::t_server server) {
 	this->_root = "html";
-	this->_client_max_body_size = "1m";
+	this->_client_max_body_size = 1;
 	this->_autoindex = "off";
 	this->_server_name.push_back("");
 	this->_listen.push_back("80");
@@ -71,7 +71,8 @@ void			Server::get_directives(Lexer::t_server server) {
 				helper_split(this->_root, *it);
 				break ;
 			case	CLIENT_MAX_BODY_SIZE:
-				helper_split(this->_client_max_body_size, *it);
+				helper_split(this->_client_max_body_size_in_string, *it);
+				resolve_client_max_body_size(this->_client_max_body_size, this->_client_max_body_size_in_string);
 				break ;
 			case	INDEX:
 				helper_split(this->_index, *it);
@@ -120,7 +121,7 @@ void			Server::error_check_listen(vector<string> const& listen) {
 				hostname_port_split.second = "80";
 			}
 		}
-		this->_host_and_port.push_back(pair<string, int>(hostname_port_split.first, stoi(hostname_port_split.second)));
+		this->_host_and_port.push_back(pair<string, int>(hostname_port_split.first, atoi(hostname_port_split.second.c_str())));
 	}
 }
 

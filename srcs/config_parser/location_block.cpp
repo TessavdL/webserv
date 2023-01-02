@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:35:53 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 17:40:59 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ LocationBlock::LocationBlock(void) {
 }
 
 LocationBlock::LocationBlock(Lexer::t_locations location) {
+	this->_client_max_body_size = -1;
 	helper_split(this->_path_and_optional_modifier, location.path_and_optional_modifier);
 	get_directives(location);
 }
@@ -56,7 +57,8 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 				helper_split(this->_root, *it);
 				break ;
 			case	CLIENT_MAX_BODY_SIZE:
-				helper_split(this->_client_max_body_size, *it);
+				helper_split(this->_client_max_body_size_in_string, *it);
+				resolve_client_max_body_size(this->_client_max_body_size, this->_client_max_body_size_in_string);
 				break ;
 			case	LIMIT_EXCEPT:
 				this->_limit_except.clear();

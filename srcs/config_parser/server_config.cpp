@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:20:08 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 18:36:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ ServerConfig	&ServerConfig::operator=(ServerConfig const& rhs) {
 	if (this != &rhs)
 	{
 		this->_autoindex = rhs._autoindex;
+		this->_client_max_body_size_in_string = rhs._client_max_body_size_in_string;
 		this->_client_max_body_size = rhs._client_max_body_size;
 		this->_error_page = rhs._error_page;
 		this->_index = rhs._index;
@@ -127,7 +128,7 @@ void			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page
 		throw LexerParserException("Error page has too few arguments");
 	for (size_t i = 0; i < (tmp.size() - 1); ++i) {
 		if (tmp[i].find_first_not_of("0123456789") == string::npos) {
-			tmp_int.push_back(stoi(tmp[i]));
+			tmp_int.push_back(atoi(tmp[i].c_str()));
 		}
 		else
 			throw LexerParserException("Invalid character in error page's error code");
@@ -135,11 +136,29 @@ void			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page
 	error_page.push_back(pair<vector<int>, string>(tmp_int, tmp[tmp.size() - 1]));
 }
 
+void			ServerConfig::resolve_client_max_body_size(int& client_max_body_size, string client_max_body_size_in_string) {
+	size_t	tmp_pos = client_max_body_size_in_string.find_first_not_of("0123456789");
+
+	if (client_max_body_size_in_string.size() > 4) {
+		throw LexerParserException("Client max body size too large, please add a value between 0 and 999");
+	}
+	else if (tmp_pos == string::npos) {
+		throw LexerParserException("No data type specifier in client max body size");
+	}
+	else if (client_max_body_size_in_string[tmp_pos] != 'M' && client_max_body_size_in_string[tmp_pos] != 'm') {
+		throw LexerParserException("Invalid data specifier in client max body size");
+	}
+	else if (strcmp(client_max_body_size_in_string.c_str() + tmp_pos, "M\0") && strcmp(client_max_body_size_in_string.c_str() + tmp_pos, "m\0")) {
+		throw LexerParserException("Too many characters in data specifier for client max body size");
+	}
+	client_max_body_size = atoi(client_max_body_size_in_string.c_str());
+}
+
 string const&								ServerConfig::get_autoindex() const {
 	return (this->_autoindex);
 }
 
-string const&								ServerConfig::get_client_max_body_size() const {
+int const&									ServerConfig::get_client_max_body_size() const {
 	return (this->_client_max_body_size);
 }
 
