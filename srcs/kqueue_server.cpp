@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 21:47:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/03 19:25:25 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,11 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 // 	save_request(client, parser, bytes_in_data, total_bytes_read);
 // 	printf("--- finished reading from client ---\n");
 // }
+static void	reset_response_data(Connection& client) {
+	ResponseData	response_data;
+	
+	client.set_response(response_data);
+}
 
 static bool	is_continue(std::map<std::string, std::string> const& headers) {
 	std::map<std::string, std::string>::const_iterator it = headers.find("Connection");
@@ -251,16 +256,20 @@ int kqueue_server(vector<Server> server) {
 				std::cout << "writable event = " << event[i].ident << std::endl;
 				Connection& client = connections[event[i].ident];
 				send_response_to_client(event[i].ident, client);
-				if (!is_continue(client.get_response().get_headers()))
+				if (!is_continue(client.get_response().get_headers())) {
 					connections.erase(event[i].ident);
+				}
 				else {
-					add_read_event_to_kqueue(kq, event[i].ident);
+					std::cout << "just sent continue response" << std::endl;
+					delete_event_from_kqueue(kq, &event[i], event[i].ident);
+					add_read_event_to_kqueue(kq, client.get_connection_fd());
+					reset_response_data(client);
 				}
 			}
 		}
 		std::cout << "end of event loop\n" << std::endl;
 		// num++;
-		// if (num == 6) {
+		// if (num == 7) {
 		// 	return (0);
 		// }
 	}

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/07 12:23:47 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 20:58:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/03 16:35:07 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ static int	handle_hexadecimal(std::string str, size_t& index) {
 	size_t 		pos = str.find(CRLF);
 
 	if (pos != std::string::npos) {
+		std::cout << " crlf yes " << std::endl;
+	}
+	else {
+		std::cout << " crlf no " << std::endl;
+	}
+
+	if (pos != std::string::npos) {
+		std::cout << "HI ====== " << str << std::endl;
 		hexadecimal = str.substr(0, pos);
 		if (!is_hexadecimal(hexadecimal)) {
 			return (-1);
@@ -44,14 +52,18 @@ static int	handle_hexadecimal(std::string str, size_t& index) {
 		index += (pos + 2);
 		return (hexadecimal_to_decimal(hexadecimal));
 	}
-	return (-1);
+	return (-2);
 }
 
 static std::string	handle_pair(std::string const s, size_t& index) {
 	size_t	start = index;
-	std::string str = s;
+	std::string new_string = s;
 
-	int number_of_bytes_in_data = handle_hexadecimal(str, index);
+	int number_of_bytes_in_data = handle_hexadecimal(new_string, index);
+	std::cout << "number of bytes in data = " << number_of_bytes_in_data << std::endl;
+	// if (str.find(CRLF) == std::string::npos) {
+
+	// }
 	if (number_of_bytes_in_data == -1) {
 		throw (RequestException(400, "handle_pair"));
 	}
@@ -59,18 +71,37 @@ static std::string	handle_pair(std::string const s, size_t& index) {
 	int total = 0;
 	std::string res;
 
-	str = str.substr(index);
+	// std::cout << "index = " << index << std::endl;
+	std::string str = new_string.substr(index);
+	// str = str.substr(index);
+	if (str.find(CRLF) == std::string::npos) {
+		std::cout << "there is no CRLF" << std::endl;
+	}
 	for (size_t pos = str.find(CRLF); pos != std::string::npos; pos = str.find(CRLF)) {
-		std::cout << "here" << std::endl;
+		size_t i = 0;
 		std::string to_add = str.substr(0, pos);
+		
+		// std::cout << "pos = " << pos << std::endl;
+		// std::cout << "to add =\t|" << to_add.substr(0, 55) << "|" << std::endl;
+		std::cout << "is to_add empty?" << std::boolalpha << to_add.empty() << std::endl;
 		if (to_add.empty() && number_of_bytes_in_data == 0) {
 			return ("");
 		}
 		res += to_add;
-		index += to_add.length() + 2;
-		str = str.substr(index);
-		total += to_add.length();
+		// std::cout << "res =\t\t|" << res.substr(0, 55) << "|" << std::endl;
+		// std::cout << "str =\t\t|" << str.substr(0, 55) << "|" << std::endl;
+		// std::cout << "str len\t\t= |" << str.size() << "|" << std::endl;
+		// std::cout << "to_add len\t= |" << to_add.size() << "|" << std::endl;
+		index += (to_add.size() + 2);
+		i += (to_add.size() + 2);
+		// std::cout << "index\t\t= |" << index << "|" << std::endl;
+		// std::cout << "i = " << i << std::endl;
+		str = str.substr(i);
+		// std::cout << "new string = " << str << std::endl;
+		total += to_add.size();
+		// std::cout << "total = " << total << std::endl;
 		if (total == number_of_bytes_in_data) {
+			std::cout << "HERE" << std::endl;
 			return (res);
 		}
 		if (total > number_of_bytes_in_data) {
@@ -87,16 +118,18 @@ std::string chunked_request(std::string const& str, std::string& remainder) {
 	size_t		index = 0;
 	std::string	res;
 
-	std::cout << "INDEX = " << index << std::endl;
+	// std::cout << "remainder = " << remainder << std::endl;
+	// std::cout << "INDEX = " << index << std::endl;
 	while (1) {
 		std::string hex_data_pair;
 		hex_data_pair = handle_pair(str, index);
-		std::cout << "|" << hex_data_pair << "|" << std::endl;
+		// std::cout << "|" << hex_data_pair << "|" << std::endl;
 		if (hex_data_pair.empty())
 			break ;
+		std::cout << "here" << std::endl;
 		res.append(hex_data_pair);
 	}
-	std::cout << "INDEX AFTER = " << index << std::endl;
+	// std::cout << "INDEX AFTER = " << index << std::endl;
 	remainder.clear();
 	remainder = str.substr(index);
 	return (res);

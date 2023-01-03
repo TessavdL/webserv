@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 19:32:04 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/03 19:32:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,37 @@ static int	is_valid_cgi(int& status_code, Connection& client, RequestData const&
 	return (OK);
 }
 
+static bool	is_not_chunked(RequestData const& request_data) {
+	std::map<std::string, std::string>					headers = request_data.get_headers();
+	std::map<std::string, std::string>::const_iterator	it = headers.find("Transfer-Encoding");
+	
+	if (it != headers.end()) {
+		if (!it->second.compare("chunked")) {
+			return (false);
+		}
+		return (true);
+	}
+	return (true);
+}
+
 int	initial_error_checking(int& status_code, Connection& client, RequestData const& request) {
 	long	content_length = find_content_length(request.get_headers());
 
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
+		std::cout << "HERE1" << std::endl;
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {
+		std::cout << "HERE2" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
-	if (check_request_size(status_code, request.get_body().length(), content_length)) {
+	if (is_not_chunked(request) && check_request_size(status_code, request.get_body().length(), content_length)) {
+		std::cout << "HERE3" << std::endl;
 		return (status_code);
 	}
 	if (is_valid_cgi(status_code, client, request)) {
+		std::cout << "HERE4" << std::endl;
 		return (status_code);
 	}
 	return (OK);

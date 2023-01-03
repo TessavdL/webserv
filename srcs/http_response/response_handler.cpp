@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 20:11:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/03 19:48:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 
 	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
+		std::cout << "AN ERROR OCCURED" << std::endl;
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
@@ -116,11 +117,13 @@ void		ResponseHandler::handle_post_response(Connection& client, RequestData cons
 			return (create_error_response(client, file, get_file_content(file)));
 		}
 	}
-	if (is_cgi(file)) {
+	// if (is_cgi(file)) {
+		std:: cout << "FILE = " << file << std::endl;
 		create_cgi_response(client, file);
 		this->_state = CGI;
 		return ;
-	}
+	// }
+	
 }
 
 std::string	ResponseHandler::error_page_location_handler(std::pair<std::string, bool> error_page) {
