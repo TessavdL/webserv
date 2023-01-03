@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/03 16:09:26 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/03 17:58:33 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void	Cgi::create_env(Connection const& connection, RequestData const& request, s
 	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
-	// // for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
-	// // 	cout << it->first << "=" << it->second << endl;
+	// for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
+	// 	cout << it->first << "=" << it->second << endl;
 	create_env_from_map();
 	(void)connection;
 }
@@ -118,6 +118,7 @@ void	Cgi::initiate_cgi_process(RequestData const& request) {
 	if (this->_pid == 0)
 		child_process(request);
 	parent_process(request);
+	close(this->_fd[0][0]);
 }
 
 void	Cgi::child_process(RequestData const& request) {
@@ -150,8 +151,9 @@ void	Cgi::parent_process(RequestData const& request) {
 		throw (FatalException("SYSCALL: waitpid: Failed"));
 	if (WIFEXITED(exit_status))
 		ret = WEXITSTATUS(exit_status);
+	cout << "RET = " << ret << endl;
 	get_content_from_cgi();
-	close(this->_fd[0][0]);
+	// close(this->_fd[0][0]);
 }
 
 void	Cgi::get_content_from_cgi(void) {
@@ -161,7 +163,8 @@ void	Cgi::get_content_from_cgi(void) {
 	this->_body = "\0";
 	tmp.resize(PIPE_BUF);
 	while ((ret = read(this->_fd[0][0], &tmp[0], PIPE_BUF)) > 0) {
-		if (ret == 0 || ret != PIPE_BUF)
+		cout << "ret = " << ret << endl;
+		if (ret != PIPE_BUF)
 			break ;
 		tmp.resize(ret);
 		this->_body += tmp;
@@ -170,6 +173,7 @@ void	Cgi::get_content_from_cgi(void) {
 		tmp.resize(ret);
 		this->_body += tmp;
 	}
+	cout << "HELLO THIS IS THE BODY IN GET CONTENT FROM CGI HIHI" << this->_body << endl;
 	return ;
 }
 

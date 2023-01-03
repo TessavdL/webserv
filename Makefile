@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2022/12/30 13:49:18 by tevan-de      ########   odam.nl          #
+#    Updated: 2023/01/03 17:36:33 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,5 +73,8 @@ clean:
 fclean: clean
 	@echo "Removing executable: $(NAME)"
 	@rm -rf $(NAME)
+
+run: all
+	./webserv
 
 re: fclean all
