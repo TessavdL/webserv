@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/24 13:27:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/03 16:09:26 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,8 @@ void	Cgi::parent_process(RequestData const& request) {
 		write(this->_fd[1][1], request.get_body().c_str(), request.get_body().size());
 	if (waitpid(this->_pid, &exit_status, WNOHANG) == -1)
 		throw (FatalException("SYSCALL: waitpid: Failed"));
-	cout << "EXIT STATUS = " << exit_status << endl;
 	if (WIFEXITED(exit_status))
 		ret = WEXITSTATUS(exit_status);
-	cout << "RET = " << ret << endl;
 	get_content_from_cgi();
 	close(this->_fd[0][0]);
 }
@@ -168,8 +166,10 @@ void	Cgi::get_content_from_cgi(void) {
 		tmp.resize(ret);
 		this->_body += tmp;
 	}
-	tmp.resize(ret);
-	this->_body += tmp;
+	if (ret > 0) {
+		tmp.resize(ret);
+		this->_body += tmp;
+	}
 	return ;
 }
 
