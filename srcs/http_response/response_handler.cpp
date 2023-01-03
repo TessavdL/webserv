@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/03 19:48:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/03 20:33:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ void		ResponseHandler::handle_post_response(Connection& client, RequestData cons
 	std::string						file_path = create_path(client.get_virtual_server().get_root(), request.get_uri().get_path_full());
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
+
+	std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
+	std::cout << "file path = " << file_path << std::endl;
+	std::cout << "file location = " << file_location.first << std::endl;
+	std::cout << "file = " << file << std::endl;
+	std::cout << "status_code = " << this->_status_code << std::endl;
 
 	if (client_or_server_error_occured(this->_status_code)) {
 		if (this->_state == DEFAULT_ERROR) {
