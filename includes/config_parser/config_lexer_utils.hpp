@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer_utils.hpp                                    :+:    :+:            */
+/*   config_lexer_utils.hpp                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/05 16:44:31 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 13:20:36 by jelvan-d      ########   odam.nl         */
+/*   Created: 2023/01/06 16:49:39 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2023/01/06 16:49:44 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ std::string trim(std::string const& str, const char* to_trim);
 std::string left_trim(std::string const& str, const char* to_trim);
 std::string right_trim(std::string const& str, const char* to_trim);
 size_t		count_blocks(std::string const& str);
+bool 		check_valid_semicolumn(std::string const& str);
 void		check_brackets(std::string str);
 void		check_for_nested_location_blocks(std::string str);
 

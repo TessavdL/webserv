@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2023/01/03 17:36:33 by jelvan-d      ########   odam.nl          #
+#    Updated: 2023/01/06 16:44:29 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ SRC_FILES	=		fatal_exception.cpp \
 					cgi/cgi_handler.cpp \
 					event_loop/connection.cpp \
 					config_parser/exception_config_parser.cpp \
-					config_parser/lexer.cpp \
-					config_parser/lexer_utils.cpp \
+					config_parser/config_lexer.cpp \
+					config_parser/config_lexer_utils.cpp \
 					config_parser/location_block.cpp \
 					config_parser/server.cpp \
 					config_parser/server_config.cpp \

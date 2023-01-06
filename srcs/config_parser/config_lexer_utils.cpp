@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer_utils.cpp                                    :+:    :+:            */
+/*   config_lexer_utils.cpp                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/05 15:02:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 13:44:38 by jelvan-d      ########   odam.nl         */
+/*   Created: 2023/01/06 16:41:53 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2023/01/06 16:49:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/config_parser/lexer_utils.hpp"
+#include "../../includes/config_parser/config_lexer_utils.hpp"
 
 std::string	right_trim(std::string const& str, const char* to_trim) {
     std::string str_trimmed = str;
@@ -45,7 +45,7 @@ bool	is_valid_server_start(std::string str) {
 
 bool	is_valid_location_start(std::string str) {
 	std::string s = trim(str, WHITESPACE);
-	if (!s.compare(0, 7, "location")) {
+	if (!s.compare(0, 8, "location")) {
 		return (true);
 	}
 	return (false);
@@ -95,6 +95,20 @@ struct is_bracket : std::unary_function<char, bool>
 	}
 };
 
+struct is_semicolumn : std::unary_function<char, bool>
+{
+    bool operator()(char c) const {
+		return (c == ';');
+	}
+};
+
+bool check_valid_semicolumn(std::string const& str) {
+	if (std::count_if(str.begin(), str.end(), is_semicolumn()) == 1) {
+		return (true);
+	}
+	return (false);
+}
+
 void	check_brackets(std::string str) {
 	size_t		open;
 	size_t		close;
@@ -103,7 +117,7 @@ void	check_brackets(std::string str) {
 
 	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
 	if (str.empty() || str[0] != '{') {
-		throw (LexerParserException("No brackets or brackets don't start with opening brackets"));
+		throw (ConfigException("No brackets or brackets don't start with opening brackets"));
 	}
 	while (!str.empty() && str.size() > 1) {
 		close = str.find_first_of('}');
@@ -111,7 +125,7 @@ void	check_brackets(std::string str) {
 		open = substr.find_last_of('{');
 		substr2 = substr.substr(open, substr.size() - open);
 		if (even_or_uneven(substr2) == UNEVEN) {
-			throw (LexerParserException("Brackets do not open and close properly"));
+			throw (ConfigException("Brackets do not open and close properly"));
 		}
 		else {
 			str.erase(close, 1);
@@ -122,7 +136,7 @@ void	check_brackets(std::string str) {
 		return ;
 	}
 	else {
-		throw (LexerParserException("Brackets do not open and close properly"));
+		throw (ConfigException("Brackets do not open and close properly"));
 	}
 }
 
@@ -131,7 +145,7 @@ void	check_for_nested_location_blocks(std::string str) {
 	
 	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
 	if (str.empty() || str[0] != '{') {
-		throw (LexerParserException("No brackets or brackets don't start with opening brackets"));
+		throw (ConfigException("No brackets or brackets don't start with opening brackets"));
 	}
 	for (size_t i = 0; i < str.size(); i++) {
 		if (str[i] == '{') {
@@ -141,7 +155,7 @@ void	check_for_nested_location_blocks(std::string str) {
 			depth--;
 		}
 		if (depth > 2) {
-			throw (LexerParserException("Nested location blocks are not allowed"));
+			throw (ConfigException("Nested location blocks are not allowed"));
 		}
 	}
 }

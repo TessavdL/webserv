@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/05 14:32:18 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:50:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ LocationBlock::LocationBlock(void) {
 	return ;
 }
 
-LocationBlock::LocationBlock(Lexer::t_locations location) {
+LocationBlock::LocationBlock(ConfigLexer::t_locations location) {
 	this->_client_max_body_size = -1;
 	helper_split(this->_path_and_optional_modifier, location.path_and_optional_modifier);
 	error_check_path_and_optional_modifier(this->_path_and_optional_modifier);
@@ -49,7 +49,7 @@ LocationBlock::~LocationBlock(void) {
 	return ;
 }
 
-void		LocationBlock::get_directives(Lexer::t_locations location) {
+void		LocationBlock::get_directives(ConfigLexer::t_locations location) {
 	for (vector<string>::iterator it = location.directives.begin(); it != location.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
@@ -75,7 +75,7 @@ void		LocationBlock::get_directives(Lexer::t_locations location) {
 			case	AUTOINDEX:
 				helper_split(this->_autoindex, *it);
 				if (this->_autoindex != "on" && this->_autoindex != "off")
-					throw LexerParserException("Invalid autoindex value");
+					throw ConfigException("Invalid autoindex value");
 				break ;
 			case	CGI:
 				helper_split(this->_cgi, *it);
@@ -99,7 +99,7 @@ void		LocationBlock::error_check_limit_except(vector<string> const& limit_except
 	int	seen_head(0);
 
 	if (limit_except.empty()) {
-		throw LexerParserException("Empty limit except directive");
+		throw ConfigException("Empty limit except directive");
 	}
 	for (vector<string>::const_iterator it = limit_except.begin(); it != limit_except.end(); ++it) {
 		if ((*it) == "GET")
@@ -111,21 +111,21 @@ void		LocationBlock::error_check_limit_except(vector<string> const& limit_except
 		else if ((*it) == "HEAD")
 			++seen_head;
 		else
-			throw LexerParserException("Invalid limit except argument");
+			throw ConfigException("Invalid limit except argument");
 	}
 	if (seen_get > 1 || seen_post > 1 || seen_delete > 1 || seen_head > 1)
-		throw LexerParserException("Repeated limit except argument");
+		throw ConfigException("Repeated limit except argument");
 }
 
 void	LocationBlock::error_check_path_and_optional_modifier(vector<string> const& path_and_optional_modifier) const {
 	if (path_and_optional_modifier.empty()) {
-		throw LexerParserException("Empty location path");
+		throw ConfigException("Empty location path");
 	}
 	if (path_and_optional_modifier.size() == 2 && path_and_optional_modifier[0].compare("=")) {
-		throw LexerParserException("Invalid optional modifier for location");
+		throw ConfigException("Invalid optional modifier for location");
 	}
 	if (path_and_optional_modifier.size() > 2) {
-		throw LexerParserException("Too many arguments for location path and modifier");
+		throw ConfigException("Too many arguments for location path and modifier");
 	}
 }
 

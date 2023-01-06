@@ -6,17 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/05 13:13:42 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:51:13 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/config_parser/server.hpp"
-#include "../includes/config_parser/lexer.hpp"
-// #include "../includes/listening_sockets/socket_listen.hpp"
-#include "../includes/fatal_exception.hpp"
 #include "../includes/webserv.hpp"
 
-int		main(int ac, char **av) {
+int	main(int ac, char **av) {
 	string filename;
 	
 	if (ac == 1)
@@ -28,24 +24,25 @@ int		main(int ac, char **av) {
 		exit (1);
 	}
 	try {
-		vector<Server>		server_blocks;
-		Lexer server_config(filename);
+		vector<Server>	server_blocks;
+		ConfigLexer		server_config(filename);
 		// Prints the raw server content before parsing
 		// cout << server_config << endl;
-		vector<Lexer::t_server>	serv = server_config.get_server_blocks();
-		for (vector<Lexer::t_server>::iterator it = serv.begin(); it != serv.end(); ++it) {
+		vector<ConfigLexer::t_server>	serv = server_config.get_server_blocks();
+		for (vector<ConfigLexer::t_server>::iterator it = serv.begin(); it != serv.end(); ++it) {
 			server_blocks.push_back(*it);
 			// Prints the parsed server content
 			cout << server_blocks.back() << endl;
 		}
 		// kqueue_server(server_blocks);
 
-	} catch(FatalException const& e) {
+	} catch (FatalException const& e) {
 		cerr << e.what() << endl;
+		exit(1);
 	}
-	catch(LexerParserException const& e) {
+	catch (ConfigException const& e) {
 		cerr << e.what() << endl;
+		exit(1);
 	}
-	exit(1);
 	return (0);
 }
