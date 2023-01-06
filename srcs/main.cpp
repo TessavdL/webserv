@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 19:18:08 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/05 13:13:42 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/config_parser/server.hpp"
 #include "../includes/config_parser/lexer.hpp"
-#include "../includes/listening_sockets/socket_listen.hpp"
+// #include "../includes/listening_sockets/socket_listen.hpp"
 #include "../includes/fatal_exception.hpp"
 #include "../includes/webserv.hpp"
 
@@ -24,7 +24,7 @@ int		main(int ac, char **av) {
 	else if (ac == 2)
 		filename = string(av[1]);
 	else {
-		cout << "Error, please provide a valid amount of arguments" << endl;
+		cerr << "Error, please provide a valid amount of arguments" << endl;
 		exit (1);
 	}
 	try {
@@ -36,16 +36,15 @@ int		main(int ac, char **av) {
 		for (vector<Lexer::t_server>::iterator it = serv.begin(); it != serv.end(); ++it) {
 			server_blocks.push_back(*it);
 			// Prints the parsed server content
-			// cout << server_blocks.back() << endl;
+			cout << server_blocks.back() << endl;
 		}
-		kqueue_server(server_blocks);
+		// kqueue_server(server_blocks);
 
 	} catch(FatalException const& e) {
-		cout << e.what() << endl;
-		exit(1);
+		cerr << e.what() << endl;
 	}
 	catch(LexerParserException const& e) {
-		cout << e.what() << endl;
+		cerr << e.what() << endl;
 	}
 	exit(1);
 	return (0);

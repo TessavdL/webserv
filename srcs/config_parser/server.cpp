@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 16:14:33 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/05 13:07:22 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ Server::Server(Lexer::t_server server) {
 	}
 }
 
-Server::Server(Server const& other) {
+Server::Server(Server const& other) : ServerConfig(other) {
 	*this = other;
 	return ;
 }

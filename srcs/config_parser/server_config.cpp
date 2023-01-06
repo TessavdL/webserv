@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 18:36:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/05 13:56:23 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void			ServerConfig::helper_split(string &str, string to_split) {
 
 	helper_split(tmp, to_split);
 	if (tmp.empty())
-		throw LexerParserException(to_split.append(" < invalid input"));
+		throw LexerParserException(to_split.append(" < empty directive"));
 	if (tmp.size() > 1)
-		throw LexerParserException(to_split.append(" < invalid input"));
+		throw LexerParserException(to_split.append(" < expected 1 argument"));
 	str = tmp[0];
 }
 

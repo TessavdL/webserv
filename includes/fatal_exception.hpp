@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 16:44:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:44:41 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/05 13:01:59 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FATAL_EXCEPTION_HPP
 
 # include <string>
+# include <string.h>
 # include <stdexcept>
 # include <errno.h>
 
