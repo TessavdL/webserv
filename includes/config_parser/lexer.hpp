@@ -6,24 +6,24 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 16:44:24 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/13 18:52:35 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 13:27:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_HPP
 # define LEXER_HPP
 
-#include "lexer_utils.hpp"
-#include "./exception_config_parser.hpp"
+# include "./lexer_utils.hpp"
+# include "./exception_config_parser.hpp"
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-#include <functional>
+# include <vector>
+# include <string>
+# include <iostream>
+# include <fstream>
+# include <sstream>
+# include <string>
+# include <algorithm>
+# include <functional>
 
 class Lexer {
 	public:
@@ -42,7 +42,7 @@ class Lexer {
 		Lexer(Lexer const& other);
 		Lexer&												operator=(Lexer const& other);
 		std::string											get_input_from_config_file(std::string const& file_name) const;
-		void												check_brackets(std::string str);
+		// void												check_brackets(std::string str);
 		std::pair<size_t, size_t>							get_start_and_end_of_block(std::string str);
 		std::vector<std::string>							get_server_blocks(std::string const& input);
 		std::vector<std::pair<std::string,std::string> >	get_location_blocks(std::string const& server_block);

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:02:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:07:32 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 13:44:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,15 @@ void	check_brackets(std::string str) {
 
 	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
 	if (str.empty() || str[0] != '{') {
-		throw (LexerParserException());
+		throw (LexerParserException("No brackets or brackets don't start with opening brackets"));
 	}
 	while (!str.empty() && str.size() > 1) {
 		close = str.find_first_of('}');
 		substr = str.substr(0, close + 1);
 		open = substr.find_last_of('{');
 		substr2 = substr.substr(open, substr.size() - open);
-		if (even_or_uneven(substr2) == 1) {
-			throw (LexerParserException());
+		if (even_or_uneven(substr2) == UNEVEN) {
+			throw (LexerParserException("Brackets do not open and close properly"));
 		}
 		else {
 			str.erase(close, 1);
@@ -122,6 +122,26 @@ void	check_brackets(std::string str) {
 		return ;
 	}
 	else {
-		throw (LexerParserException());
+		throw (LexerParserException("Brackets do not open and close properly"));
+	}
+}
+
+void	check_for_nested_location_blocks(std::string str) {
+	int	depth = 0;
+	
+	str.erase(std::remove_if(str.begin(), str.end(), std::not1(is_bracket())), std::end(str));
+	if (str.empty() || str[0] != '{') {
+		throw (LexerParserException("No brackets or brackets don't start with opening brackets"));
+	}
+	for (size_t i = 0; i < str.size(); i++) {
+		if (str[i] == '{') {
+			depth++;
+		}
+		else {
+			depth--;
+		}
+		if (depth > 2) {
+			throw (LexerParserException("Nested location blocks are not allowed"));
+		}
 	}
 }

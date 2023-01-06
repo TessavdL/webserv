@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:02:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 16:52:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 15:28:51 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 Lexer::Lexer(std::string const& file_name) {
 	std::string		input = get_input_from_config_file(file_name);
+
+	check_brackets(input);
+	check_for_nested_location_blocks(input);
+
 	size_t			n_server_blocks = count_blocks(input);
 	
 	if (n_server_blocks == 0) {
-		throw (LexerParserException());
+		throw (LexerParserException("Empty server blocks"));
 	}
 
 	std::vector<std::string>	server_block_rough = get_server_blocks(input);
@@ -55,7 +59,7 @@ std::string	Lexer::get_input_from_config_file(std::string const& file_name) cons
 	
 	input_stream.open(file_name);
 	if (!input_stream) { // open failed
-		throw (LexerParserException());
+		throw (LexerParserException("Failed to open the config file"));
 	}
 	else {
 		std::ostringstream ss;
@@ -68,9 +72,11 @@ std::string	Lexer::get_input_from_config_file(std::string const& file_name) cons
 
 std::pair<size_t, size_t>	Lexer::get_start_and_end_of_block(std::string str) {
 	size_t	open = str.find("{");
+
 	if (open == std::string::npos) {
 		throw (LexerParserException());
 	}
+
 	size_t	depth = 1;
 	for (size_t i = 0; i + open + 1 < str.size(); i++) {
 		if (str[i + open + 1] == '{') {
@@ -83,7 +89,7 @@ std::pair<size_t, size_t>	Lexer::get_start_and_end_of_block(std::string str) {
 			return (std::pair<size_t, size_t>(open, i + open + 2));
 		}
 	}
-	throw (LexerParserException());
+	throw (LexerParserException("Invalid start and end of block"));
 }
 
 std::vector<std::string>	Lexer::get_server_blocks(std::string const& input) {
@@ -98,7 +104,7 @@ std::vector<std::string>	Lexer::get_server_blocks(std::string const& input) {
 		start_end = get_start_and_end_of_block(str);
 		server_block = str.substr(start_end.first + 1, start_end.second - start_end.first - 2);
 		if (!is_valid_server_start(str.substr(0, start_end.first))) {
-			throw (LexerParserException());
+			throw (LexerParserException("Invalid server block start"));
 		}
 		server_blocks.push_back(server_block);
 		erase_substring(str, str.substr(0, start_end.second));
@@ -134,6 +140,9 @@ std::vector<std::pair<std::string,std::string> >	Lexer::get_location_blocks(std:
 		start_end = get_start_and_end_of_block(str);
 		std::string location_block = str.substr(start_end.first + 1, start_end.second - start_end.first - 2);
 		std::string location = trim(get_location(str, start_end.first), " \t\n\r\f\v");
+		if (!is_valid_location_start(location)) {
+			throw (LexerParserException("Invalid location block start"));
+		}
 		location_blocks.push_back(std::pair<std::string, std::string>(location, location_block));
 		erase_substring(str, str.substr(0, start_end.second));
 	}
