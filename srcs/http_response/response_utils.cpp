@@ -6,12 +6,38 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 13:55:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 20:31:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_utils.hpp"
-#include "../../includes/virtual_server/search_for_file.hpp"
+
+bool	check_if_auto_index_is_on(std::string const& auto_index) {
+	if (!auto_index.compare("on")) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	is_cgi(std::string const& file_location) {
+	size_t				pos = file_location.find(".");
+	if (pos == std::string::npos) {
+		return (false);
+	}
+
+	std::string const& extension = file_location.substr(pos);
+	if (!extension.empty() && !extension.compare(".php")) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	is_return(VirtualServer const& virtual_server) {
+	if (virtual_server.get_return().first != -1) {
+		return (true);
+	}
+	return (false);
+}
 
 char*	custom_asctime(const struct tm* time_information)
 {
@@ -44,13 +70,6 @@ std::string get_date_information(void) {
 	return (std::string(custom_asctime(time_information)));
 }
 
-bool	check_if_auto_index_is_on(std::string const& auto_index) {
-	if (!auto_index.compare("on")) {
-		return (true);
-	}
-	return (false);
-}
-
 std::string create_directory_list_page(std::string const& file) {
 	std::vector<std::string>	v = get_directory_file_list(file);
 	std::string					directories;
@@ -68,19 +87,6 @@ std::string create_directory_list_page(std::string const& file) {
 	page.replace(page.find("$FILE"), strlen("$FILE"), file);
 	page.replace(page.find("$DIRECTORIES"), strlen("$DIRECTORIES"), directories);
 	return (page);
-}
-
-bool	is_cgi(std::string const& file_location) {
-	size_t				pos = file_location.find(".");
-	if (pos == std::string::npos) {
-		return (false);
-	}
-
-	std::string const& extension = file_location.substr(pos);
-	if (!extension.empty() && !extension.compare(".php")) {
-		return (true);
-	}
-	return (false);
 }
 
 std::map<int, std::string>	g_status_code_reason_phrase_map = create_status_code_reason_phrase_map();

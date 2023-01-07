@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 16:52:53 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 20:15:50 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ static void	reset_response_data(Connection& client) {
 	client.set_response(response_data);
 }
 
-static bool	is_continue(std::map<std::string, std::string> const& headers) {
+static bool	connection_is_continue(std::map<std::string, std::string> const& headers) {
 	std::map<std::string, std::string>::const_iterator it = headers.find("Connection");
 
 	if (it != headers.end()) {
@@ -184,7 +184,7 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 
 	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
-	if (!is_continue(client.get_response().get_headers())) {
+	if (!connection_is_continue(client.get_response().get_headers())) {
 		close(connection_fd);
 		std::cout << "--- closed event fd = " << connection_fd << "---\n" << std::endl;
 	}
@@ -215,7 +215,7 @@ int kqueue_server(vector<Server> server) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
 			else if (client_disconnected(event[i].flags)) {
-				std::cout << "--- Client " << event[i].ident << " has disconnected" << std::endl;
+				std::cout << "--- client " << event[i].ident << " has disconnected" << std::endl;
                 close(event[i].ident);
 				connections.erase(event[i].ident);
             }
@@ -236,7 +236,7 @@ int kqueue_server(vector<Server> server) {
 				std::cout << "writable event = " << event[i].ident << std::endl;
 				Connection& client = connections[event[i].ident];
 				send_response_to_client(event[i].ident, client);
-				if (!is_continue(client.get_response().get_headers())) {
+				if (!connection_is_continue(client.get_response().get_headers())) {
 					connections.erase(event[i].ident);
 				}
 				else {

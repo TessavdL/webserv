@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:34:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 15:24:37 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 20:27:08 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 # include "../includes/webserv.hpp"
 # include "../includes/event_loop/connection.hpp"
 # include "../includes/http_response/error_checking.hpp"
+# include "../includes/http_response/response_generator.hpp"
 # include "../includes/http_response/response_handler.hpp"
 # include "../includes/kqueue_utils.hpp"
 # include "../includes/http_request/receive_request.hpp"
 # include "../includes/config_parser/server.hpp"
 # include "../includes/config_parser/config_lexer.hpp"
 # include "../includes/fatal_exception.hpp"
-# include "../includes/http_response/response_generator.hpp"
 
 int		main(int ac, char **av);
 int		kqueue_server(vector<Server> server);

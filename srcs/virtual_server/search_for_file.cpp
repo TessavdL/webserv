@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/15 13:46:54 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 19:23:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,21 @@ std::string	find_error_page_location(int& status_code, VirtualServer const& virt
 		}
 	}
 	return ("");
+}
+
+std::string	get_file_content(std::string const& file_location) {
+	std::ifstream	input_stream;
+	std::string		file_contents;
+
+	input_stream.open(file_location);
+	if (!input_stream || input_stream.bad()) {
+		throw (FatalException("SYSCALL open in get_file_contents\n"));
+	}
+	else {
+		std::ostringstream ss;
+		ss << input_stream.rdbuf();
+		file_contents.append(ss.str());
+	}
+	input_stream.close();
+	return (file_contents);
 }

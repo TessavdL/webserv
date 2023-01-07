@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:27:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:55:10 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 19:32:22 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ std::string						create_path(std::string const& root, std::string const& uri_pat
 std::string						default_error_page_content(void);
 std::string 					default_error_page_location(void);
 std::string						find_error_page_location(int& status_code, VirtualServer const& virtual_server);
+std::string						get_file_content(std::string const& file_location);
 
 #endif
