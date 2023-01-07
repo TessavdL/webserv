@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:58:08 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:07:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,6 @@ bool	ResponseHandler::is_continue(int const& status_code, response_state respons
 	}
 	return (false);
 }
-
 
 std::string	ResponseHandler::error_page_location_handler(std::pair<std::string, bool> error_page) {
 	if (check_if_file_is_found(this->_status_code, error_page) || check_if_forbidden(this->_status_code, error_page) || check_file_status(this->_status_code, error_page.first)) {

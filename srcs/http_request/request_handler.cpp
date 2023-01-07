@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/03 16:12:53 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:08:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void	RequestHandler::process_request(std::string const& request) {
 			this->_remainder = str.substr(index);
 			return ;
 		case REQUEST_BODY:
-			std::cout << "BODY" << std::endl;
-			std::cout << str.substr(index, 50) << std::endl;
 			if (!str.substr(index).empty())
 				handle_body(str, index);
 			break ;
@@ -169,22 +167,6 @@ void	RequestHandler::create_headers_map(std::vector<std::string> const& v) {
 	this->_request_headers = request_headers;
 }
 
-// CHECK REQUEST
-
-// void	RequestHandler::check_request(void) {
-// 	std::map<std::string, std::string>::const_iterator	expect_header = this->_request_headers.find("Expect");
-	
-// 	if (expect_header != this->_request_headers.end()) {
-// 		std::string const	expectation = string_to_lower(expect_header->second);
-// 		if (!expectation.compare("100-continue")) {
-// 			throw (RequestException(100, "RequestHandler::check_request"));
-// 		}
-// 		else {
-// 			throw (RequestException(417, "RequestHandler::check_request"));
-// 		}
-// 	}
-// }
-
 // HANDLE BODY
 
 static bool	is_request_chunked(std::map<std::string, std::string> const& m) {
@@ -211,45 +193,6 @@ void	RequestHandler::handle_normal_body(std::string const& str, size_t& index) {
 }
 
 void	RequestHandler::handle_chunked_body(std::string const& str, size_t &index) {
-	// std::string substring = str.substr(index);
-	// bool		is_done = false;
-	// if (substring.find(DOUBLE_CRLF)) {
-	// 	is_done = true;
-	// }
-	// size_t		pos = substring.find(CRLF);
-	// bool		hex = true;
-	// size_t		n;
-
-	// for (; pos != std::string::npos;) {
-	// 	if (hex == true) {
-	// 		n = to_dec(substring);
-	// 		hex = false;
-	// 	}
-	// 	else {
-	// 		std::string s = substring.substr(0, pos);
-	// 		std::cout << s << std::endl;
-	// 		if (s.length() == n) {
-	// 			this->_request_body.append(s);
-	// 			if (n == 0) {
-	// 				if (is_done == true)
-	// 					break ;
-	// 				else
-	// 					throw (RequestException(400));
-	// 			}
-	// 		}
-	// 		else {
-	// 			throw (RequestException(400));
-	// 		}
-	// 		hex = true;
-	// 	}
-	// 	substring = substring.substr(pos + 2);
-	// 	pos = substring.find(CRLF);
-	// }
-	// this->_remainder.clear();
-	// this->_remainder = substring;
-	std::cout << "HANDLING CHUNKY BODY" << std::endl;
-	std::cout << "index = " << index << std::endl;
-	std::cout << "str size = " << str.size() << std::endl;
 	this->_request_body.append(chunked_request(str.substr(index), this->_remainder));
 }
 
