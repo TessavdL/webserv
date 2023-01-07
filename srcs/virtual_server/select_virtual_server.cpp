@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 13:43:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:20:17 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:36:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,3 @@ size_t	select_server_index(std::string const& host, std::vector<Server> const& v
 	}
 	return (server_index);
 }
-
-// int main(int argc, char **argv) {
-// 	std::vector<t_virtual_server> v;
-
-// 	t_virtual_server	one;
-// 	t_virtual_server	two;
-// 	t_virtual_server	three;
-	
-// 	one.server_name = "example.com";
-// 	two.server_name = "example.net";
-// 	three.server_name = "example.org";
-
-// 	v.push_back(one);
-// 	v.push_back(two);
-// 	v.push_back(three);
-
-// 	for (std::vector<t_virtual_server>::iterator it = v.begin(); it != v.end(); it++) {
-// 		std::cout << (*it).server_name << std::endl;
-// 	}
-
-// 	std::vector<std::string>	host;
-// 	for (int i = 1; i < argc; i++) {
-// 		host.push_back(argv[i]);
-// 	}
-
-// 	for (std::vector<std::string>::iterator it = host.begin(); it != host.end(); it++) {
-// 		std::string	longest_match;
-// 		longest_match = v[select_virtual_server(*it, v)].server_name;
-// 		std::cout << "longest match for " << *it << " is " << longest_match << std::endl;
-// 	}
-// 	return (0);
-// }
