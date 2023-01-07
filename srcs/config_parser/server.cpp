@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 18:26:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 22:01:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ Server::Server(ConfigLexer::t_server server) {
 	this->_listen.push_back("8000");
 	this->_index.push_back("index.html");
 	this->_return.first = -1;
+	initialise_seen_directives();
 	get_directives(server);
+	check_duplicate_directives();
 	for (vector<ConfigLexer::t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
 		this->_location_blocks.push_back(LocationBlock(*it));
 	}
@@ -48,6 +50,8 @@ Server	&Server::operator=(Server	const& rhs) {
 		this->_autoindex = rhs._autoindex;
 		this->_location_blocks = rhs._location_blocks;
 		this->_host_and_port = rhs._host_and_port;
+		this->_return = rhs._return;
+		this->_rewrite = rhs._rewrite;
 	}
 	return (*this);
 }
@@ -62,46 +66,62 @@ void			Server::get_directives(ConfigLexer::t_server server) {
 		switch (hash_string(first_word))
 		{
 			case	SERVER_NAME:
+				this->_seen_server_name++;
 				helper_split(this->_server_name, *it);
+				if (this->_server_name.empty()) {
+					throw ConfigException("Server name directive empty");
+				}
 				break ;
 			case	LISTEN:
+				this->_seen_listen++;
 				helper_split(this->_listen, *it);
 				error_check_listen(this->_listen);
 				break ;
 			case	ROOT:
+				this->_seen_root++;
 				helper_split(this->_root, *it);
 				break ;
 			case	CLIENT_MAX_BODY_SIZE:
+				this->_seen_client_max_body_size++;
 				helper_split(this->_client_max_body_size_in_string, *it);
 				resolve_client_max_body_size(this->_client_max_body_size, this->_client_max_body_size_in_string);
 				break ;
 			case	INDEX:
+				this->_seen_index++;
 				helper_split(this->_index, *it);
+				if (this->_index.empty()) {
+					throw ConfigException("Empty index directive");
+				}
 				break ;
 			case	ERROR_PAGE:
 				helper_split(this->_error_page, *it);
 				break ;
 			case	AUTOINDEX:
+				this->_seen_autoindex++;
 				helper_split(this->_autoindex, *it);
 				if (this->_autoindex != "on" && this->_autoindex != "off")
 					throw ConfigException("Error; autoindex is not \"on\" or \"off\"");
 				break ;
 			case	RETURN:
+				this->_seen_return++;
 				helper_split(this->_return, *it);
 				break ;
 			case	REWRITE:
+				this->_seen_rewrite++;
 				helper_split(this->_rewrite, *it);
 				break ;
 			default:
-				cout << *it << " is not a supported directive in the server block." << endl;
-				exit (1);
+				throw ConfigException("Invalid directive in server block");
 		}
 	}
 }
 
 void			Server::error_check_listen(vector<string> const& listen) {
 	pair<string, string> hostname_port_split;
-	
+
+	if (listen.empty()) {
+		throw ConfigException("Listen directive empty");
+	}
 	for (vector<string>::const_iterator it = listen.begin(); it != listen.end(); ++it) {
 		if ((*it).find(":") != string::npos) {
 			hostname_port_split = split_string_in_half((*it), ":");
@@ -124,6 +144,30 @@ void			Server::error_check_listen(vector<string> const& listen) {
 		}
 		this->_host_and_port.push_back(pair<string, int>(hostname_port_split.first, atoi(hostname_port_split.second.c_str())));
 	}
+}
+
+void			Server::initialise_seen_directives(void) {
+	this->_seen_server_name = 0;
+	this->_seen_listen = 0;
+	this->_seen_root = 0;
+	this->_seen_client_max_body_size = 0;
+	this->_seen_index = 0;
+	this->_seen_autoindex = 0;
+	this->_seen_return = 0;
+	this->_seen_rewrite = 0;
+}
+
+void			Server::check_duplicate_directives(void) {
+	if (this->_seen_server_name > 1 ||
+		this->_seen_listen > 1 ||
+		this->_seen_root > 1 ||
+		this->_seen_client_max_body_size > 1 ||
+		this->_seen_index > 1 ||
+		this->_seen_autoindex > 1 ||
+		this->_seen_return > 1 ||
+		this->_seen_rewrite > 1) {
+			throw ConfigException("Duplicate directive in server block");
+		}
 }
 
 vector<string> const&				Server::get_server_name() const {
