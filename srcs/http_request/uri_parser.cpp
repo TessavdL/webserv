@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 16:33:21 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 15:57:04 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:18:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ Uri&  Uri::operator=(Uri const& other) {
 		this->_path_full = other._path_full;
 		this->_path_extension = other._path_extension;
 		this->_path_without_extension = other._path_without_extension;
-		// this->_query = other._query;
 		this->_query_string = other._query_string;
 	}
 	return (*this);
@@ -115,13 +114,6 @@ void	Uri::parse_query(std::string const& str, size_t index) {
 	else {
 		this->_query_string = str.substr(index + 1);
 	}
-	// std::vector<std::string>	query_seperated = split_string_on_delimeter(this->_query_string, '&');
-	// for (size_t i = 0; i < query_seperated.size(); i++) {
-	// 	if (!query_seperated[i].empty()) {
-	// 		std::pair<std::string, std::string> p = split_string_in_half(query_seperated[i], "=");
-	// 		this->_query.insert(p);
-	// 	}
-	// }
 }
 
 std::string const&  Uri::get_scheme(void) const {
@@ -152,10 +144,6 @@ std::string const&  Uri::get_path_without_extension(void) const {
 	return (this->_path_without_extension);
 }
 
-// std::map<std::string, std::string> const&  Uri::get_query(void) const {
-// 	return (this->_query);
-// }
-
 std::string const&	Uri::get_query_string(void) const {
 	return (this->_query_string);
 }
@@ -168,7 +156,6 @@ std::ostream&   operator<<(std::ostream& os, Uri const& uri) {
 	std::string							path_full = uri.get_path_full();
 	std::string							path_extension = uri.get_path_extension();
 	std::string							path_without_extension = uri.get_path_without_extension();
-	// std::map<std::string, std::string>	query = uri.get_query();
 	std::string							query_string = uri.get_query_string();
 
 	if (!scheme.empty()) {
@@ -191,12 +178,6 @@ std::ostream&   operator<<(std::ostream& os, Uri const& uri) {
 	if (!path_without_extension.empty()) {
 		os << "uri path without extension " << path_without_extension << std::endl;
 	}
-	// if (!query.empty()) {
-	// 	os << "uri query string" << std::endl;
-	// 	for (std::map<std::string, std::string>::const_iterator it = query.begin(); it != query.end(); it++) {
-	// 		os << "\t" << it->first << "=" << it->second << std::endl;
-	// 	}
-	// }
 	if (!query_string.empty()) {
 		os << "uri query string " << query_string << std::endl;
 	}
