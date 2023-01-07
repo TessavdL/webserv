@@ -1,4 +1,5 @@
 <?php
-	fopen("outputfile.txt");
-	file_put_contents("outputfile.txt", file_get_contents("php://input"));
+	$buffer = fopen('php://input', "r");
+	$myfile = fopen("index.html", "w");
+	file_put_contents("index.html", $buffer);
 ?>
