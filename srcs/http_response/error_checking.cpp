@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:53:52 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:20:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,20 +120,16 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 	long	content_length = find_content_length(request.get_headers());
 
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
-		std::cout << "HERE1" << std::endl;
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {
-		std::cout << "HERE2" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
 	if (is_not_chunked(request) && check_request_size(status_code, request.get_body().length(), content_length)) {
-		std::cout << "HERE3" << std::endl;
 		return (status_code);
 	}
 	if (is_valid_cgi(status_code, client, request)) {
-		std::cout << "HERE4" << std::endl;
 		return (status_code);
 	}
 	return (OK);
@@ -187,10 +183,10 @@ void	check_continue(std::map<std::string, std::string> const& headers) {
 	if (expect_header != headers.end()) {
 		std::string const	expectation = string_to_lower(expect_header->second);
 		if (!expectation.compare("100-continue")) {
-			throw (RequestException(100, "RequestHandler::check_request"));
+			throw (RequestException(100, "check_continue"));
 		}
 		else {
-			throw (RequestException(417, "RequestHandler::check_request"));
+			throw (RequestException(417, "check_continue"));
 		}
 	}
 }
