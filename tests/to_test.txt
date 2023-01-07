@@ -1,18 +1,18 @@
 Config:
-- IN GENERAL: DIRECTIVES CANNOT BE REPEATED
-- Autoindex < done
-- client_max_body_size < not empty, not to big, at least 1 number, "m" "M"
-- index < not empty
-- cgi < not empty, not too many arguments, not in server block
-- error_page < not empty, valid status codes, at least 1 numeric and 1 path
-- limit_except < done  REMOVE HEAD FROM code, not in server block
-- listen < not empty, not in location
-- location < done
-- root < not empty, only one value
-- server < done
-- server_name < not empty, not in location
-- return < not empty, valid status code, at least 1 numeric 1 path
-- rewrite < 1 value
+- IN GENERAL: DIRECTIVES CANNOT BE REPEATED <<< DONE
+- Autoindex <<< DONE
+- client_max_body_size <<< DONE
+- index <<< DONE
+- cgi <<< DONE
+- error_page <<< DONE
+- limit_except <<< DONE
+- listen <<< DONE
+- location <<< DONE
+- root <<< DONE
+- server <<< DONE
+- server_name <<< DONE
+- return <<< DONE
+- rewrite <<< DONE
 
 Load testing:
 

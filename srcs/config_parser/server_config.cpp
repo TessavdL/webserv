@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 18:24:01 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 22:07:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,16 +108,15 @@ void			ServerConfig::helper_split(pair<int, string> &ret, string to_split) {
 	helper_split(tmp, to_split);
 	if (tmp.size() != 1 && tmp.size() != 2)
 		throw ConfigException("Return has an incorrect amount of arguments");
-	if (tmp.size() == 1) {
-		if (tmp[0].find_first_not_of("0123456789") != string::npos)
-			throw ConfigException("Invalid character in return status code");
-		ret.first = atoi(tmp[0].c_str());
-		if (ret.first > 600) {
-			throw ConfigException("Invalid status code in return");
-		}
-		return ;
+	if (tmp[0].find_first_not_of("0123456789") != string::npos)
+		throw ConfigException("Invalid character in return status code");
+	ret.first = atoi(tmp[0].c_str());
+	if (ret.first > 600) {
+		throw ConfigException("Invalid status code in return");
 	}
-	ret.second = tmp[1];
+	if (tmp.size() == 2) {
+		ret.second = tmp[1];
+	}
 }
 
 void			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page, string to_split) {
@@ -151,6 +150,9 @@ void			ServerConfig::resolve_client_max_body_size(int& client_max_body_size, str
 	}
 	else if (strcmp(client_max_body_size_in_string.c_str() + tmp_pos, "M\0") && strcmp(client_max_body_size_in_string.c_str() + tmp_pos, "m\0")) {
 		throw ConfigException("Too many characters in data specifier for client max body size");
+	}
+	else if (!isdigit(client_max_body_size_in_string[0])) {
+		throw ConfigException("No number in client max body size");
 	}
 	client_max_body_size = atoi(client_max_body_size_in_string.c_str());
 }
