@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   kqueue_utils.cpp                                   :+:    :+:            */
+/*   kqueue_and_kevent_utils.cpp                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:44:55 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/03 19:25:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:43:44 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/kqueue_utils.hpp"
+#include "../../includes/event_loop/kqueue_and_kevent_utils.hpp"
 
 void	new_kernel_event_queue(int& kq) {
 	kq = kqueue();
@@ -77,7 +77,6 @@ void	add_new_event_to_kqueue(int kq, int event_fd) {
 void	add_read_event_to_kqueue(int kq, int event_fd) {
 	struct kevent	monitor_event;
 
-	std::cout << "ADDING READ EVENT TO KQUEUE = " << event_fd << std::endl;
 	EV_SET(&monitor_event, event_fd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
 	if (kevent(kq, &monitor_event, 1, NULL, 0, NULL) == -1) {
 		throw (FatalException("SYSCALL: kevent in add_event_to_kqueue\n"));

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   kqueue_utils.hpp                                   :+:    :+:            */
+/*   kqueue_and_kevent_utils.hpp                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/03 19:25:53 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:43:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KQUEUE_UTILS_HPP
-# define KQUEUE_UTILS_HPP
+#ifndef KQUEUE_AND_KEVENT_UTILS
+# define KQUEUE_AND_KEVENT_UTILS
 
 # include <map>
 # include <sys/event.h>
 # include <vector>
 
-# include "./config_parser/server.hpp"
+# include "../config_parser/server.hpp"
 
 void	new_kernel_event_queue(int& kq);
 
