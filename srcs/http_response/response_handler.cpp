@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:07:32 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:33:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,7 @@ std::string	ResponseHandler::handle_error_page(VirtualServer const& virtual_serv
 	}
 }
 
-std::string	ResponseHandler::file_location_handler(VirtualServer const& virtual_server, std::pair<std::string, bool> const& file_location) {
+std::string	ResponseHandler::file_location_handler(VirtualServer const& virtual_server, std::pair<std::string, bool> const& file_location, std::string const& original_uri) {
 	std::string const	file = file_location.first;
 
 	if (check_if_file_is_found(this->_status_code, file_location)) {
@@ -290,7 +290,7 @@ std::string	ResponseHandler::file_location_handler(VirtualServer const& virtual_
 		if (check_if_auto_index_is_on(virtual_server.get_autoindex())) {
 			this->_status_code = 200;
 			this->_state = DIRECTORY_LIST;
-			return (create_directory_list_page(file));
+			return (create_directory_list_page(file, original_uri));
 		}
 		else {
 			return (handle_error_page(virtual_server));
@@ -305,7 +305,7 @@ std::string	ResponseHandler::file_location_handler(VirtualServer const& virtual_
 std::string const	ResponseHandler::file_information(Connection& client, RequestData const& request_data) {
 	std::string const					file_path = create_path(client.get_virtual_server().get_root(), request_data.get_uri().get_path_full());
 	std::pair<std::string, bool> const	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
-	std::string	const					file = file_location_handler(client.get_virtual_server(), file_location);
+	std::string	const					file = file_location_handler(client.get_virtual_server(), file_location, request_data.get_uri().get_path_full());
 
 	// std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
 	// std::cout << "file path = " << file_path << std::endl;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:31:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:26:35 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ std::string get_date_information(void) {
 	return (std::string(custom_asctime(time_information)));
 }
 
-std::string create_directory_list_page(std::string const& file) {
+std::string create_directory_list_page(std::string const& file, std::string const& original_uri) {
 	std::vector<std::string>	v = get_directory_file_list(file);
 	std::string					directories;
 	std::string					page = DIRECTORY_LISTING_STRING;
@@ -83,8 +83,8 @@ std::string create_directory_list_page(std::string const& file) {
 			directories = directories + "<ul><a href = \"" + *it + "\"/><p>" + *it + "</p></a></ul>";
 		}
 	}
-	page.replace(page.find("$FILE"), strlen("$FILE"), file);
-	page.replace(page.find("$FILE"), strlen("$FILE"), file);
+	page.replace(page.find("$FILE"), strlen("$FILE"), original_uri);
+	page.replace(page.find("$FILE"), strlen("$FILE"), original_uri);
 	page.replace(page.find("$DIRECTORIES"), strlen("$DIRECTORIES"), directories);
 	return (page);
 }
