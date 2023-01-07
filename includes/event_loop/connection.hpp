@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 20:03:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 22:16:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <string>
 # include <vector>
 
+# include "./colors.hpp"
 # include "../config_parser/server.hpp"
 # include "../http_request/request_data.hpp"
 # include "../http_request/request_handler.hpp"

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 17:29:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 16:36:53 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 22:23:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	ResponseGenerator::set_status_line(std::string const& status_line) {
 }
 
 std::ostream&	operator<<(std::ostream& os, ResponseGenerator const& response) {
-	os << "---STATUS LINE---" << std::endl << response.get_status_line() << std::endl;
-	os << "---HEADERS---" << std::endl << response.get_headers() << std::endl;
+	os << response.get_status_line();
+	os << response.get_headers();
 	return (os);
 }

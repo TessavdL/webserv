@@ -6,12 +6,15 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:34:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:43:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:49:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WEBSERV_HPP
 # define WEBSERV_HPP
+
+//	favicon problems
+//	https://stackoverflow.com/questions/19641000/favicon-is-not-loading-in-chrome
 
 # define MAX_EVENTS 100
 

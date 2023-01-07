@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:03:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:35:28 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 22:12:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	SocketListen::get_port_number_from_socket_fd(void) const {
 	socklen_t			local_sin_len = sizeof(local_sin);
 	
 	if (getsockname(this->_fd, (struct sockaddr *)&local_sin, &local_sin_len) != -1)
-		std::cout << "Socket is listening on port " << ntohs(local_sin.sin_port) << std::endl;
+		std::cout << "Socket is listening on port " << ntohs(local_sin.sin_port) << " with fd [" << this->_fd << "]" << std::endl;
 	return (ntohs(local_sin.sin_port));
 }
 

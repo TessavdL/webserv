@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   kqueue_server.cpp                                  :+:    :+:            */
+/*   event_loop.cpp                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:15:50 by tevan-de      ########   odam.nl         */
+/*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
+/*   Updated: 2023/01/07 22:29:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/webserv.hpp"
+#include "../../includes/webserv.hpp"
 
 void	create_listening_sockets_with_config(vector<Server> server, map<int, vector<Server> >& listening_sockets_with_config) {
 	map<int, vector<Server> >	ports_with_config;
@@ -55,98 +55,6 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 	connections.insert(new_connection);
 }
 
-// int	prepare_error_response_to_client(Connection& client, int const status_code) {
-// 	ResponseData	response_data;
-
-// 	response_data.set_status_code(status_code);
-// 	client.set_response(response_data);
-// 	return (-1);
-// }
-
-// static bool	ready_to_check_request_line_and_headers(RequestHandler::State state) {
-// 	if (state >= RequestHandler::REQUEST_CHECK) {
-// 		return (true);
-// 	}
-// 	return (false);
-// }
-
-// void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, int total_bytes_read) {
-// 	RequestData	request;
-	
-// 	request.set_bytes_in_data(bytes_in_data);
-// 	request.set_total_bytes_read(total_bytes_read);
-// 	request.set_method(parser.get_request_line_method());
-// 	request.set_uri(parser.get_request_line_uri());
-// 	request.set_protocol(parser.get_request_line_protocol());
-// 	request.set_headers(parser.get_headers());
-// 	request.set_body(parser.get_body());
-// 	client.set_request(request);
-// }
-
-// void	save_request_line_and_headers(Connection& client, RequestHandler parser) {
-// 	RequestData request;
-	
-// 	request.set_method(parser.get_request_line_method());
-// 	request.set_uri(parser.get_request_line_uri());
-// 	request.set_protocol(parser.get_request_line_protocol());
-// 	request.set_headers(parser.get_headers());
-// 	client.set_request(request);
-// }
-
-// int	parse_received_data(Connection& client, RequestHandler& parser, std::string const& buf) {
-// 	try {
-// 		parser.process_request(buf);
-// 	}
-// 	catch (RequestException const& e) {
-// 		std::cout << e.what() << std::endl;
-// 		std::cout << e.get_status_code() << std::endl;
-// 		return (prepare_error_response_to_client(client, e.get_status_code()));
-// 	}
-// 	if (ready_to_check_request_line_and_headers(parser.get_state())) {
-// 		save_request_line_and_headers(client, parser);
-// 		client.select_virtual_server();
-// 		try {
-// 			error_check_request_line_and_headers(client, client.get_request());
-// 		}
-// 		catch (RequestException const& e2) {
-// 			std::cout << e2.what() << std::endl;
-// 			std::cout << e2.get_status_code() << std::endl;
-// 			return (prepare_error_response_to_client(client, e2.get_status_code()));
-// 		}
-// 	}
-// 	return (0);
-// }
-
-// void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
-// 	RequestHandler	parser;
-// 	long			total_bytes_read = 0;
-// 	int				bytes_read = 1;
-// 	char			buf[BUFF_SIZE + 1];
-
-// 	cout << "--- start reading from client ---" << connection_fd << endl;
-// 	while (bytes_read > 0) {
-// 		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-// 		if (bytes_read == -1) {
-// 			break ;
-// 		}
-// 		buf[bytes_read] = '\0';
-// 		total_bytes_read += bytes_read;
-// 		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
-// 			while (bytes_read > 0) {
-// 				bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-// 				if (bytes_read == -1) {
-// 					break ;
-// 				}
-// 				buf[bytes_read] = '\0';
-// 				total_bytes_read += bytes_read;
-// 			}
-// 			printf("--- finished reading from client ---\n");
-// 			return ;
-// 		}
-// 	}
-// 	save_request(client, parser, bytes_in_data, total_bytes_read);
-// 	printf("--- finished reading from client ---\n");
-// }
 static void	reset_response_data(Connection& client) {
 	ResponseData	response_data;
 	
@@ -166,6 +74,8 @@ static bool	connection_is_continue(std::map<std::string, std::string> const& hea
 }
 
 void	send_response_to_client(int connection_fd, Connection& client) {
+	Color::Modifier green(Color::FG_GREEN);
+	Color::Modifier def(Color::FG_DEFAULT);
 	ResponseHandler	response_handler;
 	std::string r;
 	response_handler.handle_response(client);
@@ -176,17 +86,18 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 		ResponseGenerator response;
 
 		response.generate_response_string(client.get_response());
+		std::cout << green;
+		std::cout << response << def;
 		r = response.get_full_response();
 	}
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
-	cout << buf << endl;
+
 
 	send(connection_fd, buf, size, 0);
-	printf("--- done writing to client socket\n");
 	if (!connection_is_continue(client.get_response().get_headers())) {
 		close(connection_fd);
-		std::cout << "--- closed event fd = " << connection_fd << "---\n" << std::endl;
+		std::cout << "closed event identifier [" << connection_fd << "]" << std::endl;
 	}
 }
 
@@ -200,54 +111,48 @@ int kqueue_server(vector<Server> server) {
 	register_listening_sockets_to_kernel_events_kqueue(kq, listening_sockets_with_config);
 
 	for (;;) {
-		// https://stackoverflow.com/questions/19641000/favicon-is-not-loading-in-chrome
 		struct kevent	event[MAX_EVENTS];
 		int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
-		std::cout << "amount of events = " << n_events << std::endl;
 		if (n_events == -1) {
 			throw (FatalException("SYSCALL: kevent in kqueue_server\n"));
 		}
 		for (int i = 0; n_events > i; i++) {
-			std::cout << "event[i].ident = " << event[i].ident << std::endl;
-			std::cout << "data = " << event[i].data << std::endl;
-			std::cout << "filter = " << event[i].filter << std::endl << std::endl;
+			std::cout << "\nevent identifier [" << event[i].ident << "]" << std::endl;
 			if (is_event_error(event[i].flags)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
 			else if (client_disconnected(event[i].flags)) {
-				std::cout << "--- client " << event[i].ident << " has disconnected" << std::endl;
+				std::cout << "client [" << event[i].ident << "] has disconnected" << std::endl;
                 close(event[i].ident);
 				connections.erase(event[i].ident);
             }
 			else if (is_new_connection(event[i].ident, listening_sockets_with_config)) {
-				std::cout << "new connection = " << event[i].ident << std::endl;
 				int connection_fd = accept_connection(event[i].ident);
+				std::cout << "client [" << connection_fd << "] has connected" << std::endl;
 				add_read_event_to_kqueue(kq, connection_fd);
 				add_connection(event[i].ident, connection_fd, connections, listening_sockets_with_config);
 			}
 			else if (is_readable_event(event[i].filter)) {
-				std::cout << "readable event = " << event[i].ident << std::endl;
+				std::cout << "readable event [" << event[i].ident << "]\n" << std::endl;
 				Connection& client = connections[event[i].ident];
 				receive_request(client, event[i].ident, event[i].data);
 				client.print_request();
 				add_write_event_to_kqueue(kq, event[i].ident);
 			}
 			else if (is_writable_event(event[i].filter)) {
-				std::cout << "writable event = " << event[i].ident << std::endl;
+				std::cout << "writable event [" << event[i].ident << "]\n" << std::endl;
 				Connection& client = connections[event[i].ident];
 				send_response_to_client(event[i].ident, client);
 				if (!connection_is_continue(client.get_response().get_headers())) {
 					connections.erase(event[i].ident);
 				}
 				else {
-					std::cout << "just sent continue response" << std::endl;
 					delete_event_from_kqueue(kq, &event[i], event[i].ident);
 					add_read_event_to_kqueue(kq, client.get_connection_fd());
 					reset_response_data(client);
 				}
 			}
 		}
-		std::cout << "end of event loop\n" << std::endl;
 	}
 	return (0);
 }
