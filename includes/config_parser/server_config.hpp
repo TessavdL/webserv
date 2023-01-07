@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:26:14 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 16:10:51 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:46:51 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sstream>
 # include <cstring>
 # include <utility>
-# include "./lexer.hpp"
+# include "./config_lexer.hpp"
 # include "./exception_config_parser.hpp"
 
 using namespace std;

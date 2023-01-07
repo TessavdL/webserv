@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:10 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/23 14:02:30 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:46:22 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ class Server : public ServerConfig {
 		vector<LocationBlock>				_location_blocks;
 	public:
 		Server();
-		Server(Lexer::t_server server);
+		Server(ConfigLexer::t_server server);
 		Server(Server const& other);
 		Server &operator=(Server const& rhs);
 		virtual ~Server();
-		void	get_directives(Lexer::t_server server);
+		void	get_directives(ConfigLexer::t_server server);
 		void	error_check_listen(vector<string> const& listen);
 		vector<string> const&				get_server_name() const;
 		vector<string> const&				get_listen() const;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 16:14:33 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:50:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Server::Server(void) {
 	return ;
 }
 
-Server::Server(Lexer::t_server server) {
+Server::Server(ConfigLexer::t_server server) {
 	this->_root = "html";
 	this->_client_max_body_size = 1;
 	this->_autoindex = "off";
@@ -25,12 +25,12 @@ Server::Server(Lexer::t_server server) {
 	this->_listen.push_back("8000");
 	this->_index.push_back("index.html");
 	get_directives(server);
-	for (vector<Lexer::t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
+	for (vector<ConfigLexer::t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
 		this->_location_blocks.push_back(LocationBlock(*it));
 	}
 }
 
-Server::Server(Server const& other) {
+Server::Server(Server const& other) : ServerConfig(other) {
 	*this = other;
 	return ;
 }
@@ -55,7 +55,7 @@ Server::~Server(void) {
 	return ;
 }
 
-void			Server::get_directives(Lexer::t_server server) {
+void			Server::get_directives(ConfigLexer::t_server server) {
 	for (vector<string>::iterator it = server.directives.begin(); it != server.directives.end(); ++it) {
 		string	first_word = (*it).substr(0, (*it).find(' '));
 		switch (hash_string(first_word))
@@ -83,7 +83,7 @@ void			Server::get_directives(Lexer::t_server server) {
 			case	AUTOINDEX:
 				helper_split(this->_autoindex, *it);
 				if (this->_autoindex != "on" && this->_autoindex != "off")
-					throw LexerParserException("Error; autoindex is not \"on\" or \"off\"");
+					throw ConfigException("Error; autoindex is not \"on\" or \"off\"");
 				break ;
 			case	RETURN:
 				helper_split(this->_return, *it);
@@ -109,7 +109,7 @@ void			Server::error_check_listen(vector<string> const& listen) {
 			if (hostname_port_split.second.empty())
 				hostname_port_split.second = "80";
 			else if (hostname_port_split.second.find_first_not_of("0123456789") != string::npos)
-				throw LexerParserException("Invalid character found in listen port");
+				throw ConfigException("Invalid character found in listen port");
 		}
 		else {
 			if ((*it).find_first_not_of("0123456789") == string::npos) {

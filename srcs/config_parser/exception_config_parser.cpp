@@ -6,29 +6,29 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:45:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:45:41 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:39:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config_parser/exception_config_parser.hpp"
 
-LexerParserException::LexerParserException(void) {
+ConfigException::ConfigException(void) {
 	this->_message = "Config file is not valid";
 }
 
-LexerParserException::LexerParserException(std::string const message) : _message(message) {}	
+ConfigException::ConfigException(std::string const message) : _message(message) {}	
 
-LexerParserException::LexerParserException(LexerParserException const& src) : _message(src._message) {}
+ConfigException::ConfigException(ConfigException const& src) : _message(src._message) {}
 
-LexerParserException::~LexerParserException(void) throw() {}
+ConfigException::~ConfigException(void) throw() {}
 
-LexerParserException&	LexerParserException::operator=(LexerParserException const& other) {
+ConfigException&	ConfigException::operator=(ConfigException const& other) {
 	if (this != &other) {
 		this->_message = other._message;
 	}
 	return (*this);
 }
 
-char const* LexerParserException::what(void) const throw() {
+char const* ConfigException::what(void) const throw() {
 	return (this->_message.c_str());
 }

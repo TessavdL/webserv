@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 18:36:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/06 16:38:22 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void			ServerConfig::helper_split(string &str, string to_split) {
 
 	helper_split(tmp, to_split);
 	if (tmp.empty())
-		throw LexerParserException(to_split.append(" < invalid input"));
+		throw ConfigException(to_split.append(" < empty directive"));
 	if (tmp.size() > 1)
-		throw LexerParserException(to_split.append(" < invalid input"));
+		throw ConfigException(to_split.append(" < expected 1 argument"));
 	str = tmp[0];
 }
 
@@ -93,13 +93,13 @@ void			ServerConfig::helper_split(pair<string, string> &ret, string to_split) {
 
 	helper_split(tmp, to_split);
 	if (tmp.size() != 2)
-		throw LexerParserException("CGI has an incorrect amount of arguments");
+		throw ConfigException("CGI has an incorrect amount of arguments");
 	ret.first = tmp[0];
 	ret.second = tmp[1];
 	if (ret.first.compare("php"))
-		throw LexerParserException("CGI only handles php file extensions, please change to php");
+		throw ConfigException("CGI only handles php file extensions, please change to php");
 	if (ret.second.compare("/Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi"))
-		throw LexerParserException("Wrong CGI script selected, please select the PHP-CGI script located in '/Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi'");
+		throw ConfigException("Wrong CGI script selected, please select the PHP-CGI script located in '/Users/jelvan-d/.brew/Cellar/php/8.1.13/bin/php-cgi'");
 }
 
 void			ServerConfig::helper_split(pair<int, string> &ret, string to_split) {
@@ -107,13 +107,13 @@ void			ServerConfig::helper_split(pair<int, string> &ret, string to_split) {
 
 	helper_split(tmp, to_split);
 	if (tmp.size() != 1 && tmp.size() != 2)
-		throw LexerParserException("Return has an incorrect amount of arguments");
+		throw ConfigException("Return has an incorrect amount of arguments");
 	if (tmp.size() == 1) {
 		ret.second = tmp[0];
 		return ;
 	}
 	if (tmp[0].find_first_not_of("0123456789") != string::npos)
-		throw LexerParserException("Invalid character in return status code");
+		throw ConfigException("Invalid character in return status code");
 	ret.first = atoi(tmp[0].c_str());
 	ret.second = tmp[1];
 	std::cout << "RETURN = " << ret.first << " " << ret.second << std::endl;
@@ -125,13 +125,13 @@ void			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page
 
 	helper_split(tmp, to_split);
 	if (tmp.size() < 2)
-		throw LexerParserException("Error page has too few arguments");
+		throw ConfigException("Error page has too few arguments");
 	for (size_t i = 0; i < (tmp.size() - 1); ++i) {
 		if (tmp[i].find_first_not_of("0123456789") == string::npos) {
 			tmp_int.push_back(atoi(tmp[i].c_str()));
 		}
 		else
-			throw LexerParserException("Invalid character in error page's error code");
+			throw ConfigException("Invalid character in error page's error code");
 	}
 	error_page.push_back(pair<vector<int>, string>(tmp_int, tmp[tmp.size() - 1]));
 }
@@ -140,16 +140,16 @@ void			ServerConfig::resolve_client_max_body_size(int& client_max_body_size, str
 	size_t	tmp_pos = client_max_body_size_in_string.find_first_not_of("0123456789");
 
 	if (client_max_body_size_in_string.size() > 4) {
-		throw LexerParserException("Client max body size too large, please add a value between 0 and 999");
+		throw ConfigException("Client max body size too large, please add a value between 0 and 999");
 	}
 	else if (tmp_pos == string::npos) {
-		throw LexerParserException("No data type specifier in client max body size");
+		throw ConfigException("No data type specifier in client max body size");
 	}
 	else if (client_max_body_size_in_string[tmp_pos] != 'M' && client_max_body_size_in_string[tmp_pos] != 'm') {
-		throw LexerParserException("Invalid data specifier in client max body size");
+		throw ConfigException("Invalid data specifier in client max body size");
 	}
 	else if (strcmp(client_max_body_size_in_string.c_str() + tmp_pos, "M\0") && strcmp(client_max_body_size_in_string.c_str() + tmp_pos, "m\0")) {
-		throw LexerParserException("Too many characters in data specifier for client max body size");
+		throw ConfigException("Too many characters in data specifier for client max body size");
 	}
 	client_max_body_size = atoi(client_max_body_size_in_string.c_str());
 }
