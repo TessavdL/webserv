@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:45:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 20:58:08 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,24 @@ void	ResponseHandler::handle_response(Connection& client) {
 	if (!request.get_method().compare("POST")) {
 		handle_post_response(client, request);
 	}
-// 	if (!request.get_method.compare("DELETE")) {
-// 		handle_delete_response(client, request);
-// 	}
+	if (!request.get_method().compare("DELETE")) {
+		handle_delete_response(client, request);
+	}
 }
 
-// void	ResponseHandler::handle_delete_response(Connection& client, RequestData const& request_data) {
-// 	std::string const	file = file_information(client, request_data);
+void	ResponseHandler::handle_delete_response(Connection& client, RequestData const& request_data) {
+	std::string const	file = file_information(client, request_data);
 
-// 	if (client_or_server_error_occured(this->_status_code)) {
-// 		handle_error_response(client);
-// 	}
-// 	if (remove(file.c_str())) {
-// 		this->_status_code = 500;
-// 		handle_error_response(client);
-// 	}
-// 	create_delete_response(client, file);
-// }
+	if (client_or_server_error_occured(this->_status_code)) {
+		handle_error_response(client);
+	}
+	if (remove(file.c_str())) {
+		this->_status_code = 500;
+		handle_error_response(client);
+	}
+	this->_status_code = 200;
+	create_delete_response(client, file);
+}
 
 void	ResponseHandler::handle_error_response(Connection& client) {
 	std::string const error_page = handle_error_page(client.get_virtual_server());
@@ -122,14 +123,14 @@ void	ResponseHandler::create_continue_response(Connection& client) {
 	client.set_response(response_data);
 }
 
-// void	ResponseHandler::create_delete_respones(Connection& client, std::string const& file) {
-// 	ResponseData	response_data;
+void	ResponseHandler::create_delete_response(Connection& client, std::string const& file) {
+	ResponseData	response_data;
 
-// 	response_data.set_status_code(this->_status_code);
-// 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
-// 	response_data.set_body(file + " has been deleted"));
-// 	client.set_response(response_data);
-// }
+	response_data.set_status_code(this->_status_code);
+	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
+	response_data.set_body(file + " has been deleted");
+	client.set_response(response_data);
+}
 
 void	ResponseHandler::create_directory_list_response(Connection& client, std::string const& file) {
 	ResponseData	response_data;

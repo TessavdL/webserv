@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:45:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 20:57:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ class ResponseHandler {
 		ResponseHandler&	operator=(ResponseHandler const& other);
 
 		void								handle_response(Connection& client);
-		// void								handle_delete_respones(Connection& client);
+		void								handle_delete_response(Connection& client, RequestData const& request_data);
 		void								handle_error_response(Connection& client);
 		void								handle_get_response(Connection& client, RequestData const& request_data);
 		void								handle_post_response(Connection& client, RequestData const& request_data);
+		
 		void								create_continue_response(Connection& client);
-		// void								create_delete_response(Connection& client);
+		void								create_delete_response(Connection& client, std::string const& file);
 		void								create_directory_list_response(Connection& client, std::string const& page);
 		void								create_error_response(Connection& client, std::string const& file_location, std::string const& file_content);
 		void								create_get_response(Connection& client, std::string const& file_location, std::string file_content);
