@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/30 14:04:56 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/03 19:25:25 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 #include "../includes/http_response/error_checking.hpp"
 #include "../includes/http_response/response_handler.hpp"
 #include "../includes/kqueue_utils.hpp"
+#include "../includes/http_request/receive_request.hpp"
 
-#define BUFF_SIZE 4096
+// #define BUFF_SIZE 4096
 #define MAX_EVENTS 100
 
 void	create_listening_sockets_with_config(vector<Server> server, map<int, vector<Server> >& listening_sockets_with_config)
@@ -73,97 +74,102 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 	connections.insert(new_connection);
 }
 
-int	prepare_error_response_to_client(Connection& client, int const status_code) {
+// int	prepare_error_response_to_client(Connection& client, int const status_code) {
+// 	ResponseData	response_data;
+
+// 	response_data.set_status_code(status_code);
+// 	client.set_response(response_data);
+// 	return (-1);
+// }
+
+// static bool	ready_to_check_request_line_and_headers(RequestHandler::State state) {
+// 	if (state >= RequestHandler::REQUEST_CHECK) {
+// 		return (true);
+// 	}
+// 	return (false);
+// }
+
+// void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, int total_bytes_read) {
+// 	RequestData	request;
+	
+// 	request.set_bytes_in_data(bytes_in_data);
+// 	request.set_total_bytes_read(total_bytes_read);
+// 	request.set_method(parser.get_request_line_method());
+// 	request.set_uri(parser.get_request_line_uri());
+// 	request.set_protocol(parser.get_request_line_protocol());
+// 	request.set_headers(parser.get_headers());
+// 	request.set_body(parser.get_body());
+// 	client.set_request(request);
+// }
+
+// void	save_request_line_and_headers(Connection& client, RequestHandler parser) {
+// 	RequestData request;
+	
+// 	request.set_method(parser.get_request_line_method());
+// 	request.set_uri(parser.get_request_line_uri());
+// 	request.set_protocol(parser.get_request_line_protocol());
+// 	request.set_headers(parser.get_headers());
+// 	client.set_request(request);
+// }
+
+// int	parse_received_data(Connection& client, RequestHandler& parser, std::string const& buf) {
+// 	try {
+// 		parser.process_request(buf);
+// 	}
+// 	catch (RequestException const& e) {
+// 		std::cout << e.what() << std::endl;
+// 		std::cout << e.get_status_code() << std::endl;
+// 		return (prepare_error_response_to_client(client, e.get_status_code()));
+// 	}
+// 	if (ready_to_check_request_line_and_headers(parser.get_state())) {
+// 		save_request_line_and_headers(client, parser);
+// 		client.select_virtual_server();
+// 		try {
+// 			error_check_request_line_and_headers(client, client.get_request());
+// 		}
+// 		catch (RequestException const& e2) {
+// 			std::cout << e2.what() << std::endl;
+// 			std::cout << e2.get_status_code() << std::endl;
+// 			return (prepare_error_response_to_client(client, e2.get_status_code()));
+// 		}
+// 	}
+// 	return (0);
+// }
+
+// void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
+// 	RequestHandler	parser;
+// 	long			total_bytes_read = 0;
+// 	int				bytes_read = 1;
+// 	char			buf[BUFF_SIZE + 1];
+
+// 	cout << "--- start reading from client ---" << connection_fd << endl;
+// 	while (bytes_read > 0) {
+// 		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
+// 		if (bytes_read == -1) {
+// 			break ;
+// 		}
+// 		buf[bytes_read] = '\0';
+// 		total_bytes_read += bytes_read;
+// 		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
+// 			while (bytes_read > 0) {
+// 				bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
+// 				if (bytes_read == -1) {
+// 					break ;
+// 				}
+// 				buf[bytes_read] = '\0';
+// 				total_bytes_read += bytes_read;
+// 			}
+// 			printf("--- finished reading from client ---\n");
+// 			return ;
+// 		}
+// 	}
+// 	save_request(client, parser, bytes_in_data, total_bytes_read);
+// 	printf("--- finished reading from client ---\n");
+// }
+static void	reset_response_data(Connection& client) {
 	ResponseData	response_data;
-
-	response_data.set_status_code(status_code);
+	
 	client.set_response(response_data);
-	return (-1);
-}
-
-static bool	ready_to_check_request_line_and_headers(RequestHandler::State state) {
-	if (state >= RequestHandler::REQUEST_CHECK) {
-		return (true);
-	}
-	return (false);
-}
-
-void	save_request(Connection& client, RequestHandler parser, int bytes_in_data, int total_bytes_read) {
-	RequestData	request;
-	
-	request.set_bytes_in_data(bytes_in_data);
-	request.set_total_bytes_read(total_bytes_read);
-	request.set_method(parser.get_request_line_method());
-	request.set_uri(parser.get_request_line_uri());
-	request.set_protocol(parser.get_request_line_protocol());
-	request.set_headers(parser.get_headers());
-	request.set_body(parser.get_body());
-	client.set_request(request);
-}
-
-void	save_request_line_and_headers(Connection& client, RequestHandler parser) {
-	RequestData request;
-	
-	request.set_method(parser.get_request_line_method());
-	request.set_uri(parser.get_request_line_uri());
-	request.set_protocol(parser.get_request_line_protocol());
-	request.set_headers(parser.get_headers());
-	client.set_request(request);
-}
-
-int	parse_received_data(Connection& client, RequestHandler& parser, std::string const& buf) {
-	try {
-		parser.process_request(buf);
-	}
-	catch (RequestException const& e) {
-		std::cout << e.what() << std::endl;
-		std::cout << e.get_status_code() << std::endl;
-		return (prepare_error_response_to_client(client, e.get_status_code()));
-	}
-	if (ready_to_check_request_line_and_headers(parser.get_state())) {
-		save_request_line_and_headers(client, parser);
-		client.select_virtual_server();
-		try {
-			error_check_request_line_and_headers(client, client.get_request());
-		}
-		catch (RequestException const& e2) {
-			std::cout << e2.what() << std::endl;
-			std::cout << e2.get_status_code() << std::endl;
-			return (prepare_error_response_to_client(client, e2.get_status_code()));
-		}
-	}
-	return (0);
-}
-
-void	receive_request_from_client(int connection_fd, Connection& client, int bytes_in_data) {
-	RequestHandler	parser;
-	long			total_bytes_read = 0;
-	int				bytes_read = 1;
-	char			buf[BUFF_SIZE + 1];
-
-	cout << "--- start reading from client ---" << connection_fd << endl;
-	while (bytes_read > 0) {
-		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-		if (bytes_read == -1) {
-			break ;
-		}
-		buf[bytes_read] = '\0';
-		total_bytes_read += bytes_read;
-		if (parse_received_data(client, parser, string(buf, bytes_read)) == -1) {
-			while (bytes_read > 0) {
-				bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-				if (bytes_read == -1) {
-					break ;
-				}
-				buf[bytes_read] = '\0';
-				total_bytes_read += bytes_read;
-			}
-			printf("--- finished reading from client ---\n");
-			return ;
-		}
-	}
-	save_request(client, parser, bytes_in_data, total_bytes_read);
-	printf("--- finished reading from client ---\n");
 }
 
 static bool	is_continue(std::map<std::string, std::string> const& headers) {
@@ -193,20 +199,21 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	}
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
-	// cout << buf << endl;
+	cout << buf << endl;
 
 	send(connection_fd, buf, size, 0);
 	printf("--- done writing to client socket\n");
 	if (!is_continue(client.get_response().get_headers())) {
 		close(connection_fd);
+		std::cout << "--- closed event fd = " << connection_fd << "---\n" << std::endl;
 	}
-	std::cout << "--- closed event fd = " << connection_fd << "---\n" << std::endl;
 }
 
 int kqueue_server(vector<Server> server) {
 	int							kq;
 	map<int, vector<Server> >	listening_sockets_with_config;
 	map<int, Connection>		connections;
+	// int	num = 1;
 
 	create_listening_sockets_with_config(server, listening_sockets_with_config);
 	new_kernel_event_queue(kq);
@@ -241,7 +248,7 @@ int kqueue_server(vector<Server> server) {
 			else if (is_readable_event(event[i].filter)) {
 				std::cout << "readable event = " << event[i].ident << std::endl;
 				Connection& client = connections[event[i].ident];
-				receive_request_from_client(event[i].ident, client, event[i].data);
+				receive_request(client, event[i].ident, event[i].data);
 				client.print_request();
 				add_write_event_to_kqueue(kq, event[i].ident);
 			}
@@ -249,14 +256,22 @@ int kqueue_server(vector<Server> server) {
 				std::cout << "writable event = " << event[i].ident << std::endl;
 				Connection& client = connections[event[i].ident];
 				send_response_to_client(event[i].ident, client);
-				if (!is_continue(client.get_response().get_headers()))
+				if (!is_continue(client.get_response().get_headers())) {
 					connections.erase(event[i].ident);
+				}
 				else {
-					add_read_event_to_kqueue(kq, event[i].ident);
+					std::cout << "just sent continue response" << std::endl;
+					delete_event_from_kqueue(kq, &event[i], event[i].ident);
+					add_read_event_to_kqueue(kq, client.get_connection_fd());
+					reset_response_data(client);
 				}
 			}
 		}
 		std::cout << "end of event loop\n" << std::endl;
+		// num++;
+		// if (num == 7) {
+		// 	return (0);
+		// }
 	}
 	return (0);
 }

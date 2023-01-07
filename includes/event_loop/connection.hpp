@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/13 16:35:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 20:03:22 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include "../http_request/uri_parser.hpp"
 # include "../http_response/response_data.hpp"
 # include "../virtual_server/virtual_server.hpp"
-
-class ResponseHandler;
 
 class Connection {
 	public:
@@ -45,6 +43,10 @@ class Connection {
 		void										set_request(RequestData const& request);
 		void										set_virtual_server(VirtualServer const& virtual_server);
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
+		void										save_request(int bytes_in_data, int listen_backlog_size);
+		void										save_request_line_and_headers(void);
+		RequestHandler								request_handler;
+
 	private:
 		ResponseData								_response;
 		RequestData									_request;

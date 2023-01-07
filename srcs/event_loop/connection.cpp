@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 16:36:13 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/12/30 21:08:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ Connection::Connection(Connection const& other) {
 
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
+		this->request_handler = other.request_handler;
 		this->_virtual_servers = other._virtual_servers;
 		this->_virtual_server = other._virtual_server;
 		this->_request = other._request;
@@ -35,6 +36,29 @@ Connection&	Connection::operator=(Connection const& other) {
 	return (*this);
 }
 
+void	Connection::save_request(int total_bytes_read, int listen_backlog_size) {
+	RequestData	request;
+	
+	request.set_total_bytes_read(total_bytes_read);
+	request.set_bytes_in_data(listen_backlog_size);
+	request.set_method(this->request_handler.get_request_line_method());
+	request.set_uri(this->request_handler.get_request_line_uri());
+	request.set_protocol(this->request_handler.get_request_line_protocol());
+	request.set_headers(this->request_handler.get_headers());
+	request.set_body(this->request_handler.get_body());
+	this->set_request(request);
+}
+
+void	Connection::save_request_line_and_headers(void) {
+	RequestData request;
+	
+	request.set_method(this->request_handler.get_request_line_method());
+	request.set_uri(this->request_handler.get_request_line_uri());
+	request.set_protocol(this->request_handler.get_request_line_protocol());
+	request.set_headers(this->request_handler.get_headers());
+	this->set_request(request);
+}
+
 void	Connection::print_request(void) const {
 	if (!this->_request.get_method().empty())
 		std::cout << "method = " << this->_request.get_method() << std::endl;
@@ -42,13 +66,22 @@ void	Connection::print_request(void) const {
 	if (!this->_request.get_protocol().empty())
 		std::cout << "protocol = " << this->_request.get_protocol() << std::endl;
 	if (!this->_request.get_headers().empty()) {
-		std::cout << "headers = " << std::endl;
+		std::cout << "headers" << std::endl;
 		for (std::map<std::string, std::string>::const_iterator it = this->_request.get_headers().begin(); it != this->_request.get_headers().end(); it++) {
 			std::cout << "\t" << it->first << "=" << it->second << std::endl;
 		}
 	}
 	std::cout << "bytes in client request = " << this->_request.get_bytes_in_data() << std::endl;
 	std::cout << "bytes read = " << this->_request.get_total_bytes_read() << std::endl;
+	if (!this->_request.get_body().empty()) {
+		if (this->_request.get_body().size() > 1000)
+			std::cout << this->_request.get_body().substr(0, 100) << std::endl;
+		else
+			std::cout << this->_request.get_body() << std::endl;
+	}
+	else {
+		std::cout << "body is empty" << std::endl;
+	}
 }
 
 void	Connection::handle_rewrite(void) {

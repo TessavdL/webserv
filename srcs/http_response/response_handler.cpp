@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 14:30:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 15:11:04 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 
 	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
+		std::cout << "AN ERROR OCCURED" << std::endl;
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
@@ -84,7 +85,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 			return (create_error_response(client, error_page, get_file_content(error_page)));
 		}
 	}
-	if (this->_status_code == 100) {
+	if (this->_status_code == 100 && this->_state != CONTINUE) {
 		this->_state = CONTINUE;
 		return (create_continue_response(client));
 	}
@@ -108,6 +109,12 @@ void		ResponseHandler::handle_post_response(Connection& client, RequestData cons
 	std::pair<std::string, bool>	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string						file = file_location_handler(client.get_virtual_server(), file_location);
 
+	std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
+	std::cout << "file path = " << file_path << std::endl;
+	std::cout << "file location = " << file_location.first << std::endl;
+	std::cout << "file = " << file << std::endl;
+	std::cout << "status_code = " << this->_status_code << std::endl;
+
 	if (client_or_server_error_occured(this->_status_code)) {
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));
@@ -116,11 +123,13 @@ void		ResponseHandler::handle_post_response(Connection& client, RequestData cons
 			return (create_error_response(client, file, get_file_content(file)));
 		}
 	}
-	if (is_cgi(file)) {
+	// if (is_cgi(file)) {
+		std:: cout << "FILE = " << file << std::endl;
 		create_cgi_response(client, file);
 		this->_state = CGI;
 		return ;
-	}
+	// }
+	
 }
 
 std::string	ResponseHandler::error_page_location_handler(std::pair<std::string, bool> error_page) {

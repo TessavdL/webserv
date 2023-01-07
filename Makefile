@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2023/01/03 17:36:33 by jelvan-d      ########   odam.nl          #
+#    Updated: 2023/01/07 15:11:22 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC_FILES	=		fatal_exception.cpp \
 					config_parser/server_config.cpp \
 					listening_sockets/socket_listen.cpp \
 					http_request/chunked_request.cpp \
+					http_request/receive_request.cpp \
 					http_request/request_data.cpp \
 					http_request/request_exception.cpp \
 					http_request/request_handler.cpp \

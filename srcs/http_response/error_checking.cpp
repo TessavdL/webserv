@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:56:58 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 15:10:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,37 @@ static int	is_valid_cgi(int& status_code, Connection& client, RequestData const&
 	return (OK);
 }
 
+static bool	is_not_chunked(RequestData const& request_data) {
+	std::map<std::string, std::string>					headers = request_data.get_headers();
+	std::map<std::string, std::string>::const_iterator	it = headers.find("Transfer-Encoding");
+	
+	if (it != headers.end()) {
+		if (!it->second.compare("chunked")) {
+			return (false);
+		}
+		return (true);
+	}
+	return (true);
+}
+
 int	initial_error_checking(int& status_code, Connection& client, RequestData const& request) {
 	long	content_length = find_content_length(request.get_headers());
 
 	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
+		std::cout << "HERE1" << std::endl;
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {
+		std::cout << "HERE2" << std::endl;
 		status_code = 400;
 		return (status_code);
 	}
-	if (check_request_size(status_code, request.get_body().length(), content_length)) {
+	if (is_not_chunked(request) && check_request_size(status_code, request.get_body().length(), content_length)) {
+		std::cout << "HERE3" << std::endl;
 		return (status_code);
 	}
 	if (is_valid_cgi(status_code, client, request)) {
+		std::cout << "HERE4" << std::endl;
 		return (status_code);
 	}
 	return (OK);
@@ -160,15 +177,30 @@ void	check_http_protocol(std::string const& protocol) {
 
 void	check_client_max_body_size(int client_max_body_size, std::string content_length) {
 	if (atoi(content_length.c_str()) > (client_max_body_size * 1000000)) {
-		std::cout << "PLEASE THROW ME DADDY" << std::endl;
 		throw (RequestException(413, "check_client_max_body_size"));
 	}
 }
 
 void	error_check_request_line_and_headers(Connection const& client, RequestData const& request) {
+void	check_continue(std::map<std::string, std::string> const& headers) {
+	std::map<std::string, std::string>::const_iterator	expect_header = headers.find("Expect");
+	
+	if (expect_header != headers.end()) {
+		std::string const	expectation = string_to_lower(expect_header->second);
+		if (!expectation.compare("100-continue")) {
+			throw (RequestException(100, "RequestHandler::check_request"));
+		}
+		else {
+			throw (RequestException(417, "RequestHandler::check_request"));
+		}
+	}
+}
+
+void	check_request_line_and_headers(Connection const& client, RequestData const& request) {
 	check_method(request.get_method(), client.get_virtual_server().get_limit_except());
 	check_uri_length(request.get_uri().get_path_full());
 	check_user_information(request.get_uri().get_authority_user_information());
 	check_http_protocol(request.get_protocol());
 	check_client_max_body_size(client.get_virtual_server().get_client_max_body_size(), request.get_headers().find("Content-Length")->second);
+	check_continue(request.get_headers());
 }
