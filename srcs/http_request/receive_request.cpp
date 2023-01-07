@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 17:59:36 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:15:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	parse_request(Connection& client, std::string const& input) {
 		client.request_handler.process_request(input);
 	}
 	catch (RequestException const& e) {
-		std::cout << e.what() << std::endl;
-		std::cout << e.get_status_code() << std::endl;
 		return (prepare_error_response_to_client(client, e.get_status_code()));
 	}
 	if (is_ready_to_check_request_line_and_headers(client.request_handler.get_state())) {
@@ -45,8 +43,6 @@ int	parse_request(Connection& client, std::string const& input) {
 			parse_request(client, "");
 		}
 		catch (RequestException const& e2) {
-			std::cout << e2.what() << std::endl;
-			std::cout << e2.get_status_code() << std::endl;
 			if (e2.get_status_code() == 100) {
 				client.request_handler.set_state(RequestHandler::REQUEST_BODY);
 				parse_request(client, "");
@@ -68,7 +64,6 @@ void	receive_request(Connection& client, int connection_fd, int listen_backlog_s
 			break ;
 		}
 		buf[bytes_read] = '\0';
-		std::cout << std::string(buf, bytes_read).substr(0, 100) << std::endl;
 		total_bytes_read += bytes_read;
 		if (parse_request(client, std::string(buf, bytes_read))) {
 			return ;
