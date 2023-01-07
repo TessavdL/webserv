@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 16:38:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 16:47:18 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ void			ServerConfig::helper_split(pair<int, string> &ret, string to_split) {
 		throw ConfigException("Invalid character in return status code");
 	ret.first = atoi(tmp[0].c_str());
 	ret.second = tmp[1];
-	std::cout << "RETURN = " << ret.first << " " << ret.second << std::endl;
 }
 
 void			ServerConfig::helper_split(vector<pair<vector<int>, string> > &error_page, string to_split) {

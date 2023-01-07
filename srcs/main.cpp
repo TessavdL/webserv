@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 16:51:13 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 15:25:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	main(int ac, char **av) {
 		for (vector<ConfigLexer::t_server>::iterator it = serv.begin(); it != serv.end(); ++it) {
 			server_blocks.push_back(*it);
 			// Prints the parsed server content
-			cout << server_blocks.back() << endl;
+			// cout << server_blocks.back() << endl;
 		}
-		// kqueue_server(server_blocks);
-
-	} catch (FatalException const& e) {
+		kqueue_server(server_blocks);
+	}
+	catch (FatalException const& e) {
 		cerr << e.what() << endl;
 		exit(1);
 	}

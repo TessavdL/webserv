@@ -6,32 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/03 19:25:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 16:52:53 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/event.h>
-#include <string.h>
-#include <unistd.h>
-#include <iostream>
-#include <errno.h>
-
 #include "../includes/webserv.hpp"
-#include "../includes/event_loop/connection.hpp"
-#include "../includes/http_response/error_checking.hpp"
-#include "../includes/http_response/response_handler.hpp"
-#include "../includes/kqueue_utils.hpp"
-#include "../includes/http_request/receive_request.hpp"
 
-// #define BUFF_SIZE 4096
-#define MAX_EVENTS 100
-
-void	create_listening_sockets_with_config(vector<Server> server, map<int, vector<Server> >& listening_sockets_with_config)
-{
+void	create_listening_sockets_with_config(vector<Server> server, map<int, vector<Server> >& listening_sockets_with_config) {
 	map<int, vector<Server> >	ports_with_config;
 
 	for (vector<Server>::iterator it = server.begin(); it != server.end(); ++it) {
@@ -213,7 +194,6 @@ int kqueue_server(vector<Server> server) {
 	int							kq;
 	map<int, vector<Server> >	listening_sockets_with_config;
 	map<int, Connection>		connections;
-	// int	num = 1;
 
 	create_listening_sockets_with_config(server, listening_sockets_with_config);
 	new_kernel_event_queue(kq);
@@ -268,10 +248,6 @@ int kqueue_server(vector<Server> server) {
 			}
 		}
 		std::cout << "end of event loop\n" << std::endl;
-		// num++;
-		// if (num == 7) {
-		// 	return (0);
-		// }
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/03 17:58:33 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 16:46:51 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void	Cgi::create_env(Connection const& connection, RequestData const& request, s
 	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
-	// for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
-	// 	cout << it->first << "=" << it->second << endl;
+	for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
+		cout << it->first << "=" << it->second << endl;
 	create_env_from_map();
 	(void)connection;
 }
@@ -151,9 +151,8 @@ void	Cgi::parent_process(RequestData const& request) {
 		throw (FatalException("SYSCALL: waitpid: Failed"));
 	if (WIFEXITED(exit_status))
 		ret = WEXITSTATUS(exit_status);
-	cout << "RET = " << ret << endl;
 	get_content_from_cgi();
-	// close(this->_fd[0][0]);
+	close(this->_fd[0][0]);
 }
 
 void	Cgi::get_content_from_cgi(void) {
@@ -173,7 +172,6 @@ void	Cgi::get_content_from_cgi(void) {
 		tmp.resize(ret);
 		this->_body += tmp;
 	}
-	cout << "HELLO THIS IS THE BODY IN GET CONTENT FROM CGI HIHI" << this->_body << endl;
 	return ;
 }
 
