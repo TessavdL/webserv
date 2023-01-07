@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 15:25:31 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 17:25:23 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int ac, char **av) {
 	string filename;
 	
 	if (ac == 1)
-		filename = "./basic.conf";
+		filename = "./configs/good_configs/basic.conf";
 	else if (ac == 2)
 		filename = string(av[1]);
 	else {
