@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 15:11:04 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 18:28:08 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ ResponseHandler&	ResponseHandler::operator=(ResponseHandler const& other) {
 // HANDLE RESPONSE
 
 static bool	check_return(VirtualServer const& virtual_server) {
+	if (virtual_server.get_return().first != -1) {
+		return (true);
+	}
 	if (!virtual_server.get_return().second.empty()) {
 		return (true);
 	}
@@ -76,7 +79,6 @@ void	ResponseHandler::handle_response(Connection& client) {
 
 	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
-		std::cout << "AN ERROR OCCURED" << std::endl;
 		std::string const error_page = handle_error_page(client.get_virtual_server());
 		if (this->_state == DEFAULT_ERROR) {
 			return (create_error_response(client, default_error_page_location(), default_error_page_content()));

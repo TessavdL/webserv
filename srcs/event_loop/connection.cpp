@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 21:08:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 17:58:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,16 @@ Connection&	Connection::operator=(Connection const& other) {
 }
 
 void	Connection::save_request(int total_bytes_read, int listen_backlog_size) {
-	RequestData	request;
-	
-	request.set_total_bytes_read(total_bytes_read);
-	request.set_bytes_in_data(listen_backlog_size);
-	request.set_method(this->request_handler.get_request_line_method());
-	request.set_uri(this->request_handler.get_request_line_uri());
-	request.set_protocol(this->request_handler.get_request_line_protocol());
-	request.set_headers(this->request_handler.get_headers());
-	request.set_body(this->request_handler.get_body());
-	this->set_request(request);
+	this->_request.set_body(this->request_handler.get_body());
+	this->_request.set_bytes_in_data(total_bytes_read);
+	this->_request.set_bytes_in_data(listen_backlog_size);
 }
 
 void	Connection::save_request_line_and_headers(void) {
-	RequestData request;
-	
-	request.set_method(this->request_handler.get_request_line_method());
-	request.set_uri(this->request_handler.get_request_line_uri());
-	request.set_protocol(this->request_handler.get_request_line_protocol());
-	request.set_headers(this->request_handler.get_headers());
-	this->set_request(request);
+	this->_request.set_method(this->request_handler.get_request_line_method());
+	this->_request.set_uri(this->request_handler.get_request_line_uri());
+	this->_request.set_protocol(this->request_handler.get_request_line_protocol());
+	this->_request.set_headers(this->request_handler.get_headers());
 }
 
 void	Connection::print_request(void) const {
@@ -93,13 +83,16 @@ void	Connection::handle_rewrite(void) {
 		Uri	new_uri;
 		new_uri.parse_uri(uri_replacement);
 		this->_request.set_uri(new_uri);
+		std::cout << this->_request.get_uri().get_path_full() << std::endl;
 		this->_virtual_server.initialize_virtual_server(this->_request.get_uri().get_authority_host(), this->_request.get_uri().get_path_full(), this->_virtual_servers.second);
 	}
 }
 
 void	Connection::select_virtual_server(void) {
 	this->_virtual_server.initialize_virtual_server(this->_request.get_uri().get_authority_host(), this->_request.get_uri().get_path_full(), this->_virtual_servers.second);
+	std::cout << "WHY JELE WHY " << this->_request.get_uri().get_path_full() << std::endl;
 	handle_rewrite();
+	std::cout << "whyYYYYYYYYY " << this->_request.get_uri().get_path_full() << std::endl;
 }
 
 int const&	Connection::get_connection_fd(void) const {
