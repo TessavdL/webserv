@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 13:39:17 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 16:52:53 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 16:57:08 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,8 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 		response.generate_response_string(client.get_response());
 		r = response.get_full_response();
 	}
-	unsigned long size = r.size();
-	const char *buf = r.c_str();
+	unsigned long	size = r.size();
+	const char		*buf = r.c_str();
 	cout << buf << endl;
 
 	send(connection_fd, buf, size, 0);

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/24 14:20:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:53:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 17:04:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	select_location_index(std::string const& uri_path, std::vector<LocationBlock
 	size_t		max = 0;
 	int		location_index = 0;
 
+	// std::cout << "WHY WE CRASH?" << std::endl;
+	// std::cout << "size of v = " << v.size() << std::endl;
 	if (v.empty())
 		return (NO_LOCATION);
 	for (size_t i = 0; i < v.size(); i++) {

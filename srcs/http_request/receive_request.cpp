@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/03 16:15:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 16:58:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	receive_request(Connection& client, int connection_fd, int listen_backlog_s
 		}
 		buf[bytes_read] = '\0';
 		total_bytes_read += bytes_read;
-		std::cout << "final bytes ======= " << std::string(buf, bytes_read).substr(bytes_read - 5) << std::endl;
+		std::cout << "bytes_read = " << bytes_read << std::endl;
+		std::cout << "|buf = " << buf << "|" << std::endl;
 		if (parse_request(client, std::string(buf, bytes_read))) {
 			return ;
 		}

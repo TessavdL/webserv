@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/07 12:23:47 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/03 16:35:07 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 17:06:36 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,12 @@ std::string chunked_request(std::string const& str, std::string& remainder) {
 	size_t		index = 0;
 	std::string	res;
 
-	// std::cout << "remainder = " << remainder << std::endl;
-	// std::cout << "INDEX = " << index << std::endl;
+	std::cout << "remainder = " << remainder << std::endl;
+	std::cout << "INDEX = " << index << std::endl;
 	while (1) {
 		std::string hex_data_pair;
 		hex_data_pair = handle_pair(str, index);
-		// std::cout << "|" << hex_data_pair << "|" << std::endl;
+		std::cout << "|" << hex_data_pair << "|" << std::endl;
 		if (hex_data_pair.empty())
 			break ;
 		std::cout << "here" << std::endl;
