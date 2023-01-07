@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 19:11:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:39:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	VirtualServer::initialize_virtual_server(std::string const& host, std::stri
 	size_t const						server_index = select_server_index(host, servers);
 	Server const						virtual_server = servers[server_index];
 
-	std::cout << "uri_path = " << uri_path << std::endl;
 	this->_autoindex = virtual_server.get_autoindex();
 	this->_client_max_body_size = virtual_server.get_client_max_body_size();
 	this->_error_page = virtual_server.get_error_page();
