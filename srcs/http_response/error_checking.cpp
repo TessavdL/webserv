@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 15:10:56 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 15:15:33 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,6 @@ void	check_client_max_body_size(int client_max_body_size, std::string content_le
 	}
 }
 
-void	error_check_request_line_and_headers(Connection const& client, RequestData const& request) {
 void	check_continue(std::map<std::string, std::string> const& headers) {
 	std::map<std::string, std::string>::const_iterator	expect_header = headers.find("Expect");
 	
