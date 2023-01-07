@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 17:58:01 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 21:13:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,13 @@ void	Connection::handle_rewrite(void) {
 		Uri	new_uri;
 		new_uri.parse_uri(uri_replacement);
 		this->_request.set_uri(new_uri);
-		std::cout << this->_request.get_uri().get_path_full() << std::endl;
 		this->_virtual_server.initialize_virtual_server(this->_request.get_uri().get_authority_host(), this->_request.get_uri().get_path_full(), this->_virtual_servers.second);
 	}
 }
 
 void	Connection::select_virtual_server(void) {
 	this->_virtual_server.initialize_virtual_server(this->_request.get_uri().get_authority_host(), this->_request.get_uri().get_path_full(), this->_virtual_servers.second);
-	std::cout << "WHY JELE WHY " << this->_request.get_uri().get_path_full() << std::endl;
 	handle_rewrite();
-	std::cout << "whyYYYYYYYYY " << this->_request.get_uri().get_path_full() << std::endl;
 }
 
 int const&	Connection::get_connection_fd(void) const {
