@@ -6,12 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 19:17:54 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 18:20:34 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/virtual_server/virtual_server.hpp"
 #include "../../includes/virtual_server/search_for_file.hpp"
+
 VirtualServer::VirtualServer(void) {
 
 }
@@ -62,7 +63,7 @@ void	VirtualServer::overwrite_directives_if_set_in_location(LocationBlock locati
 	if (!location_block.get_limit_except().empty()) {
 		this->_limit_except = location_block.get_limit_except();
 	}
-	if (location_block.get_return().first) {
+	if (location_block.get_return().first != -1) {
 		this->_return = location_block.get_return();
 	}
 	if (!location_block.get_rewrite().empty()) {

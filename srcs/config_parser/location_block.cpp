@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 15:11:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 16:50:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 18:17:32 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ LocationBlock::LocationBlock(void) {
 
 LocationBlock::LocationBlock(ConfigLexer::t_locations location) {
 	this->_client_max_body_size = -1;
+	this->_return.first = -1;
 	helper_split(this->_path_and_optional_modifier, location.path_and_optional_modifier);
 	error_check_path_and_optional_modifier(this->_path_and_optional_modifier);
 	get_directives(location);

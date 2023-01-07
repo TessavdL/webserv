@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:27:15 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 16:50:38 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 18:26:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ Server::Server(ConfigLexer::t_server server) {
 	this->_listen.push_back("80");
 	this->_listen.push_back("8000");
 	this->_index.push_back("index.html");
+	this->_return.first = -1;
 	get_directives(server);
 	for (vector<ConfigLexer::t_locations>::iterator it = server.locations.begin(); it != server.locations.end(); ++it) {
 		this->_location_blocks.push_back(LocationBlock(*it));

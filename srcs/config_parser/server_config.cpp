@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:52:42 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 16:47:18 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/07 18:24:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,14 @@ void			ServerConfig::helper_split(pair<int, string> &ret, string to_split) {
 	if (tmp.size() != 1 && tmp.size() != 2)
 		throw ConfigException("Return has an incorrect amount of arguments");
 	if (tmp.size() == 1) {
-		ret.second = tmp[0];
+		if (tmp[0].find_first_not_of("0123456789") != string::npos)
+			throw ConfigException("Invalid character in return status code");
+		ret.first = atoi(tmp[0].c_str());
+		if (ret.first > 600) {
+			throw ConfigException("Invalid status code in return");
+		}
 		return ;
 	}
-	if (tmp[0].find_first_not_of("0123456789") != string::npos)
-		throw ConfigException("Invalid character in return status code");
-	ret.first = atoi(tmp[0].c_str());
 	ret.second = tmp[1];
 }
 

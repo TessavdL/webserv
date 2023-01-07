@@ -11,14 +11,23 @@ $WEBSERV ../configs/bad_configs/invalid_autoindex_empty.conf
 echo "\nTesting autoindex value\nExpected result: \nautoindex on off < expected 1 argument\nResult:"
 $WEBSERV ../configs/bad_configs/invalid_autoindex_multiple_arguments.conf
 
+echo "\nTesting client_max_body_size with a too large value\nExpected result: \nClient max body size too large, please add a value between 0 and 999\nResult:"
+$WEBSERV ../configs/bad_configs/invalid_client_max_body_size.conf
+
+echo "\nTesting client_max_body_size\nExpected result: \nClient max body size too large, please add a value between 0 and 999\nResult:"
+$WEBSERV ../configs/bad_configs/invalid_client_max_body_size.conf
+
+echo "\nTesting client_max_body_size\nExpected result: \nClient max body size too large, please add a value between 0 and 999\nResult:"
+$WEBSERV ../configs/bad_configs/invalid_client_max_body_size.conf
+
+echo "\nTesting client_max_body_size\nExpected result: \nClient max body size too large, please add a value between 0 and 999\nResult:"
+$WEBSERV ../configs/bad_configs/invalid_client_max_body_size.conf
+
 echo "\nTesting brackets with 1 bracket too little\nExpected result: \nConfig file is not valid\nResult:"
 $WEBSERV ../configs/bad_configs/invalid_brackets.conf
 
 echo "\nTesting brackets with 1 bracket too much\nExpected result: \nConfig file is not valid\nResult:"
 $WEBSERV ../configs/bad_configs/invalid_brackets_2.conf
-
-echo "\nTesting client_max_body_size\nExpected result: \nClient max body size too large, please add a value between 0 and 999\nResult:"
-$WEBSERV ../configs/bad_configs/invalid_client_max_body_size.conf
 
 echo "\nTesting error page values with invalid amount of error pages\nExpected result: \nInvalid character in error page's error code\nResult:"
 $WEBSERV ../configs/bad_configs/invalid_error_page.conf
