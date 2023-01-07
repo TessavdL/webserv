@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:29:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/07 22:42:03 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	}
 	unsigned long size = r.size();
 	const char *buf = r.c_str();
-
 
 	send(connection_fd, buf, size, 0);
 	if (!connection_is_continue(client.get_response().get_headers())) {
