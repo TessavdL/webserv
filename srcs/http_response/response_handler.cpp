@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:38:39 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:05:45 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
 
-ResponseHandler::ResponseHandler() :_state(UNSET) {
+ResponseHandler::ResponseHandler() : _status_code(200), _state(UNSET) {
 
 }
 
@@ -44,7 +44,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 		this->_state = CONTINUE;
 		return (create_continue_response(client));
 	}
-	if (is_return(client.get_virtual_server())) {
+	if (is_return(client.get_virtual_server().get_return())) {
 		this->_state = RETURN;
 		return (create_return_response(client, client.get_virtual_server().get_return()));
 	}
@@ -120,7 +120,7 @@ void	ResponseHandler::create_continue_response(Connection& client) {
 	response_data.set_status_code(100);
 	response_data.set_reason_phrase(get_reason_phrase(100));
 	response_data.set_headers(create_continue_headers());
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 void	ResponseHandler::create_delete_response(Connection& client, std::string const& file) {
@@ -129,7 +129,7 @@ void	ResponseHandler::create_delete_response(Connection& client, std::string con
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
 	response_data.set_body(file + " has been deleted");
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 void	ResponseHandler::create_directory_list_response(Connection& client, std::string const& file) {
@@ -139,7 +139,7 @@ void	ResponseHandler::create_directory_list_response(Connection& client, std::st
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
 	response_data.set_headers(create_headers(client, ".html", file.length()));
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 void	ResponseHandler::create_error_response(Connection& client, std::string const& file_location, std::string const& file_content) {
@@ -156,7 +156,7 @@ void	ResponseHandler::create_error_response(Connection& client, std::string cons
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
 	response_data.set_headers(create_headers(client, file_location, body.length()));
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 void	ResponseHandler::create_get_response(Connection& client, std::string const& file_location, std::string file_content) {
@@ -169,7 +169,7 @@ void	ResponseHandler::create_get_response(Connection& client, std::string const&
 	response_data.set_status_code(this->_status_code);
 	response_data.set_reason_phrase(get_reason_phrase(this->_status_code));
 	response_data.set_headers(create_headers(client, file_location, body.length()));
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 void	ResponseHandler::create_return_response(Connection& client, std::pair<int, std::string> return_information) {
@@ -178,7 +178,7 @@ void	ResponseHandler::create_return_response(Connection& client, std::pair<int, 
 	response_data.set_status_code(return_information.first);
 	response_data.set_reason_phrase(get_reason_phrase(return_information.first));
 	response_data.set_headers(create_headers(client, return_information.second, 0));
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 // CREATE RESPONSE HELPERS

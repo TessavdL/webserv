@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 13:17:25 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 12:25:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 18:50:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,39 @@ class ResponseData
 		~ResponseData();
 		ResponseData(ResponseData const& other);
 		ResponseData&	operator=(ResponseData const& other);
-		int const&									get_status_code(void) const;
-		std::string const&							get_reason_phrase(void) const;
-		std::map<std::string, std::string> const&	get_headers(void) const;
-		std::string const&							get_body(void) const;
-		int const&									get_bytes_in_data(void) const;
-		int const&									get_total_bytes_read(void) const;
-		void										set_bytes_in_data(int const& bytes_in_data);
-		void										set_total_bytes_read(int const& total_bytes_read);
-		std::string const&							get_full_response(void) const;
-		void										set_body(std::string const& body);
-		void										set_full_response(std::string const& full_response);
-		void										set_headers(std::map<std::string, std::string> const& headers);
+
+		int const&									get_bytes_in_data() const;
+		int const&									get_total_bytes_read() const;
+		int const&									get_total_bytes_sent() const;
+		int const&									get_status_code() const;
+		std::string const&							get_reason_phrase() const;
+		std::map<std::string, std::string> const&	get_headers() const;
+		std::string const&							get_body() const;
+		bool const&									get_generated() const;
+		std::string const&							get_cgi_response() const;
+		std::string const&							get_repsonse_string() const;
+
+		void										set_bytes_in_data(int const bytes_in_data);
+		void										set_total_bytes_read(int const total_bytes_read);
+		void										set_total_bytes_sent(int const total_bytes_sent);
+		void										set_status_code(int const status_code);
 		void										set_reason_phrase(std::string const& reason_phrase);
-		void										set_status_code(int const& status_code);	
+		void										set_headers(std::map<std::string, std::string> const& headers);
+		void										set_body(std::string const& body);
+		void										set_generated(bool const generated);
+		void										set_cgi_response(std::string const& full_response);
+		void										set_response_string(std::string const& response_string);
 	private:
-		int									_bytes_in_data;
-		int									_total_bytes_read;
-		std::string							_body;
-		std::map<std::string, std::string>	_headers;
-		std::string							_reason_phrase;
-		std::string							_full_response;
-		int									_status_code;
+		int											_bytes_in_data;
+		int											_total_bytes_read;
+		int											_total_bytes_sent;
+		int											_status_code;
+		std::string									_reason_phrase;
+		std::map<std::string, std::string>			_headers;
+		std::string									_body;
+		bool										_generated;
+		std::string									_cgi_response;
+		std::string									_response_string;
 };
 
 #endif
