@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:42:03 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 13:36:19 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	Color::Modifier green(Color::FG_GREEN);
 	Color::Modifier def(Color::FG_DEFAULT);
 	ResponseHandler	response_handler;
+	ssize_t		total_bytes_sent(0);
+	ssize_t		bytes_sent(0);
 	std::string r;
 	response_handler.handle_response(client);
 
@@ -90,10 +92,15 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 		std::cout << response << def;
 		r = response.get_full_response();
 	}
-	unsigned long size = r.size();
+	ssize_t size = r.size();
 	const char *buf = r.c_str();
 
-	send(connection_fd, buf, size, 0);
+	while (total_bytes_sent != size) {
+		bytes_sent = send(connection_fd, buf + total_bytes_sent, size - total_bytes_sent, 0);
+		if (bytes_sent != -1) {
+			total_bytes_sent += bytes_sent;
+		}
+	}
 	if (!connection_is_continue(client.get_response().get_headers())) {
 		close(connection_fd);
 		std::cout << "closed event identifier [" << connection_fd << "]" << std::endl;
