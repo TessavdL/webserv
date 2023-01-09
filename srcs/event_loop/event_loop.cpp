@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:22:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:23:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	send_response_to_client(std::map<int, Connection>& connections, int const k
 		client.response.set_total_bytes_sent(total_bytes_sent + bytes_sent);
 	}
 }
-
 
 int event_loop(vector<Server> server) {
 	int							kq;
