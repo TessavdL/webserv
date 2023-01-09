@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:38:39 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 17:37:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_response/response_handler.hpp"
 
-ResponseHandler::ResponseHandler() :_state(UNSET) {
+ResponseHandler::ResponseHandler() : _status_code(200), _state(UNSET) {
 
 }
 
@@ -44,7 +44,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 		this->_state = CONTINUE;
 		return (create_continue_response(client));
 	}
-	if (is_return(client.get_virtual_server())) {
+	if (is_return(client.get_virtual_server().get_return())) {
 		this->_state = RETURN;
 		return (create_return_response(client, client.get_virtual_server().get_return()));
 	}

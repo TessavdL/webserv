@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:26:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 15:48:25 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 bool	check_if_auto_index_is_on(std::string const& auto_index) {
 	if (!auto_index.compare("on")) {
 		return (true);
+	}
+	return (false);
+}
+
+bool	connection_is_continue(std::map<std::string, std::string> const& headers) {
+	std::map<std::string, std::string>::const_iterator it = headers.find("Connection");
+
+	if (it != headers.end()) {
+		if (!it->second.compare("Keep-Alive")) {
+			return (true);
+		}
+		return (false);
 	}
 	return (false);
 }
@@ -32,8 +44,9 @@ bool	is_cgi(std::string const& file_location) {
 	return (false);
 }
 
-bool	is_return(VirtualServer const& virtual_server) {
-	if (virtual_server.get_return().first != -1) {
+
+bool	is_return(std::pair<int, std::string> const& virtual_server_return) {
+	if (virtual_server_return.first != -1) {
 		return (true);
 	}
 	return (false);

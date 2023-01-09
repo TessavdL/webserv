@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 13:17:25 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/12 12:25:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 17:16:36 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class ResponseData
 		void										set_full_response(std::string const& full_response);
 		void										set_headers(std::map<std::string, std::string> const& headers);
 		void										set_reason_phrase(std::string const& reason_phrase);
-		void										set_status_code(int const& status_code);	
+		void										set_status_code(int const& status_code);
 	private:
 		int									_bytes_in_data;
 		int									_total_bytes_read;
