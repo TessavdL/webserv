@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 13:36:19 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 14:52:24 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	send_response_to_client(int connection_fd, Connection& client) {
 	}
 }
 
-int kqueue_server(vector<Server> server) {
+int event_loop(vector<Server> server) {
 	int							kq;
 	map<int, vector<Server> >	listening_sockets_with_config;
 	map<int, Connection>		connections;
@@ -120,7 +120,7 @@ int kqueue_server(vector<Server> server) {
 		struct kevent	event[MAX_EVENTS];
 		int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
 		if (n_events == -1) {
-			throw (FatalException("SYSCALL: kevent in kqueue_server\n"));
+			throw (FatalException("SYSCALL: kevent in event_loop\n"));
 		}
 		for (int i = 0; n_events > i; i++) {
 			std::cout << "\nevent identifier [" << event[i].ident << "]" << std::endl;
