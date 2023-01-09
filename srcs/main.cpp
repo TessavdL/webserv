@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 17:25:23 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/09 13:03:38 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av) {
 			// Prints the parsed server content
 			// cout << server_blocks.back() << endl;
 		}
-		kqueue_server(server_blocks);
+		event_loop(server_blocks);
 	}
 	catch (FatalException const& e) {
 		cerr << e.what() << endl;
