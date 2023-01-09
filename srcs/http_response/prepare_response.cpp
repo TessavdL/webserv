@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/09 14:53:47 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 17:36:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 18:24:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	prepare_response(Connection& client) {
 
 	response_handler.handle_response(client);
 	if (response_handler.get_status() == ResponseHandler::CGI) {
-		client.set_response_string(client.get_response().get_full_response());
+		client.set_response_string(client.get_response().get_cgi_response());
 	}
 	else {
 		ResponseGenerator response_string;
