@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:20:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 13:13:35 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	check_http_protocol(std::string const& protocol) {
 }
 
 void	check_client_max_body_size(int client_max_body_size, std::string content_length) {
-	if (atoi(content_length.c_str()) > (client_max_body_size * 1000000)) {
+	if (client_max_body_size != 0 && (atoi(content_length.c_str()) > (client_max_body_size * 1000000))) {
 		throw (RequestException(413, "check_client_max_body_size"));
 	}
 }
