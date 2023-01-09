@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 17:36:49 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:07:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static bool	is_not_chunked(RequestData const& request_data) {
 int	initial_error_checking(int& status_code, Connection& client, RequestData const& request) {
 	long	content_length = find_content_length(request.get_headers());
 
-	if (check_if_request_parser_threw_exception(status_code, client.get_response().get_status_code())) {
+	if (check_if_request_parser_threw_exception(status_code, client.response.get_status_code())) {
 		return (status_code);
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 17:44:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:15:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,41 +67,33 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 static void	reset_response_data(Connection& client) {
 	ResponseData	response_data;
 	
-	client.set_response(response_data);
+	client.response = response_data;
 }
 
 void	send_response_to_client(std::map<int, Connection>& connections, int const kq, struct kevent& event) {
 	Connection&	client = connections[event.ident];
-	SendData*	send_data = client.get_send_data(); // response data please
-	std::string	response_string = client.get_response_string(); // response data please
+	std::string	response_string = client.response.get_repsonse_string();
 	const char	*buf = response_string.c_str();
 	ssize_t		size = response_string.size();
 	ssize_t		bytes_sent = 0;
+	ssize_t		total_bytes_sent = client.response.get_total_bytes_sent();
 
-	bytes_sent = send(event.ident, buf + send_data->get_total_bytes_sent(), size - send_data->get_total_bytes_sent(), 0);
-	if (bytes_sent == 0 && !connection_is_continue(client.get_response().get_headers())) {
-		delete client.get_send_data();
+	bytes_sent = send(event.ident, buf + total_bytes_sent, size - total_bytes_sent, 0);
+	if (bytes_sent == 0 && !connection_is_continue(client.response.get_headers())) {
 		close(event.ident);
 		connections.erase(event.ident);
 		std::cout << "closed event identifier [" << event.ident << "]" << std::endl;
 	}
-	else if (bytes_sent == 0 && connection_is_continue(client.get_response().get_headers())) {
-		delete client.get_send_data();
+	else if (bytes_sent == 0 && connection_is_continue(client.response.get_headers())) {
 		delete_event_from_kqueue(kq, &event, event.ident);
 		add_read_event_to_kqueue(kq, client.get_connection_fd());
 		reset_response_data(client);
 	}
 	else if (bytes_sent > 0) {
-		send_data->add_bytes_sent_to_total_bytes_sent(bytes_sent);
+		client.response.set_total_bytes_sent(total_bytes_sent + bytes_sent);
 	}
 }
 
-static bool	response_not_set(Connection& client) {
-	if (client.get_ready() == true) {
-		return (false);
-	}
-	return (true);
-}
 
 int event_loop(vector<Server> server) {
 	int							kq;
@@ -147,9 +139,9 @@ int event_loop(vector<Server> server) {
 				std::cout << "writable event [" << event[i].ident << "]\n" << std::endl;
 				if (is_client(connections, event[i].ident)) {
 					Connection& client = connections[event[i].ident];
-					if (response_not_set(client)) {
+					if (!response_is_generated(client.response.get_generated())) {
 						prepare_response(client);
-						client.set_ready_true();
+						client.response.set_generated(true);
 					}
 					send_response_to_client(connections, kq, event[i]);
 				}

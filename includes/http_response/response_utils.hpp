@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:48:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 15:48:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:01:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 bool						check_if_auto_index_is_on(std::string const& auto_index);
 bool						connection_is_continue(std::map<std::string, std::string> const& headers);
 bool						is_cgi(std::string const& file_location);
-// bool						is_client(std::map<int, Connection> const& connections, int event_fd);
 bool						is_return(std::pair<int, std::string> const& virtual_server_return);
+bool						response_is_generated(bool const generated);
 
 char*						custom_asctime(const struct tm* timeptr);
 std::string					get_date_information(void);

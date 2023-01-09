@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/09 14:53:47 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 18:24:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:14:10 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,13 @@ void	prepare_response(Connection& client) {
 
 	response_handler.handle_response(client);
 	if (response_handler.get_status() == ResponseHandler::CGI) {
-		client.set_response_string(client.get_response().get_cgi_response());
+		client.response.set_response_string(client.response.get_cgi_response());
 	}
 	else {
 		ResponseGenerator response_string;
 
-		response_string.generate_response_string(client.get_response());
+		response_string.generate_response_string(client.response);
 		std::cout << green << response_string << def;
-		client.set_response_string(response_string.get_full_response());
+		client.response.set_response_string(response_string.get_full_response());
 	}
-	SendData*	send_data = new SendData(client.get_response_string());
-	client.set_send_data(send_data);
 }

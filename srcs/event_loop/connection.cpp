@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 17:33:01 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:06:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/event_loop/connection.hpp"
 
-Connection::Connection() : _ready(false) {
+Connection::Connection() {
 
 }
 
@@ -27,11 +27,11 @@ Connection::Connection(Connection const& other) {
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
 		this->request_handler = other.request_handler;
+		this->response = other.response;
+		this->_connection_fd = other._connection_fd;
+		this->_request = other._request;
 		this->_virtual_servers = other._virtual_servers;
 		this->_virtual_server = other._virtual_server;
-		this->_request = other._request;
-		this->_response = other._response;
-		this->_connection_fd = other._connection_fd;
 	}
 	return (*this);
 }
@@ -100,20 +100,12 @@ int const&	Connection::get_connection_fd(void) const {
 	return (this->_connection_fd);
 }
 
-std::string const&	Connection::get_response_string(void) const {
-	return (this->_response_string);
-}
-
-ResponseData const&	Connection::get_response(void) const {
-	return (this->_response);
-}
+// ResponseData const&	Connection::get_response(void) const {
+// 	return (this->_response);
+// }
 
 RequestData const&	Connection::get_request(void) const {
 	return (this->_request);
-}
-
-SendData*	Connection::get_send_data(void) const {
-	return (this->_send_data);
 }
 
 VirtualServer const&	Connection::get_virtual_server(void) const {
@@ -128,20 +120,12 @@ void	Connection::set_connection_fd(int const& connection_fd) {
 	this->_connection_fd = connection_fd;
 }
 
-void	Connection::set_response_string(std::string const& response_string) {
-	this->_response_string = response_string;
-}
-
-void	Connection::set_response(ResponseData const& response) {
-	this->_response = response;
-}
+// void	Connection::set_response(ResponseData const& response) {
+// 	this->_response = response;
+// }
 
 void	Connection::set_request(RequestData const& request) {
 	this->_request = request;
-}
-
-void	Connection::set_send_data(SendData* send_data) {
-	this->_send_data = send_data;
 }
 
 void	Connection::set_virtual_server(VirtualServer const& virtual_server) {
@@ -150,12 +134,4 @@ void	Connection::set_virtual_server(VirtualServer const& virtual_server) {
 
 void	Connection::set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers) {
 	this->_virtual_servers = virtual_servers;
-}
-
-bool const&	Connection::get_ready(void) const {
-	return (this->_ready);
-}
-
-void	Connection::set_ready_true(void) {
-	this->_ready = true;
 }

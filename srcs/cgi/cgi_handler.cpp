@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 16:39:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/09 18:26:01 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:04:36 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ void	create_cgi_response(Connection& connection, std::string const& file_locatio
 	else if (!connection.get_request().get_method().compare("POST"))
 		status_line = "HTTP/1.1 201 Created\r\n";
 	data.set_cgi_response(status_line + cgi_session.get_body());
-	connection.set_response(data);
+	connection.response = data;
 }

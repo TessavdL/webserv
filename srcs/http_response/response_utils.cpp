@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 18:11:22 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/09 15:48:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:14:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ bool	is_cgi(std::string const& file_location) {
 
 bool	is_return(std::pair<int, std::string> const& virtual_server_return) {
 	if (virtual_server_return.first != -1) {
+		return (true);
+	}
+	return (false);
+}
+
+bool	response_is_generated(bool const generated) {
+	if (generated == true) {
 		return (true);
 	}
 	return (false);
