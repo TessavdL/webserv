@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 18:28:18 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 21:01:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,21 @@ static bool	is_not_chunked(RequestData const& request_data) {
 	return (true);
 }
 
+static bool	is_empty_request(RequestData const& request) {
+	if (request.get_method().empty() || request.get_protocol().empty() || request.get_headers().empty()) {
+		return (true);
+	}
+	return (false);
+}
+
 int	initial_error_checking(int& status_code, Connection& client, RequestData const& request) {
 	long	content_length = find_content_length(request.get_headers());
 
 	if (check_if_request_parser_threw_exception(status_code, client.response.get_status_code())) {
 		return (status_code);
+	}
+	if (is_empty_request(request)) {
+		status_code = 400;
 	}
 	if (content_length == INVALID_CONTENT_LENGTH) {
 		status_code = 400;

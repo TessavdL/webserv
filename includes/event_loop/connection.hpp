@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 15:39:53 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 20:38:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <map>
 # include <string>
+# include <ctime>
 # include <vector>
 
 # include "./colors.hpp"
@@ -44,12 +45,14 @@ class Connection {
 		RequestData const&							get_request() const;
 		VirtualServer const&						get_virtual_server() const;
 		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
+		time_t const&								get_time() const;
 
 		// SETTERS
 		void										set_connection_fd(int const& connection_fd);
 		void										set_request(RequestData const& request);
 		void										set_virtual_server(VirtualServer const& virtual_server);
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
+		void										set_time();
 
 		RequestHandler								request_handler;
 		ResponseData								response;
@@ -58,6 +61,7 @@ class Connection {
 		RequestData									_request;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
 		VirtualServer								_virtual_server;
+		time_t										_time;
 };
 
 #endif

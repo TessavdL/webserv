@@ -17,8 +17,11 @@ int	error_and_exit(const char* error_message)
 	exit(EXIT_FAILURE);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
+	if (argc != 2) {
+		return (1);
+	}
 	int	client_socket;
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
 	std::cout << client_socket << std::endl;
@@ -41,6 +44,8 @@ int main(void)
 	{
 		return (error_and_exit("An error occured in connect.\n"));
 	}
+
+	sleep(atoi(argv[1]));
 
 	int	close_status;
 	close_status = close(client_socket);

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 16:34:50 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:19:08 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 20:40:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define MAX_EVENTS 100
 
+# include <ctime>
 # include <iostream>
 # include <netinet/in.h>
 # include <sys/socket.h>

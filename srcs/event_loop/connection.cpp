@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 20:07:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 20:48:22 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ Connection&	Connection::operator=(Connection const& other) {
 		this->_request = other._request;
 		this->_virtual_servers = other._virtual_servers;
 		this->_virtual_server = other._virtual_server;
+		this->_time = other._time;
 	}
 	return (*this);
 }
@@ -111,6 +112,10 @@ std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void
 	return (this->_virtual_servers);
 }
 
+time_t const&	Connection::get_time(void) const {
+	return (this->_time);
+}
+
 void	Connection::set_connection_fd(int const& connection_fd) {
 	this->_connection_fd = connection_fd;
 }
@@ -125,4 +130,8 @@ void	Connection::set_virtual_server(VirtualServer const& virtual_server) {
 
 void	Connection::set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers) {
 	this->_virtual_servers = virtual_servers;
+}
+
+void	Connection::set_time(void) {
+	this->_time = time(0);
 }

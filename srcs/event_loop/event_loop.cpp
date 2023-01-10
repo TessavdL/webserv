@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 17:05:00 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 21:23:44 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	add_connection(int event_fd, int connection_fd, map<int, Connection>& conne
 	map<int, vector<Server> >::const_iterator	it = virtual_servers.find(event_fd);
 
 	new_connection.first = connection_fd;
+	new_connection.second.set_time();
 	new_connection.second.set_connection_fd(connection_fd);
 	new_connection.second.set_virtual_servers(*it);
 	connections.insert(new_connection);
@@ -94,6 +95,23 @@ void	send_response_to_client(std::map<int, Connection>& connections, int const k
 	}
 }
 
+static void	check_for_hanging_connections(std::map<int, Connection>& connections) {
+	std::vector<int>	hanging_connections;
+	double				second_since_start = 0.0;
+
+	for (std::map<int, Connection>::const_iterator it = connections.cbegin(); it != connections.cend(); it++) {
+		second_since_start = difftime(time(0), it->second.get_time());
+		if (second_since_start > 180.0) {
+			hanging_connections.push_back(it->first);
+		}
+	}
+	for (std::vector<int>::const_iterator it = hanging_connections.cbegin(); it != hanging_connections.cend(); it++) {
+		std::cout << "client [" << *it << "] was hanging and has been bounced" << std::endl;
+		connections.erase(*it);
+		close(*it);
+	}
+}
+
 int event_loop(vector<Server> server) {
 	int							kq;
 	map<int, vector<Server> >	listening_sockets_with_config;
@@ -105,7 +123,10 @@ int event_loop(vector<Server> server) {
 
 	for (;;) {
 		struct kevent	event[MAX_EVENTS];
-		int n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
+		int				n_events = 0;
+		
+		check_for_hanging_connections(connections);
+		n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
 		if (n_events == -1) {
 			throw (FatalException("SYSCALL: kevent in event_loop\n"));
 		}
