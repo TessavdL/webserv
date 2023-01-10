@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:16:42 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:20:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,33 @@ class Connection {
 		~Connection();
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
+
+		void										save_request(int bytes_in_data, int listen_backlog_size);
+		void										save_request_line_and_headers();
 		void										print_request() const;
-		void										handle_rewrite(void);
+		
+		void										handle_rewrite();
 		void										select_virtual_server();
+
+		// GETTERS
 		int	const&									get_connection_fd() const;
-		ResponseData const&							get_response() const;
 		RequestData const&							get_request() const;
 		VirtualServer const&						get_virtual_server() const;
 		std::pair<int, std::vector<Server> > const&	get_virtual_servers() const;
+
+		// SETTERS
 		void										set_connection_fd(int const& connection_fd);
-		void										set_response(ResponseData const& response);
 		void										set_request(RequestData const& request);
 		void										set_virtual_server(VirtualServer const& virtual_server);
 		void										set_virtual_servers(std::pair<int, std::vector<Server> > virtual_servers);
-		void										save_request(int bytes_in_data, int listen_backlog_size);
-		void										save_request_line_and_headers(void);
-		RequestHandler								request_handler;
 
+		RequestHandler								request_handler;
+		ResponseData								response;
 	private:
-		ResponseData								_response;
+		int											_connection_fd;
 		RequestData									_request;
 		VirtualServer								_virtual_server;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
-		int											_connection_fd;
 };
 
 #endif

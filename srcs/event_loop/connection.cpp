@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:17:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/09 19:06:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ Connection::Connection(Connection const& other) {
 Connection&	Connection::operator=(Connection const& other) {
 	if (this != &other) {
 		this->request_handler = other.request_handler;
+		this->response = other.response;
+		this->_connection_fd = other._connection_fd;
+		this->_request = other._request;
 		this->_virtual_servers = other._virtual_servers;
 		this->_virtual_server = other._virtual_server;
-		this->_request = other._request;
-		this->_response = other._response;
-		this->_connection_fd = other._connection_fd;
 	}
 	return (*this);
 }
@@ -65,8 +65,6 @@ void	Connection::print_request(void) const {
 			std::cout << it->first << "=" << it->second << std::endl;
 		}
 	}
-	// std::cout << "bytes in client request = " << this->_request.get_bytes_in_data() << std::endl;
-	// std::cout << "bytes read = " << this->_request.get_total_bytes_read() << std::endl;
 	std::cout << "\r\n";
 	if (!this->_request.get_body().empty()) {
 		if (this->_request.get_body().size() > 1000)
@@ -102,9 +100,9 @@ int const&	Connection::get_connection_fd(void) const {
 	return (this->_connection_fd);
 }
 
-ResponseData const&	Connection::get_response(void) const {
-	return (this->_response);
-}
+// ResponseData const&	Connection::get_response(void) const {
+// 	return (this->_response);
+// }
 
 RequestData const&	Connection::get_request(void) const {
 	return (this->_request);
@@ -122,9 +120,9 @@ void	Connection::set_connection_fd(int const& connection_fd) {
 	this->_connection_fd = connection_fd;
 }
 
-void	Connection::set_response(ResponseData const& response) {
-	this->_response = response;
-}
+// void	Connection::set_response(ResponseData const& response) {
+// 	this->_response = response;
+// }
 
 void	Connection::set_request(RequestData const& request) {
 	this->_request = request;

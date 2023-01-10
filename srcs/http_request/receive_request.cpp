@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 15:11:33 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 15:13:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int prepare_error_response_to_client(Connection& client, int const status
 	ResponseData	response_data;
 
 	response_data.set_status_code(status_code);
-	client.set_response(response_data);
+	client.response = response_data;
 	return (-1);
 }
 
