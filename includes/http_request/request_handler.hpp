@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:44:56 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/12/30 19:21:14 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 15:42:58 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,24 @@ class RequestHandler {
 		void										tokenize_request_headers(std::string const& str);
 		void										create_headers_map(std::vector<std::string> const& v);
 
-		// void										check_request();
-
 		void										handle_body(std::string const& str, size_t& index);
 		void										handle_normal_body(std::string const& str, size_t& index);
 		void										handle_chunked_body(std::string const& str, size_t &index);
 
-		State const&								get_state(void) const;
-		std::string const&							get_remainder(void) const;
-		std::string const&							get_request_line_method(void) const;
-		std::string const&							get_request_line_uri_raw(void) const;
-		std::string const&							get_request_line_protocol(void) const;
-		Uri const&									get_request_line_uri(void) const;
-		std::map<std::string, std::string> const&	get_headers(void) const;
-		std::string const&							get_body(void) const;
-
+		State const&								get_state() const;
+		std::string const&							get_remainder() const;
+		std::string const&							get_request_line_method() const;
+		std::string const&							get_request_line_uri_raw() const;
+		std::string const&							get_request_line_protocol() const;
+		Uri const&									get_request_line_uri() const;
+		std::map<std::string, std::string> const&	get_headers() const;
+		std::string const&							get_body() const;
+		int const&									get_total_bytes_read() const;
+		
 		void										set_state(RequestHandler::State state);
 	private:
 		std::string									_remainder;
+		int											_total_bytes_read;
 		std::string									_request_line_full;
 		std::string									_request_line_method;
 		std::string									_request_line_uri_raw;

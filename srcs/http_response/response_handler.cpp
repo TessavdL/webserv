@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:05:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 17:17:49 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ResponseHandler::handle_response(Connection& client) {
 
 	initial_error_checking(this->_status_code, client, request);
 	if (client_or_server_error_occured(this->_status_code)) {
-		handle_error_response(client);
+		return (handle_error_response(client));
 	}
 	if (is_continue(this->_status_code, this->_state)) {
 		this->_state = CONTINUE;
@@ -63,11 +63,11 @@ void	ResponseHandler::handle_delete_response(Connection& client, RequestData con
 	std::string const	file = file_information(client, request_data);
 
 	if (client_or_server_error_occured(this->_status_code)) {
-		handle_error_response(client);
+		return (handle_error_response(client));
 	}
 	if (remove(file.c_str())) {
 		this->_status_code = 500;
-		handle_error_response(client);
+		return (handle_error_response(client));
 	}
 	this->_status_code = 200;
 	create_delete_response(client, file);
@@ -88,7 +88,7 @@ void	ResponseHandler::handle_get_response(Connection& client, RequestData const&
 	std::string const	file = file_information(client, request_data);
 
 	if (client_or_server_error_occured(this->_status_code)) {
-		handle_error_response(client);
+		return (handle_error_response(client));
 	}
 	if (is_cgi(file)) {
 		this->_state = CGI;
@@ -106,7 +106,7 @@ void		ResponseHandler::handle_post_response(Connection& client, RequestData cons
 	std::string const	file = file_information(client, request_data);
 
 	if (client_or_server_error_occured(this->_status_code)) {
-		handle_error_response(client);
+		return (handle_error_response(client));
 	}
 	this->_state = CGI;
 	create_cgi_response(client, file);
@@ -146,11 +146,13 @@ void	ResponseHandler::create_error_response(Connection& client, std::string cons
 	ResponseData	response_data;
 	std::string		body = file_content;
 
+	if (!body.empty() && this->_state == DEFAULT_ERROR) {
+		body.replace(body.find("$STATUS_CODE"), strlen("$STATUS_CODE"), std::to_string(this->_status_code));
+		body.replace(body.find("$REASON_PHRASE"), strlen("$REASON_PHRASE"), get_reason_phrase(this->_status_code));
+		body.replace(body.find("$STATUS_CODE"), strlen("$STATUS_CODE"), std::to_string(this->_status_code));
+		body.replace(body.find("$REASON_PHRASE"), strlen("$REASON_PHRASE"), get_reason_phrase(this->_status_code));
+	}
 	if (!body.empty()) {
-		body.replace(body.find("$STATUS_CODE"), strlen("$STATUS_CODE"), std::to_string(this->_status_code));
-		body.replace(body.find("$REASON_PHRASE"), strlen("$REASON_PHRASE"), get_reason_phrase(this->_status_code));
-		body.replace(body.find("$STATUS_CODE"), strlen("$STATUS_CODE"), std::to_string(this->_status_code));
-		body.replace(body.find("$REASON_PHRASE"), strlen("$REASON_PHRASE"), get_reason_phrase(this->_status_code));
 		response_data.set_body(body);
 	}
 	response_data.set_status_code(this->_status_code);
@@ -310,7 +312,7 @@ std::string const	ResponseHandler::file_information(Connection& client, RequestD
 	std::pair<std::string, bool> const	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string	const					file = file_location_handler(client.get_virtual_server(), file_location, request_data.get_uri().get_path_full());
 
-	// std::cout << "GET ROOT = " << client.get_virtual_server().get_root() << endl;
+	// std::cout << "root = " << client.get_virtual_server().get_root() << endl;
 	// std::cout << "file path = " << file_path << std::endl;
 	// std::cout << "file location = " << file_location.first << std::endl;
 	// std::cout << "file = " << file << std::endl;

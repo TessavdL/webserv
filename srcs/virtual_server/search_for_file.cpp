@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:28:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 13:20:07 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 17:14:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ std::string	find_error_page_location(int& status_code, VirtualServer const& virt
 		for (std::vector<std::pair<std::vector<int>, std::string> >::const_iterator it = error_page.begin(); it != error_page.end(); it++) {
 			for (std::vector<int>::const_iterator it2 = it->first.begin(); it2 != it->first.end(); it2++) {
 				if (*it2 == status_code) {
-					return (it->second);
+					return (create_path(root, it->second));
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:20:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 15:39:53 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Connection {
 		Connection(Connection const& other);
 		Connection&	operator=(Connection const& other);
 
-		void										save_request(int bytes_in_data, int listen_backlog_size);
+		void										save_body_and_total_bytes_read();
 		void										save_request_line_and_headers();
 		void										print_request() const;
 		
@@ -56,8 +56,8 @@ class Connection {
 	private:
 		int											_connection_fd;
 		RequestData									_request;
-		VirtualServer								_virtual_server;
 		std::pair<int, std::vector<Server> >		_virtual_servers;
+		VirtualServer								_virtual_server;
 };
 
 #endif

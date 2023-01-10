@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:23:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 17:05:00 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	send_response_to_client(std::map<int, Connection>& connections, int const k
 		std::cout << "closed event identifier [" << event.ident << "]" << std::endl;
 	}
 	else if (bytes_sent == 0 && connection_is_continue(client.response.get_headers())) {
-		delete_event_from_kqueue(kq, &event, event.ident);
+		delete_write_event_from_kqueue(kq, &event, event.ident);
 		add_read_event_to_kqueue(kq, client.get_connection_fd());
 		reset_response_data(client);
 	}
@@ -116,9 +116,9 @@ int event_loop(vector<Server> server) {
 			}
 			else if (client_disconnected(event[i].flags)) {
 				std::cout << "client [" << event[i].ident << "] has disconnected" << std::endl;
-                close(event[i].ident);
+				close(event[i].ident);
 				connections.erase(event[i].ident);
-            }
+			}
 			else if (is_new_connection(event[i].ident, listening_sockets_with_config)) {
 				int connection_fd = accept_connection(event[i].ident);
 				std::cout << "client [" << connection_fd << "] has connected" << std::endl;
@@ -129,9 +129,7 @@ int event_loop(vector<Server> server) {
 				std::cout << "readable event [" << event[i].ident << "]\n" << std::endl;
 				if (is_client(connections, event[i].ident)) {
 					Connection& client = connections[event[i].ident];
-					receive_request(client, event[i].ident, event[i].data);
-					client.print_request();
-					add_write_event_to_kqueue(kq, event[i].ident);
+					handle_request(client, kq, event[i]);
 				}
 			}
 			else if (is_writable_event(event[i].filter)) {

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:07:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 18:28:18 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_request_size(int& status_code, int request_body_size, int content_leng
 	}
 	else {
 		if (request_body_size != content_length_size) {
-			status_code = 413;
+			status_code = 400;
 			return (KO);
 		}
 	}
@@ -126,7 +126,7 @@ int	initial_error_checking(int& status_code, Connection& client, RequestData con
 		status_code = 400;
 		return (status_code);
 	}
-	if (is_not_chunked(request) && check_request_size(status_code, request.get_body().length(), content_length)) {
+	if (is_not_chunked(request) && check_request_size(status_code, request.get_body().size(), content_length)) {
 		return (status_code);
 	}
 	if (is_valid_cgi(status_code, client, request)) {
