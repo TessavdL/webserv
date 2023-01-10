@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:08:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 15:11:08 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	RequestHandler::process_request(std::string const& request) {
 }
 
 void	RequestHandler::process_request_start(std::string const& request) {
-	size_t 		pos = request.find(DOUBLE_CRLF);
+	size_t pos = request.find(DOUBLE_CRLF);
 
 	if (pos == std::string::npos) {
 		this->_remainder.append(request);
