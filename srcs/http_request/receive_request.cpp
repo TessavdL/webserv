@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 17:07:07 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 18:52:18 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	parse_request(Connection& client, std::string const& input) {
 		}
 		catch (RequestException const& e2) {
 			if (e2.get_status_code() != 100) {
-				std::cout << "a bad request was sent\n" << e2.what() << std::endl;
+				std::cout << "A bad request was sent\n" << e2.what() << std::endl;
 				std::cout << "status_code = " << e2.get_status_code() << std::endl;
 			}
 			if (e2.get_status_code() == 100) {

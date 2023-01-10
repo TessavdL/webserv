@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 17:18:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 18:51:53 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ void	RequestHandler::handle_body(std::string const& str, size_t& index) {
 }
 
 void	RequestHandler::handle_normal_body(std::string const& str, size_t& index) {
-	std::cout << "appending body" << std::endl;
 	this->_request_body.append(str.substr(index));
 	this->_remainder.clear();
 }
