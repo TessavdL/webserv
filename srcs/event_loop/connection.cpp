@@ -6,17 +6,17 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:06:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 15:35:08 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/event_loop/connection.hpp"
 
-Connection::Connection() {
+Connection::Connection(void) {
 
 }
 
-Connection::~Connection() {
+Connection::~Connection(void) {
 
 }
 
@@ -36,10 +36,9 @@ Connection&	Connection::operator=(Connection const& other) {
 	return (*this);
 }
 
-void	Connection::save_request(int total_bytes_read, int listen_backlog_size) {
+void	Connection::save_body_and_total_bytes_read(void) {
 	this->_request.set_body(this->request_handler.get_body());
-	this->_request.set_bytes_in_data(total_bytes_read);
-	this->_request.set_bytes_in_data(listen_backlog_size);
+	this->_request.set_total_bytes_read(this->request_handler.get_total_bytes_read());
 }
 
 void	Connection::save_request_line_and_headers(void) {
@@ -100,10 +99,6 @@ int const&	Connection::get_connection_fd(void) const {
 	return (this->_connection_fd);
 }
 
-// ResponseData const&	Connection::get_response(void) const {
-// 	return (this->_response);
-// }
-
 RequestData const&	Connection::get_request(void) const {
 	return (this->_request);
 }
@@ -119,10 +114,6 @@ std::pair<int, std::vector<Server> > const&	Connection::get_virtual_servers(void
 void	Connection::set_connection_fd(int const& connection_fd) {
 	this->_connection_fd = connection_fd;
 }
-
-// void	Connection::set_response(ResponseData const& response) {
-// 	this->_response = response;
-// }
 
 void	Connection::set_request(RequestData const& request) {
 	this->_request = request;

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:43:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 16:58:35 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ bool	is_new_connection(int event_identifier, map<int, vector<Server> > listening
 void	add_write_event_to_kqueue(int kq, int event_fd);
 void	add_new_event_to_kqueue(int kq, int event_fd);
 void	add_read_event_to_kqueue(int kq, int event_fd);
-void	delete_event_from_kqueue(int kq, struct kevent *k_event, int event_fd);
+
+void	delete_read_event_from_kqueue(int kq, struct kevent *k_event, int event_fd);
+void	delete_write_event_from_kqueue(int kq, struct kevent *k_event, int event_fd);
 
 void	register_listening_sockets_to_kernel_events_kqueue(int const kq, map<int, vector<Server> > listening_sockets_with_config);
 

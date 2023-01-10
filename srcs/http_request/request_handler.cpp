@@ -6,13 +6,14 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 15:11:08 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 17:18:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/http_request/request_handler.hpp"
 
 RequestHandler::RequestHandler(void) {
+	this->_total_bytes_read = 0;
 	this->_state = REQUEST_START;
 }
 
@@ -27,6 +28,7 @@ RequestHandler::RequestHandler(RequestHandler const& other) {
 RequestHandler&	RequestHandler::operator=(RequestHandler const& other) {
 	if (this != &other) {
 		this->_remainder = other._remainder;
+		this->_total_bytes_read = other._total_bytes_read;
 		this->_request_line_full = other._request_line_full;
 		this->_request_line_method = other._request_line_method;
 		this->_request_line_uri = other._request_line_uri;
@@ -46,6 +48,7 @@ void	RequestHandler::process_request(std::string const& request) {
 		process_request_start(request);
 	}
 
+	this->_total_bytes_read += request.size();
 	std::string 	str = this->_remainder.append(request);
 	size_t			index = 0;
 
@@ -62,8 +65,9 @@ void	RequestHandler::process_request(std::string const& request) {
 			this->_remainder = str.substr(index);
 			return ;
 		case REQUEST_BODY:
-			if (!str.substr(index).empty())
+			if (!str.substr(index).empty()) {
 				handle_body(str, index);
+			}
 			break ;
 		default:
 			throw (RequestException(400, "RequestHandler::process_request"));
@@ -188,6 +192,7 @@ void	RequestHandler::handle_body(std::string const& str, size_t& index) {
 }
 
 void	RequestHandler::handle_normal_body(std::string const& str, size_t& index) {
+	std::cout << "appending body" << std::endl;
 	this->_request_body.append(str.substr(index));
 	this->_remainder.clear();
 }
@@ -228,6 +233,10 @@ std::map<std::string, std::string>	const&	RequestHandler::get_headers(void) cons
 
 std::string	const&	RequestHandler::get_body(void) const {
 	return (this->_request_body);
+}
+
+int const&	RequestHandler::get_total_bytes_read(void) const {
+	return (this->_total_bytes_read);
 }
 
 std::ostream&	operator<<(std::ostream& os, RequestHandler const& lexer) {

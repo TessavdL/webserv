@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 15:13:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/10 17:07:07 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	parse_request(Connection& client, std::string const& input) {
 		client.request_handler.process_request(input);
 	}
 	catch (RequestException const& e) {
+		std::cout << "A bad request was sent\n" << e.what() << std::endl;
+		std::cout << "status_code = " << e.get_status_code() << std::endl;
 		return (prepare_error_response_to_client(client, e.get_status_code()));
 	}
 	if (is_ready_to_check_request_line_and_headers(client.request_handler.get_state())) {
@@ -43,6 +45,10 @@ int	parse_request(Connection& client, std::string const& input) {
 			parse_request(client, "");
 		}
 		catch (RequestException const& e2) {
+			if (e2.get_status_code() != 100) {
+				std::cout << "a bad request was sent\n" << e2.what() << std::endl;
+				std::cout << "status_code = " << e2.get_status_code() << std::endl;
+			}
 			if (e2.get_status_code() == 100) {
 				client.request_handler.set_state(RequestHandler::REQUEST_BODY);
 				parse_request(client, "");
@@ -53,37 +59,33 @@ int	parse_request(Connection& client, std::string const& input) {
 	return (0);
 }
 
-// void	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
-// 	int		bytes_read(1);
-// 	int		total_bytes_read(0);
-// 	char	buf[BUFF_SIZE + 1];
-
-// 	std::cout << "listen_backlog_lize = " << listen_backlog_size << std::endl;
-// 	while (bytes_read > 0) {
-// 		bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-// 		std::cout << "bytes read = " << bytes_read << std::endl;
-// 		buf[bytes_read] = '\0';
-// 		total_bytes_read += bytes_read;
-// 		if (parse_request(client, std::string(buf, bytes_read))) {
-// 			return ;
-// 		}
-// 	}
-// 	client.save_request(total_bytes_read, listen_backlog_size);
-// }
-
-void	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
+int	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
 	int		bytes_read(1);
 	char	buf[BUFF_SIZE + 1];
-	size_t	total_bytes_read = client.get_request().get_total_bytes_read();
+	int		size = BUFF_SIZE;
 
-	std::cout << "listen_backlog_lize = " << listen_backlog_size << std::endl;
-	bytes_read = recv(connection_fd, buf, BUFF_SIZE, 0);
-	std::cout << "bytes read = " << bytes_read << std::endl;
+	if (listen_backlog_size < BUFF_SIZE) {
+		size = listen_backlog_size;
+	}
+	bytes_read = recv(connection_fd, buf, size, 0);
 	buf[bytes_read] = '\0';
 	if (parse_request(client, std::string(buf, bytes_read))) {
-		return ;
+		return (-2);
 	}
-	// maybe remove read event from kqueue in case of an error 
-	if (bytes_read < BUFF_SIZE || bytes_read == 0)
-		client.save_request(total_bytes_read, listen_backlog_size);
+	return (bytes_read);
+}
+
+void	handle_request(Connection& client, int kq, struct kevent& event) {
+	int	listen_backlog_size = event.data;
+	int	bytes_read = receive_request(client, event.ident, listen_backlog_size);
+
+	if (bytes_read == listen_backlog_size) {
+		client.save_body_and_total_bytes_read();
+		client.print_request();
+		add_write_event_to_kqueue(kq, event.ident);
+	}
+	else if (bytes_read == -2) {
+		delete_read_event_from_kqueue(kq, &event, event.ident);
+		add_write_event_to_kqueue(kq, event.ident);
+	}
 }

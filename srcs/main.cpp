@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 14:38:25 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/09 13:03:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 16:24:16 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av) {
 		filename = string(av[1]);
 	else {
 		cerr << "Error, please provide a valid amount of arguments" << endl;
-		exit (1);
+		exit(1);
 	}
 	try {
 		vector<Server>	server_blocks;

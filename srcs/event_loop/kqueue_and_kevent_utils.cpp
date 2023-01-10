@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:44:55 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:43:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 16:57:41 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,14 @@ void	register_listening_sockets_to_kernel_events_kqueue(int const kq, map<int, v
 	}
 }
 
-void	delete_event_from_kqueue(int kq, struct kevent *k_event, int event_fd) {
+void	delete_read_event_from_kqueue(int kq, struct kevent *k_event, int event_fd) {
+	EV_SET(k_event, event_fd, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+	if (kevent(kq, k_event, 1, NULL, 0, NULL) == -1) {
+		throw (FatalException("SYSCALL: kevent in delete_event_from_kqueue\n"));
+	}
+}
+
+void	delete_write_event_from_kqueue(int kq, struct kevent *k_event, int event_fd) {
 	EV_SET(k_event, event_fd, EVFILT_WRITE, EV_DELETE, 0, 0, NULL);
 	if (kevent(kq, k_event, 1, NULL, 0, NULL) == -1) {
 		throw (FatalException("SYSCALL: kevent in delete_event_from_kqueue\n"));
