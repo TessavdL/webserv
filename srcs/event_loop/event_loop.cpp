@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 14:10:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:07:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,6 @@ void	create_listening_sockets_with_config(vector<Server> server, map<int, vector
 	}
 }
 
-static bool	is_client(std::map<int, Connection> const& connections, int event_fd) {
-	std::map<int, Connection>::const_iterator	it = connections.find(event_fd);
-
-	if (it != connections.end()) {
-		return (true);
-	}
-	return (false);
-}
-
-int	accept_connection(int event_fd) {
-	struct sockaddr_in	client_addr;
-	socklen_t			client_len = sizeof(client_addr);
-	int 				connection_fd = accept(event_fd, (struct sockaddr*)&client_addr, &client_len);
-
-	if (connection_fd == -1) {
-		throw (FatalException("SYSCALL: accept in accept_connection\n"));
-	}
-	return (connection_fd);
-}
-
-void	add_connection(int event_fd, int connection_fd, map<int, Connection>& connections, map<int, vector<Server> > virtual_servers) {
-	pair<int, Connection>						new_connection;
-	map<int, vector<Server> >::const_iterator	it = virtual_servers.find(event_fd);
-
-	new_connection.first = connection_fd;
-	new_connection.second.set_time();
-	new_connection.second.set_connection_fd(connection_fd);
-	new_connection.second.set_virtual_servers(*it);
-	connections.insert(new_connection);
-}
-
 static void	reset_response_data(Connection& client) {
 	ResponseData	response_data;
 	
@@ -90,22 +59,6 @@ void	send_response_to_client(std::map<int, Connection>& connections, int const k
 		delete_write_event_from_kqueue(kq, &event, event.ident);
 		add_read_event_to_kqueue(kq, client.get_connection_fd());
 		reset_response_data(client);
-	}
-}
-
-static void	check_for_hanging_connections(std::map<int, Connection>& connections, int const kq) {
-	std::vector<int>	hanging_connections;
-	double				second_since_start = 0.0;
-
-	for (std::map<int, Connection>::const_iterator it = connections.cbegin(); it != connections.cend(); it++) {
-		second_since_start = difftime(time(0), it->second.get_time());
-		if (second_since_start > 4.0) {
-			hanging_connections.push_back(it->first);
-		}
-	}
-	for (std::vector<int>::const_iterator it = hanging_connections.cbegin(); it != hanging_connections.cend(); it++) {
-		connections[*it].response.set_status_code(408);
-		add_write_event_to_kqueue(kq, *it);
 	}
 }
 
@@ -141,7 +94,7 @@ int event_loop(vector<Server> server) {
 				int connection_fd = accept_connection(event[i].ident);
 				std::cout << "client [" << connection_fd << "] has connected" << std::endl;
 				add_read_event_to_kqueue(kq, connection_fd);
-				add_connection(event[i].ident, connection_fd, connections, listening_sockets_with_config);
+				add_connection(connections, listening_sockets_with_config, event[i].ident, connection_fd);
 			}
 			else if (is_readable_event(event[i].filter)) {
 				std::cout << "readable event [" << event[i].ident << "]\n" << std::endl;
