@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 21:23:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 14:10:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,35 +80,32 @@ void	send_response_to_client(std::map<int, Connection>& connections, int const k
 	ssize_t		total_bytes_sent = client.response.get_total_bytes_sent();
 
 	bytes_sent = send(event.ident, buf + total_bytes_sent, size - total_bytes_sent, 0);
-	if (bytes_sent == 0 && !connection_is_continue(client.response.get_headers())) {
+	client.response.set_total_bytes_sent(total_bytes_sent + bytes_sent);
+	if ((bytes_sent == 0 || client.response.get_total_bytes_sent() == size) && !connection_is_continue(client.response.get_headers())) {
 		close(event.ident);
 		connections.erase(event.ident);
 		std::cout << "closed event identifier [" << event.ident << "]" << std::endl;
 	}
-	else if (bytes_sent == 0 && connection_is_continue(client.response.get_headers())) {
+	else if ((bytes_sent == 0 || client.response.get_total_bytes_sent() == size) && connection_is_continue(client.response.get_headers())) {
 		delete_write_event_from_kqueue(kq, &event, event.ident);
 		add_read_event_to_kqueue(kq, client.get_connection_fd());
 		reset_response_data(client);
 	}
-	else if (bytes_sent > 0) {
-		client.response.set_total_bytes_sent(total_bytes_sent + bytes_sent);
-	}
 }
 
-static void	check_for_hanging_connections(std::map<int, Connection>& connections) {
+static void	check_for_hanging_connections(std::map<int, Connection>& connections, int const kq) {
 	std::vector<int>	hanging_connections;
 	double				second_since_start = 0.0;
 
 	for (std::map<int, Connection>::const_iterator it = connections.cbegin(); it != connections.cend(); it++) {
 		second_since_start = difftime(time(0), it->second.get_time());
-		if (second_since_start > 180.0) {
+		if (second_since_start > 4.0) {
 			hanging_connections.push_back(it->first);
 		}
 	}
 	for (std::vector<int>::const_iterator it = hanging_connections.cbegin(); it != hanging_connections.cend(); it++) {
-		std::cout << "client [" << *it << "] was hanging and has been bounced" << std::endl;
-		connections.erase(*it);
-		close(*it);
+		connections[*it].response.set_status_code(408);
+		add_write_event_to_kqueue(kq, *it);
 	}
 }
 
@@ -125,7 +122,7 @@ int event_loop(vector<Server> server) {
 		struct kevent	event[MAX_EVENTS];
 		int				n_events = 0;
 		
-		check_for_hanging_connections(connections);
+		check_for_hanging_connections(connections, kq);
 		n_events = kevent(kq, NULL, 0, event, MAX_EVENTS, NULL);
 		if (n_events == -1) {
 			throw (FatalException("SYSCALL: kevent in event_loop\n"));
