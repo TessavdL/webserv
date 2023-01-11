@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:43:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 18:51:53 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:56:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,20 +240,20 @@ int const&	RequestHandler::get_total_bytes_read(void) const {
 
 std::ostream&	operator<<(std::ostream& os, RequestHandler const& lexer) {
 	if (!lexer.get_request_line_method().empty()) {
-		os << "method = " << lexer.get_request_line_method() << std::endl;
+		os << "method = " << lexer.get_request_line_method() << "\n";
 	}
 	os << lexer.get_request_line_uri();
 	if (!lexer.get_request_line_protocol().empty()) {
-		os << "protocol = " << lexer.get_request_line_protocol() << std::endl;
+		os << "protocol = " << lexer.get_request_line_protocol() << "\n";
 	}
 	if (!lexer.get_headers().empty()) {
-		os << "headers = " << std::endl;
+		os << "headers =\n";
 		for (std::map<std::string, std::string>::const_iterator it = lexer.get_headers().begin(); it != lexer.get_headers().end(); it++) {
-			os << "\t" << it->first << ": " << it->second << std::endl;
+			os << "\t" << it->first << ": " << it->second << "\n";
 		}
 	}
 	if (!lexer.get_body().empty()) {
-		os << "body = " << std::endl << lexer.get_body() << std::endl;
+		os << "body = " << std::endl << lexer.get_body() << "\n";
 	}
 	return (os);
 }

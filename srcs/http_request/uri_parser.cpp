@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 16:33:21 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 16:41:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:56:24 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,27 +159,27 @@ std::ostream&   operator<<(std::ostream& os, Uri const& uri) {
 	std::string							query_string = uri.get_query_string();
 
 	if (!scheme.empty()) {
-		os << "uri scheme = " << scheme << std::endl;
+		os << "uri scheme = " << scheme << "\n";
 	}
 	if (!authority_user_information.empty()) {
-		os << "uri user information = " << authority_user_information << std::endl;
+		os << "uri user information = " << authority_user_information << "\n";
 	}
 	if (!authority_host.empty()) {
-		os << "uri host = " << authority_host << std::endl;
+		os << "uri host = " << authority_host << "\n";
 	}
 	if (authority_port != 0)
-		os << "uri port = " << authority_port << std::endl;
+		os << "uri port = " << authority_port << "\n";
 	if (!path_full.empty()) {
-		os << "uri path = " << path_full << std::endl;
+		os << "uri path = " << path_full << "\n";
 	}
 	if (!path_extension.empty()) {
-		os << "uri path extension = " << path_extension << std::endl;
+		os << "uri path extension = " << path_extension << "\n";
 	}
 	if (!path_without_extension.empty()) {
-		os << "uri path without extension " << path_without_extension << std::endl;
+		os << "uri path without extension " << path_without_extension << "\n";
 	}
 	if (!query_string.empty()) {
-		os << "uri query string " << query_string << std::endl;
+		os << "uri query string " << query_string << "\n";
 	}
 	return (os);
 }

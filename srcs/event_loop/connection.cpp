@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:50:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 20:48:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:54:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,21 @@ void	Connection::print_request(void) const {
 	if (!this->_request.get_uri().get_path_full().empty())
 		std::cout << this->_request.get_uri().get_path_full() << " ";
 	if (!this->_request.get_protocol().empty())
-		std::cout << this->_request.get_protocol() << std::endl;
+		std::cout << this->_request.get_protocol() << "\n";
 	if (!this->_request.get_headers().empty()) {
 		for (std::map<std::string, std::string>::const_iterator it = this->_request.get_headers().begin(); it != this->_request.get_headers().end(); it++) {
-			std::cout << it->first << "=" << it->second << std::endl;
+			std::cout << it->first << "=" << it->second << "\n";
 		}
 	}
 	std::cout << "\r\n";
 	if (!this->_request.get_body().empty()) {
 		if (this->_request.get_body().size() > 1000)
-			std::cout << this->_request.get_body().substr(0, 100) << std::endl;
+			std::cout << this->_request.get_body().substr(0, 100) << "\n";
 		else
-			std::cout << this->_request.get_body() << std::endl;
+			std::cout << this->_request.get_body() << "\n";
 	}
 	else {
-		std::cout << "body is empty" << std::endl;
+		std::cout << "body is empty\n";
 	}
 	std::cout << def;
 }

@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	}
 	int	client_socket;
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
-	std::cout << client_socket << std::endl;
+	std::cout << client_socket << "\n";
 	if (client_socket == -1)
 	{
 		return (error_and_exit("An error occured in socket.\n"));
@@ -53,6 +53,6 @@ int main(int argc, char **argv)
 	{
 		error_and_exit("An error occured in close.\n");
 	}
-	std::cout << "Client fd was closed\n" << std::endl;
+	std::cout << "Client fd was closed\n";
 	return (0);
 }

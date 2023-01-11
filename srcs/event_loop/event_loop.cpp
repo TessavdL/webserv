@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 15:07:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:54:05 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	send_response_to_client(std::map<int, Connection>& connections, int const k
 	if ((bytes_sent == 0 || client.response.get_total_bytes_sent() == size) && !connection_is_continue(client.response.get_headers())) {
 		close(event.ident);
 		connections.erase(event.ident);
-		std::cout << "closed event identifier [" << event.ident << "]" << std::endl;
+		std::cout << "closed event identifier [" << event.ident << "]\n";
 	}
 	else if ((bytes_sent == 0 || client.response.get_total_bytes_sent() == size) && connection_is_continue(client.response.get_headers())) {
 		delete_write_event_from_kqueue(kq, &event, event.ident);
@@ -81,30 +81,30 @@ int event_loop(vector<Server> server) {
 			throw (FatalException("SYSCALL: kevent in event_loop\n"));
 		}
 		for (int i = 0; n_events > i; i++) {
-			std::cout << "\nevent identifier [" << event[i].ident << "]" << std::endl;
+			std::cout << "\nevent identifier [" << event[i].ident << "]\n";
 			if (is_event_error(event[i].flags)) {
 				throw (FatalException("KEVENT EV_ERROR\n"));
 			}
 			else if (client_disconnected(event[i].flags)) {
-				std::cout << "client [" << event[i].ident << "] has disconnected" << std::endl;
+				std::cout << "client [" << event[i].ident << "] has disconnected\n";
 				close(event[i].ident);
 				connections.erase(event[i].ident);
 			}
 			else if (is_new_connection(event[i].ident, listening_sockets_with_config)) {
 				int connection_fd = accept_connection(event[i].ident);
-				std::cout << "client [" << connection_fd << "] has connected" << std::endl;
+				std::cout << "client [" << connection_fd << "] has connected\n";
 				add_read_event_to_kqueue(kq, connection_fd);
 				add_connection(connections, listening_sockets_with_config, event[i].ident, connection_fd);
 			}
 			else if (is_readable_event(event[i].filter)) {
-				std::cout << "readable event [" << event[i].ident << "]\n" << std::endl;
+				std::cout << "readable event [" << event[i].ident << "]\n\n";
 				if (is_client(connections, event[i].ident)) {
 					Connection& client = connections[event[i].ident];
 					handle_request(client, kq, event[i]);
 				}
 			}
 			else if (is_writable_event(event[i].filter)) {
-				std::cout << "writable event [" << event[i].ident << "]\n" << std::endl;
+				std::cout << "writable event [" << event[i].ident << "]\n\n";
 				if (is_client(connections, event[i].ident)) {
 					Connection& client = connections[event[i].ident];
 					if (!response_is_generated(client.response.get_generated())) {
