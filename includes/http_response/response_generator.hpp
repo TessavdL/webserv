@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:51:48 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:18:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:04:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 #include "./response_utils.hpp"
 #include "./response_data.hpp"
-#include "../event_loop/colors.hpp"
 
 class ResponseGenerator {
 	public:

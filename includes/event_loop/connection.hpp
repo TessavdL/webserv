@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 20:38:30 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:03:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ class Connection {
 		void										save_body_and_total_bytes_read();
 		void										save_request_line_and_headers();
 		void										print_request() const;
-		
+
+		void										reset_response_data();
+		void										print_response() const;
+
 		void										handle_rewrite();
 		void										select_virtual_server();
 

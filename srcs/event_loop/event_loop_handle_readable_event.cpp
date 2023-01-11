@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   receive_request.cpp                                :+:    :+:            */
+/*   event_loop_handle_readable_event.cpp               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 15:55:33 by tevan-de      ########   odam.nl         */
+/*   Created: 2023/01/11 16:24:24 by tevan-de      #+#    #+#                 */
+/*   Updated: 2023/01/11 16:59:35 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request/receive_request.hpp"
+#include "../../includes/event_loop/event_loop_actions.hpp"
 
 static int prepare_error_response_to_client(Connection& client, int const status_code) {
 	ResponseData	response_data;
@@ -27,7 +27,7 @@ static bool	is_ready_to_check_request_line_and_headers(RequestHandler::State sta
 	return (false);
 }
 
-int	parse_request(Connection& client, std::string const& input) {
+static int	parse_request(Connection& client, std::string const& input) {
 	try {
 		client.request_handler.process_request(input);
 	}
@@ -59,7 +59,7 @@ int	parse_request(Connection& client, std::string const& input) {
 	return (0);
 }
 
-int	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
+static int	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
 	int		bytes_read(1);
 	char	buf[BUFF_SIZE + 1];
 	int		size = BUFF_SIZE;
@@ -75,7 +75,7 @@ int	receive_request(Connection& client, int connection_fd, int listen_backlog_si
 	return (bytes_read);
 }
 
-void	handle_request(Connection& client, int kq, struct kevent& event) {
+static void	handle_request(Connection& client, int kq, struct kevent& event) {
 	int	listen_backlog_size = event.data;
 	int	bytes_read = receive_request(client, event.ident, listen_backlog_size);
 
@@ -87,5 +87,13 @@ void	handle_request(Connection& client, int kq, struct kevent& event) {
 	else if (bytes_read == -2) {
 		delete_read_event_from_kqueue(kq, &event, event.ident);
 		add_write_event_to_kqueue(kq, event.ident);
+	}
+}
+
+void	handle_readable_event(std::map<int, Connection>& connections, int const kq, struct kevent& event) {
+	std::cout << "readable event [" << event.ident << "]\n\n";
+	if (is_client(connections, event.ident)) {
+		Connection& client = connections[event.ident];
+		handle_request(client, kq, event);
 	}
 }
