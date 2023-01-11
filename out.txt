@@ -1,0 +1,3218 @@
+Socket is listening on port 80 with fd [3]
+Socket is listening on port 400 with fd [4]
+Socket is listening on port 5000 with fd [5]
+Socket is listening on port 8080 with fd [6]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [3]
+client [9] has connected
+
+event identifier [3]
+client [10] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [3]
+client [11] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [11]
+readable event [11]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [11]
+writable event [11]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [11]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [3]
+client [10] has connected
+
+event identifier [9]
+readable event [9]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [8]
+writable event [8]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [8]
+
+event identifier [3]
+client [8] has connected
+
+event identifier [10]
+readable event [10]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [9]
+writable event [9]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [9]
+
+event identifier [3]
+client [9] has connected
+
+event identifier [8]
+readable event [8]
+
+[34mGET / HTTP/1.1
+Accept=*/*
+Accept-Encoding=gzip, deflate
+Connection=close
+Host=127.0.0.1
+User-Agent=Mozilla/5.0 (apple-x86_64-darwin18.7.0) Siege/4.1.6
+
+body is empty
+[39m
+event identifier [10]
+writable event [10]
+
+[32mHTTP/1.1 200 OK
+Date: Wed, 11 Jan 2023 14:29:28 CET
+Connection: close
+Content-Length: 1358
+Content-Type: text/html
+Server: Codyserv (macOS)
+
+[39mclosed event identifier [10]
+
+event identifier [8]
+client [8] has disconnected
+
+event identifier [8]
+writable event [8]
+
+
+event identifier [9]
+client [9] has disconnected

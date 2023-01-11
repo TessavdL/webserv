@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:03:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/10 21:12:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 14:44:09 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	SocketListen::bind_socket_to_address(void) {
 }
 
 void	SocketListen::listen_on_socket(void) {
-	int	status = listen(this->_fd, 5);
+	int	status = listen(this->_fd, SOMAXCONN);
 	if (status == -1) {
 		throw (FatalException("System call to listen in SocketListen::listen_on_socket()\n"));
 	}

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:28 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/10 18:47:12 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 14:46:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,9 @@ void	Cgi::create_env(Connection const& connection, RequestData const& request, s
 	this->_env["SERVER_PORT"] = to_string(get_port_number_from_socket_fd(connection.get_connection_fd()));
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "Codyserv (macOS)";
-	for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
-		cout << it->first << "=" << it->second << endl;
+	// Print the environment variables for debugging
+	// for (map<string, string>::iterator it = this->_env.begin(); it != this->_env.end(); ++it)
+	// 	cout << it->first << "=" << it->second << endl;
 	create_env_from_map();
 	(void)connection;
 }
@@ -147,17 +148,6 @@ void	Cgi::parent_process(RequestData const& request) {
 	close(this->_fd[0][1]);
 	if (!request.get_method().compare("POST")) {
 		write(this->_fd[1][1], request.get_body().c_str(), request.get_body().size());
-		// int total_write = 0;
-		// int size = request.get_body().size();
-		// while (1) {
-		// 	int write_ret = write(this->_fd[1][1], request.get_body().c_str() + total_write, 4000);
-		// 	cout << "WRITE RETURN TO CGI = " << write_ret << std::endl;
-		// 	cout << "size = " << size << std::endl;
-		// 	if (size <= 4000) {
-		// 		break ;
-		// 	}
-		// 	size -= 4000;
-		// }
 	}
 	if (waitpid(this->_pid, &exit_status, WNOHANG) == -1)
 		throw (FatalException("SYSCALL: waitpid: Failed"));
