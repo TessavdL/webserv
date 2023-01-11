@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 16:09:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:10:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:42:27 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "../fatal_exception.hpp"
 
 # define BUFF_SIZE 4096
+# define REQUEST_EXCEPTION -2
 
 void	handle_disconnect(std::map<int, Connection>& connections, int const event_fd);
 void	handle_new_connection(std::map<int, Connection>& connections, std::map<int, std::vector<Server> > const& listening_sockets_with_config, int const kq, int const event_fd);

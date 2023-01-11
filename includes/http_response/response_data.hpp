@@ -6,15 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 13:17:25 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 18:50:04 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:37:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RESPONSE_DATA_HPP
 # define RESPONSE_DATA_HPP
 
-#include <map>
-#include <string>
+# include <map>
+# include <string>
 
 class ResponseData
 {

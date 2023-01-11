@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 13:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 16:55:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:31:15 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <vector>
 
 # include "../config_parser/server.hpp"
+# include "../fatal_exception.hpp"
 
 void	new_kernel_event_queue(int& kq);
 

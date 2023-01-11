@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:44:56 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 15:42:58 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:33:38 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <iostream>
 # include <map>
-# include <sstream>
 # include <string>
 # include <vector>
 
@@ -26,7 +25,6 @@
 
 # define CRLF "\r\n"
 # define CRLFLEN 4
-
 # define DOUBLE_CRLF "\r\n\r\n"
 # define MAX_HEADER_SIZE 1000
 # define MAX_URI_SIZE 2000

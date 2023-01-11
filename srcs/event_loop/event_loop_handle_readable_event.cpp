@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 16:24:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 16:59:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:42:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	receive_request(Connection& client, int connection_fd, int listen_bac
 	bytes_read = recv(connection_fd, buf, size, 0);
 	buf[bytes_read] = '\0';
 	if (parse_request(client, std::string(buf, bytes_read))) {
-		return (-2);
+		return (REQUEST_EXCEPTION);
 	}
 	return (bytes_read);
 }
@@ -84,7 +84,7 @@ static void	handle_request(Connection& client, int kq, struct kevent& event) {
 		client.print_request();
 		add_write_event_to_kqueue(kq, event.ident);
 	}
-	else if (bytes_read == -2) {
+	else if (bytes_read == REQUEST_EXCEPTION) {
 		delete_read_event_from_kqueue(kq, &event, event.ident);
 		add_write_event_to_kqueue(kq, event.ident);
 	}

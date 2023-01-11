@@ -13,8 +13,8 @@
 #ifndef LOCATION_BLOCK_HPP
 # define LOCATION_BLOCK_HPP
 
-# include "./server_config.hpp"
 # include "./config_lexer.hpp"
+# include "./server_config.hpp"
 
 using namespace std;
 

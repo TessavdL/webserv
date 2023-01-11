@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:29:12 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:13:05 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:16:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	create_listening_sockets_with_config(vector<Server> server, map<int,
 		SocketListen	socket((*it).first);
 		listening_sockets_with_config[socket.get_fd()] = (*it).second;
 	}
+	std::cout << "\n";
 }
 
 int event_loop(vector<Server> server) {
@@ -40,7 +41,6 @@ int event_loop(vector<Server> server) {
 	map<int, Connection>		connections;
 
 	create_listening_sockets_with_config(server, listening_sockets_with_config);
-	std::cout << "\n";
 	new_kernel_event_queue(kq);
 	register_listening_sockets_to_kernel_events_kqueue(kq, listening_sockets_with_config);
 

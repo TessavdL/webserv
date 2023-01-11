@@ -6,17 +6,18 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 17:57:29 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/24 12:21:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:24:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CGI_HPP
 # define CGI_HPP
 
+# include <unistd.h>
+
 # include "../event_loop/connection.hpp"
 # include "../config_parser/server.hpp"
 # include "../listening_sockets/socket_listen.hpp"
-# include <unistd.h>
 
 class Cgi {
 	public:

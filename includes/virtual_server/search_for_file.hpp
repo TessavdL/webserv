@@ -6,26 +6,24 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 13:27:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 16:34:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:41:14 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SEARCH_FOR_FILE_HPP
 # define SEARCH_FOR_FILE_HPP
 
-#include <string>
-#include <vector>
-#include <dirent.h>
-#include <iostream>
-#include <fstream>
-#include <cstdio>
+# include <cstdio>
+# include <dirent.h>
+# include <fstream>
+# include <iostream>
+# include <string>
+# include <vector>
 
-#include "../fatal_exception.hpp"
-#include "../http_request/utility_path.hpp"
-// #include "../event_loop/connection.hpp"
-// #include "../http_response/error_checking.hpp"
-#include "../http_response/error_page_string.hpp"
-#include "../virtual_server/virtual_server.hpp"
+# include "../fatal_exception.hpp"
+# include "../http_request/utility_path.hpp"
+# include "../http_response/error_page_string.hpp"
+# include "../virtual_server/virtual_server.hpp"
 
 std::string						search_for_file_in_dir(std::vector<std::string>	const& v, std::string const& directory);
 std::string						create_current_working_directory(void);

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 15:04:51 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 16:38:50 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:21:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 
 # include "./connection.hpp"
 # include "./kqueue_and_kevent_utils.hpp"
-# include "../config_parser/server.hpp"
-# include "../fatal_exception.hpp"
 
 void	check_for_hanging_connections(std::map<int, Connection>& connections, int const kq);
 bool	is_client(std::map<int, Connection> const& connections, int const event_fd);

@@ -6,16 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/31 11:43:36 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:03:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:22:51 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONNECTION_HPP
 # define CONNECTION_HPP
 
-# include <map>
-# include <string>
 # include <ctime>
+# include <map>
 # include <vector>
 
 # include "./colors.hpp"

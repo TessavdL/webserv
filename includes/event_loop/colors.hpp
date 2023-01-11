@@ -6,14 +6,14 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 22:25:25 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:26:10 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:32:00 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLORS_HPP
 # define COLORS_HPP
 
-#include <ostream>
+# include <ostream>
 
 namespace Color {
 		enum Code {
