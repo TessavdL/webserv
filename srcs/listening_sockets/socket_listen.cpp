@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 15:03:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:12:17 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/10 21:12:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ void				SocketListen::create_socket(void) {
 	}
 	int	n = 1;
 	status = setsockopt(this->_fd, SOL_SOCKET, SO_REUSEADDR, &n, sizeof(n));
+	if (status == -1) {
+		throw (FatalException("System call to setsockopt in SocketListen::create_socket()\n"));
+	}
+	status = setsockopt(this->_fd, SOL_SOCKET, SO_NOSIGPIPE, &n, sizeof(n));
 	if (status == -1) {
 		throw (FatalException("System call to setsockopt in SocketListen::create_socket()\n"));
 	}
