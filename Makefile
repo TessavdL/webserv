@@ -6,7 +6,7 @@
 #    By: tevan-de <tevan-de@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/08 16:12:16 by tevan-de      #+#    #+#                  #
-#    Updated: 2023/01/09 19:18:47 by tevan-de      ########   odam.nl          #
+#    Updated: 2023/01/11 16:54:51 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,12 @@ SRC_FILES	=		fatal_exception.cpp \
 					main.cpp \
 					cgi/cgi.cpp \
 					cgi/cgi_handler.cpp \
+					event_loop/connection_utils.cpp \
 					event_loop/connection.cpp \
+					event_loop/event_loop_handle_disconnect.cpp \
+					event_loop/event_loop_handle_new_connection.cpp \
+					event_loop/event_loop_handle_readable_event.cpp \
+					event_loop/event_loop_handle_writable_event.cpp \
 					event_loop/event_loop.cpp \
 					event_loop/kqueue_and_kevent_utils.cpp \
 					config_parser/exception_config_parser.cpp \
@@ -33,7 +38,6 @@ SRC_FILES	=		fatal_exception.cpp \
 					config_parser/server_config.cpp \
 					listening_sockets/socket_listen.cpp \
 					http_request/chunked_request.cpp \
-					http_request/receive_request.cpp \
 					http_request/request_data.cpp \
 					http_request/request_exception.cpp \
 					http_request/request_handler.cpp \
@@ -41,7 +45,6 @@ SRC_FILES	=		fatal_exception.cpp \
 					http_request/utility_path.cpp \
 					http_request/utility_split.cpp \
 					http_response/error_checking.cpp \
-					http_response/prepare_response.cpp \
 					http_response/response_data.cpp \
 					http_response/response_generator.cpp \
 					http_response/response_handler.cpp \

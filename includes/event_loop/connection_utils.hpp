@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   chunked_request.hpp                                :+:    :+:            */
+/*   connection_utils.hpp                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/07 12:16:51 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:32:25 by tevan-de      ########   odam.nl         */
+/*   Created: 2023/01/11 15:04:51 by tevan-de      #+#    #+#                 */
+/*   Updated: 2023/01/11 17:21:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHUNKED_REQUEST_HPP
-# define CHUNKED_REQUEST_HPP
+#ifndef CONNECTION_UTILS_HPP
+# define CONNECTION_UTILS_HPP
 
-# include <string>
-# include <sstream>
+# include <ctime>
+# include <map>
 
-# include "./request_exception.hpp"
-# include "./request_handler.hpp"
+# include "./connection.hpp"
+# include "./kqueue_and_kevent_utils.hpp"
 
-std::string chunked_request(std::string const& str, std::string& remainder);
+void	check_for_hanging_connections(std::map<int, Connection>& connections, int const kq);
+bool	is_client(std::map<int, Connection> const& connections, int const event_fd);
 
 #endif

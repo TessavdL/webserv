@@ -6,16 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 14:45:03 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:39:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:41:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VIRTUAL_SERVER_HPP
 # define VIRTUAL_SERVER_HPP
 
-#include "../config_parser/server.hpp"
-#include "./select_location.hpp"
-#include "./select_virtual_server.hpp"
+# include "../config_parser/server.hpp"
+# include "./select_location.hpp"
+# include "./select_virtual_server.hpp"
 
 class VirtualServer {
 	public:

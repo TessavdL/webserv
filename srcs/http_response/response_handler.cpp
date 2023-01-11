@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 17:17:49 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:56:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,11 +312,6 @@ std::string const	ResponseHandler::file_information(Connection& client, RequestD
 	std::pair<std::string, bool> const	file_location = search_for_file_to_serve(client.get_virtual_server().get_index(), file_path);
 	std::string	const					file = file_location_handler(client.get_virtual_server(), file_location, request_data.get_uri().get_path_full());
 
-	// std::cout << "root = " << client.get_virtual_server().get_root() << endl;
-	// std::cout << "file path = " << file_path << std::endl;
-	// std::cout << "file location = " << file_location.first << std::endl;
-	// std::cout << "file = " << file << std::endl;
-	// std::cout << "status_code = " << this->_status_code << std::endl;
 	return (file);
 }
 

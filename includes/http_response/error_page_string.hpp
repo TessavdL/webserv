@@ -6,14 +6,14 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 14:05:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 16:00:51 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:37:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_PAGE_STRING_HPP
 # define ERROR_PAGE_STRING_HPP
 
-#define ERROR_PAGE_STRING "<!DOCTYPE html>\
+# define ERROR_PAGE_STRING "<!DOCTYPE html>\
 <html>\
 	<head>\
 		<meta charset=\"utf-8\">\

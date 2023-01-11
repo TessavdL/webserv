@@ -6,18 +6,18 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 17:37:45 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/12/08 12:57:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:35:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILITY_SPLIT_HPP
 # define UTILITY_SPLIT_HPP
 
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <iostream>
+# include <sstream>
+# include <string>
+# include <vector>
 
 std::string							string_to_lower(std::string const& str);
 std::string							string_until_deilimeter(std::string const& str, std::string const& delimeter);

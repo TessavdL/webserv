@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   utility_path.hpp                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/01/11 17:34:26 by tevan-de      #+#    #+#                 */
+/*   Updated: 2023/01/11 17:35:32 by tevan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef UTILITY_PATH_HPP
 # define UTILITY_PATH_HPP
 
-#include <string>
-#include <vector>
-#include <iostream>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <unistd.h>
+# include <dirent.h>
+# include <string>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <vector>
 
 bool						is_absolute_path(const char* str);
 bool						is_directory(const char* str);

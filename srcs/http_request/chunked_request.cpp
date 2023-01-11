@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/07 12:23:47 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 21:09:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:55:07 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static std::string	handle_pair(std::string const s, size_t& index) {
 		str = str.substr(i);
 		total += to_add.size();
 		if (total == number_of_bytes_in_data) {
-			std::cout << "HERE" << std::endl;
 			return (res);
 		}
 		if (total > number_of_bytes_in_data) {

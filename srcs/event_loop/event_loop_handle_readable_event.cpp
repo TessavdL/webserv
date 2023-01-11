@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   receive_request.cpp                                :+:    :+:            */
+/*   event_loop_handle_readable_event.cpp               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/30 17:53:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 14:30:51 by jelvan-d      ########   odam.nl         */
+/*   Created: 2023/01/11 16:24:24 by tevan-de      #+#    #+#                 */
+/*   Updated: 2023/01/11 17:44:49 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/http_request/receive_request.hpp"
+#include "../../includes/event_loop/event_loop_actions.hpp"
 
 static int prepare_error_response_to_client(Connection& client, int const status_code) {
 	ResponseData	response_data;
@@ -27,13 +27,13 @@ static bool	is_ready_to_check_request_line_and_headers(RequestHandler::State sta
 	return (false);
 }
 
-int	parse_request(Connection& client, std::string const& input) {
+static int	parse_request(Connection& client, std::string const& input) {
 	try {
 		client.request_handler.process_request(input);
 	}
 	catch (RequestException const& e) {
-		std::cout << "A bad request was sent\n" << e.what() << std::endl;
-		std::cout << "status_code = " << e.get_status_code() << std::endl;
+		std::cout << "A bad request was sent\n" << e.what() << "\n";
+		std::cout << "status_code = " << e.get_status_code() << "\n";
 		return (prepare_error_response_to_client(client, e.get_status_code()));
 	}
 	if (is_ready_to_check_request_line_and_headers(client.request_handler.get_state())) {
@@ -46,8 +46,8 @@ int	parse_request(Connection& client, std::string const& input) {
 		}
 		catch (RequestException const& e2) {
 			if (e2.get_status_code() != 100) {
-				std::cout << "A bad request was sent\n" << e2.what() << std::endl;
-				std::cout << "status_code = " << e2.get_status_code() << std::endl;
+				std::cout << "A bad request was sent\n" << e2.what() << "\n";
+				std::cout << "status_code = " << e2.get_status_code() << "\n";
 			}
 			if (e2.get_status_code() == 100) {
 				client.request_handler.set_state(RequestHandler::REQUEST_BODY);
@@ -59,7 +59,7 @@ int	parse_request(Connection& client, std::string const& input) {
 	return (0);
 }
 
-int	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
+static int	receive_request(Connection& client, int connection_fd, int listen_backlog_size) {
 	int		bytes_read(1);
 	char	buf[BUFF_SIZE + 1];
 	int		size = BUFF_SIZE;
@@ -70,12 +70,12 @@ int	receive_request(Connection& client, int connection_fd, int listen_backlog_si
 	bytes_read = recv(connection_fd, buf, size, 0);
 	buf[bytes_read] = '\0';
 	if (parse_request(client, std::string(buf, bytes_read))) {
-		return (-2);
+		return (REQUEST_EXCEPTION);
 	}
 	return (bytes_read);
 }
 
-void	handle_request(Connection& client, int kq, struct kevent& event) {
+static void	handle_request(Connection& client, int kq, struct kevent& event) {
 	int	listen_backlog_size = event.data;
 	int	bytes_read = receive_request(client, event.ident, listen_backlog_size);
 
@@ -84,8 +84,16 @@ void	handle_request(Connection& client, int kq, struct kevent& event) {
 		client.print_request();
 		add_write_event_to_kqueue(kq, event.ident);
 	}
-	else if (bytes_read == -2) {
+	else if (bytes_read == REQUEST_EXCEPTION) {
 		delete_read_event_from_kqueue(kq, &event, event.ident);
 		add_write_event_to_kqueue(kq, event.ident);
+	}
+}
+
+void	handle_readable_event(std::map<int, Connection>& connections, int const kq, struct kevent& event) {
+	std::cout << "readable event [" << event.ident << "]\n\n";
+	if (is_client(connections, event.ident)) {
+		Connection& client = connections[event.ident];
+		handle_request(client, kq, event);
 	}
 }

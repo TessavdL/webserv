@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 20:28:15 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:37:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include "../event_loop/connection.hpp"
 # include "../http_request/request_exception.hpp"
 # include "../http_request/utility_path.hpp"
-# include "../virtual_server/select_location.hpp"
 
 # define NO_CONTENT_LENGTH -2
 # define INVALID_CONTENT_LENGTH -1

@@ -6,22 +6,20 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:45:33 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 15:41:29 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:39:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RESPONSE_HANDLER_HPP
 # define RESPONSE_HANDLER_HPP
 
-#include "./error_checking.hpp"
-#include "./response_utils.hpp"
-#include "./error_page_string.hpp"
-#include "../cgi/cgi_handler.hpp"
-#include "../event_loop/connection.hpp"
-#include "../http_request/utility_path.hpp"
-#include "../virtual_server/search_for_file.hpp"
-
-#include <iostream>
+# include "./error_checking.hpp"
+# include "./response_utils.hpp"
+# include "./error_page_string.hpp"
+# include "../cgi/cgi_handler.hpp"
+# include "../event_loop/connection.hpp"
+# include "../http_request/utility_path.hpp"
+# include "../virtual_server/search_for_file.hpp"
 
 class ResponseHandler {
 	public:

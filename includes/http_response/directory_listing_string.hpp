@@ -6,14 +6,14 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 14:05:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/22 18:49:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:36:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DIRECTORY_LISTING_STRING_HPP
 # define DIRECTORY_LISTING_STRING_HPP
 
-#define DIRECTORY_LISTING_STRING "<!DOCTYPE html>\
+# define DIRECTORY_LISTING_STRING "<!DOCTYPE html>\
 <html>\
 	<head>\
 		<meta charset=\"utf-8\">\

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:48:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/09 19:01:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:38:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@
 # include <unistd.h>
 
 # include "./directory_listing_string.hpp"
-# include "../event_loop/connection.hpp"
 # include "../http_request/utility_path.hpp"
 # include "../virtual_server/search_for_file.hpp"
 # include "../virtual_server/virtual_server.hpp"
-# include "../fatal_exception.hpp"
 
 bool						check_if_auto_index_is_on(std::string const& auto_index);
 bool						connection_is_continue(std::map<std::string, std::string> const& headers);

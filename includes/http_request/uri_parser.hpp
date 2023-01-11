@@ -6,16 +6,14 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 16:30:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/16 15:11:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:34:13 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef URI_PARSER_HPP
 # define URI_PARSER_HPP
 
-# include <map>
 # include <string>
-# include <vector>
 # include <iostream>
 
 # include "./utility_split.hpp"
@@ -38,7 +36,6 @@ class Uri {
 		std::string const&							get_path_full() const;
 		std::string const&							get_path_extension() const;
 		std::string const&							get_path_without_extension() const;
-		// std::map<std::string, std::string> const&	get_query() const;
 		std::string const&							get_query_string() const;
 	private:
 		std::string									_scheme;
@@ -48,7 +45,6 @@ class Uri {
 		std::string									_path_full;
 		std::string									_path_extension;
 		std::string									_path_without_extension;
-		// std::map<std::string, std::string>			_query;
 		std::string									_query_string;
 
 };

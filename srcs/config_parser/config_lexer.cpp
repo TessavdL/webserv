@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/06 16:41:43 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2023/01/06 16:48:21 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2023/01/11 15:54:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,15 +200,15 @@ std::ostream&	operator<<(std::ostream& os, ConfigLexer const& lexer) {
 
 	for (size_t i = 0; i < server_block.size(); i++) {
 		for (size_t n = 0; n < server_block[i].directives.size(); n++) {
-			os << server_block[i].directives[n] << std::endl;
+			os << server_block[i].directives[n] << "\n";
 		}
 
 		std::vector<ConfigLexer::t_locations>	const location_blocks = server_block[i].locations;
 
 		for (size_t j = 0; j < location_blocks.size(); j++) {
-			os << location_blocks[j].path_and_optional_modifier << std::endl;
+			os << location_blocks[j].path_and_optional_modifier << "\n";
 			for (size_t m = 0; m < location_blocks[j].directives.size(); m++) {
-				os << "\t" << location_blocks[j].directives[m] << std::endl;
+				os << "\t" << location_blocks[j].directives[m] << "\n";
 			}
 		}
 	}

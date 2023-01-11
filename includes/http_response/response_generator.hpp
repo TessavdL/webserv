@@ -6,19 +6,18 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:51:48 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/07 22:18:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/11 17:37:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RESPONE_GENERATOR_HPP
 # define RESPONE_GENERATOR_HPP
 
-#include <string>
-#include <iostream>
+# include <string>
+# include <iostream>
 
-#include "./response_utils.hpp"
-#include "./response_data.hpp"
-#include "../event_loop/colors.hpp"
+# include "./response_utils.hpp"
+# include "./response_data.hpp"
 
 class ResponseGenerator {
 	public:
