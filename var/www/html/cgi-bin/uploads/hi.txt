@@ -1,3 +1,5 @@
 You're not supposed to find this, but hi! :D
 
 TRY TO DELETE ME!
+
+curl -X DELETE localhost/cgi-bin/uploads/hi.txt

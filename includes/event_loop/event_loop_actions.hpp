@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 16:09:22 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:42:27 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/12 16:53:12 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "../config_parser/server.hpp"
 # include "../http_response/response_generator.hpp"
 # include "../http_response/response_handler.hpp"
+# include "../http_request/utility_split.hpp"
 # include "../fatal_exception.hpp"
 
 # define BUFF_SIZE 4096

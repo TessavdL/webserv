@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 16:30:15 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:13:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/12 16:13:07 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static void	send_response_to_client(std::map<int, Connection>& connections, int 
 	ssize_t		total_bytes_sent = client.response.get_total_bytes_sent();
 
 	bytes_sent = send(event.ident, buf + total_bytes_sent, size - total_bytes_sent, 0);
+	if (bytes_sent == -1) {
+		return ;
+	}
 	client.response.set_total_bytes_sent(total_bytes_sent + bytes_sent);
 	if ((bytes_sent == 0 || client.response.get_total_bytes_sent() == size) && !connection_is_continue(client.response.get_headers())) {
 		close(event.ident);

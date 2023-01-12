@@ -6,11 +6,32 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 16:24:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 17:44:49 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/12 17:17:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/event_loop/event_loop_actions.hpp"
+
+static bool	is_post_request_finished(RequestData const& request_data) {
+	if (request_data.get_method().compare("POST")) {
+		return (false);
+	}
+	std::map<std::string, std::string>::const_iterator	it = request_data.get_headers().find("Transfer-Encoding");
+
+	if (it != request_data.get_headers().end()) {
+		if (!it->second.compare("chunked")) {
+			return (false);
+		}
+	}
+	std::map<std::string, std::string>::const_iterator	it2 = request_data.get_headers().find("Content-Length");
+
+	if (it2 != request_data.get_headers().end()) {
+		if (request_data.get_body().size() != static_cast<size_t>(stol(it2->second))) {
+			return (true);
+		}
+	}
+	return (false);
+}
 
 static int prepare_error_response_to_client(Connection& client, int const status_code) {
 	ResponseData	response_data;
@@ -68,6 +89,9 @@ static int	receive_request(Connection& client, int connection_fd, int listen_bac
 		size = listen_backlog_size;
 	}
 	bytes_read = recv(connection_fd, buf, size, 0);
+	if (bytes_read == -1 || bytes_read == 0) {
+		return (bytes_read);
+	}
 	buf[bytes_read] = '\0';
 	if (parse_request(client, std::string(buf, bytes_read))) {
 		return (REQUEST_EXCEPTION);
@@ -81,6 +105,9 @@ static void	handle_request(Connection& client, int kq, struct kevent& event) {
 
 	if (bytes_read == listen_backlog_size) {
 		client.save_body_and_total_bytes_read();
+		if (is_post_request_finished(client.get_request())) {
+			return ;
+		}
 		client.print_request();
 		add_write_event_to_kqueue(kq, event.ident);
 	}

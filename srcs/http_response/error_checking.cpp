@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/01 20:07:04 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/10 21:01:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/12 16:19:43 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	check_request_size(int& status_code, int request_body_size, int content_leng
 	}
 	else {
 		if (request_body_size != content_length_size) {
+			cout << request_body_size << " <<< REQUEST BODY SIZE\t" << content_length_size << " <<< CONTENT LENGTH SIZE" << endl;
 			status_code = 400;
 			return (KO);
 		}

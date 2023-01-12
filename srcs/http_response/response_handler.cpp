@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/14 15:44:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 15:56:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/12 17:28:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ void	ResponseHandler::handle_delete_response(Connection& client, RequestData con
 	std::string const	file = file_information(client, request_data);
 
 	if (client_or_server_error_occured(this->_status_code)) {
+		return (handle_error_response(client));
+	}
+	if (is_cgi(file)) {
+		this->_status_code = 501;
 		return (handle_error_response(client));
 	}
 	if (remove(file.c_str())) {

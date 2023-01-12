@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 14:53:01 by tevan-de      #+#    #+#                 */
-/*   Updated: 2023/01/11 16:38:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2023/01/12 17:26:39 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	check_for_hanging_connections(std::map<int, Connection>& connections, int c
 
 	for (std::map<int, Connection>::const_iterator it = connections.cbegin(); it != connections.cend(); it++) {
 		second_since_start = difftime(time(0), it->second.get_time());
-		if (second_since_start > 4.0) {
+		if (second_since_start > 120.0) {
 			hanging_connections.push_back(it->first);
 		}
 	}
