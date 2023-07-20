@@ -130,16 +130,16 @@ cd <target_location>
 <div class="use">
   <h2>How to use webserv</h2>
   Webserv can be reached by visiting the following URL in the browser: <code>http://localhost/"path_here"</code>. If no portnumber is specified, webserv will listen to port <code>80</code>.
-You can also specify a port number, which will work if the configuration file is set to handle that portnumber. For example: <code>http://localhost/"path_here":8080</code>.
+You can also specify a port number, which will work if the configuration file is set to handle that port number. For example: <code>http://localhost/"path_here":8080</code>.
 If webserv is run with the standard configuration file you can go to <code>http://localhost</code> and you'll find an overview of webserv features: 
   <ul>
     <li>Standard HTML pages with images, CSS and JS.</li>
-    <li>HTML page where you can submit a form with both GET and POST methods.</li>
+    <li>HTML page where you can submit a form with a GET method.</li>
+    <li>HTML page where you can submit a form with a POST method.</li>
     <li>HTML page where you can upload an image.</li>
-    <li>HTML page that displays information regarding the site's PHP configuration, including: The current version of PHP your site is running, server information and environment.</li>
+    <li>HTML page that displays information regarding the site's PHP configuration, including: the current version of PHP the site is running, server information and environment information.</li>
   </ul>
-  Webserv can also be reached using <code>cURL</code> and has been tested with siege (https://formulae.brew.sh/formula/siege), where it reached 100% uptime with simple HTML requests and HTML request requesting a 8MB image with 200 clients at a time.
-
+  Webserv can also be reached by for example using <code>cURL</code> and has been tested with siege (https://formulae.brew.sh/formula/siege), where it reached 100% uptime with simple HTML requests and HTML request requesting a 8MB image with 200 clients at a time.
 </div>
 
 </html>
